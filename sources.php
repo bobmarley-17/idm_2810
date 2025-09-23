@@ -1,3 +1,4 @@
+sources.php
 <?php
 require_once 'config/database.php';
 require_once 'lib/UserManager.php';
@@ -26,8 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'has_headers' => isset($_POST['has_headers']),
                         'field_mapping' => [
                             'email' => $_POST['email_field'] ?? 'email',
-                            'username' => $_POST['username_field'] ?? 'username',
-                            'employee_id' => $_POST['employee_id_field'] ?? 'employee_id'
+                            'firstname' => $_POST['firstname_field'] ?? 'firstname',
+                            //'username' => $_POST['username_field'] ?? 'username',
+                            //'employee_id' => $_POST['employee_id_field'] ?? 'employee_id',
+                            'lastname' => $_POST['lastname_field'] ?? 'lastname',
+                            'supervisor_email' => $_POST['supervisor_email_field'] ?? 'supervisor_email'
+
                         ]
                     ];
                     break;
@@ -72,8 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'has_headers' => isset($_POST['has_headers']),
                         'field_mapping' => [
                             'email' => $_POST['email_field'] ?? 'email',
-                            'username' => $_POST['username_field'] ?? 'username',
-                            'employee_id' => $_POST['employee_id_field'] ?? 'employee_id'
+                            'firstname' => $_POST['firstname_field'] ?? 'firstname',
+                            //'username' => $_POST['username_field'] ?? 'username',
+                            //'employee_id' => $_POST['employee_id_field'] ?? 'employee_id',
+                            'lastname' => $_POST['lastname_field'] ?? 'lastname'
                         ]
                     ];
                     break;
@@ -191,7 +198,7 @@ if ($currentSourceId) {
     foreach ($sources as $src) {
         if ($src['id'] == $currentSourceId) {
             $currentSource = $src;
-            
+
             // Get active accounts
             $accountsStmt = $db->prepare("
                 SELECT ua.account_id, ua.email, ua.username, ua.created_at, ua.updated_at, ua.status
@@ -201,7 +208,7 @@ if ($currentSourceId) {
             ");
             $accountsStmt->execute([$currentSourceId]);
             $accounts = $accountsStmt->fetchAll(PDO::FETCH_ASSOC);
-            
+
             // Get count of inactive/deleted accounts
             $inactiveStmt = $db->prepare("
                 SELECT COUNT(*) as count
@@ -343,15 +350,15 @@ include 'templates/header.php';
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Username Field</label>
-                                <select name="username_field" class="form-select edit-field-mapping-select">
-                                    <option value="<?= htmlspecialchars($editConfig['field_mapping']['username'] ?? 'username') ?>" selected><?= htmlspecialchars($editConfig['field_mapping']['username'] ?? 'username') ?></option>
+                                <label class="form-label">FirstName Field</label>
+                                <select name="firstname_field" class="form-select edit-field-mapping-select">
+                                    <option value="<?= htmlspecialchars($editConfig['field_mapping']['firstname'] ?? 'firstname') ?>" selected><?= htmlspecialchars($editConfig['field_mapping']['firstname'] ?? 'firstname') ?></option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Employee ID Field</label>
-                                <select name="employee_id_field" class="form-select edit-field-mapping-select">
-                                    <option value="<?= htmlspecialchars($editConfig['field_mapping']['employee_id'] ?? 'employee_id') ?>" selected><?= htmlspecialchars($editConfig['field_mapping']['employee_id'] ?? 'employee_id') ?></option>
+                                <label class="form-label">LastName Field</label>
+                                <select name="lastname_field" class="form-select edit-field-mapping-select">
+                                    <option value="<?= htmlspecialchars($editConfig['field_mapping']['lastname'] ?? 'lastname') ?>" selected><?= htmlspecialchars($editConfig['field_mapping']['lastname'] ?? 'lastname') ?></option>
                                 </select>
                             </div>
                         </div>
@@ -740,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <input type="checkbox" name="has_headers" class="form-check-input" checked id="csvHeaders">
                             <label class="form-check-label" for="csvHeaders">First row contains headers</label>
                         </div>
-                    
+
                         <h6 class="mt-3">Field Mappings</h6>
                         <div class="row g-3">
                             <div class="col-md-4">
@@ -750,15 +757,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Username Field</label>
-                                <select name="username_field" class="form-select field-mapping-select">
-                                    <option value="username">username</option>
+                                <label class="form-label">FirstName Field</label>
+                                <select name="firstname_field" class="form-select field-mapping-select">
+                                    <option value="firstname">firstname</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Employee ID Field</label>
-                                <select name="employee_id_field" class="form-select field-mapping-select">
-                                    <option value="employee_id">employee_id</option>
+                                <label class="form-label">LastName Field</label>
+                                <select name="lastname_field" class="form-select field-mapping-select">
+                                    <option value="lastname">lastname</option>
                                 </select>
                             </div>
                         </div>
@@ -826,7 +833,7 @@ tabElms.forEach(function(tabEl) {
 document.getElementById('detectHeadersBtn').addEventListener('click', async function() {
     const filePath = document.getElementById('csvFilePath').value;
     const statusElement = document.getElementById('headerDetectionStatus');
-    
+
     if (!filePath) {
         statusElement.textContent = 'Please enter a file path first';
         statusElement.className = 'mt-2 text-danger small';
@@ -860,7 +867,7 @@ document.getElementById('detectHeadersBtn').addEventListener('click', async func
         document.querySelectorAll('.field-mapping-select').forEach(select => {
             const currentValue = select.value;
             select.innerHTML = '';
-            
+
             // Add detected headers
             data.headers.forEach(header => {
                 const option = document.createElement('option');
@@ -869,7 +876,7 @@ document.getElementById('detectHeadersBtn').addEventListener('click', async func
                 option.selected = (header === currentValue);
                 select.appendChild(option);
             });
-            
+
             // Keep current value if not in detected headers
             if (currentValue && !data.headers.includes(currentValue)) {
                 const option = document.createElement('option');
@@ -892,3 +899,4 @@ document.getElementById('detectHeadersBtn').addEventListener('click', async func
 </script>
 
 <?php include 'templates/footer.php'; ?>
+

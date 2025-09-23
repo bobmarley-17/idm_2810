@@ -4,11 +4,10 @@ require_once 'lib/UserManager.php';
 
 $db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 $userManager = new UserManager($db);
-
-$userId = $_GET['id'] ?? 0;
-
+$userId = $_GET['user_id'] ?? ($_GET['id'] ?? 0);
 $user = $userManager->getUserWithAccounts($userId);
-// Check defunct status
+
+// Check defunct status from defunct_users table
 $defunctStatus = null;
 $defunctStmt = $db->prepare("SELECT status FROM defunct_users WHERE email = ? OR employee_id = ? LIMIT 1");
 $defunctStmt->execute([$user['email'], $user['employee_id']]);
@@ -23,36 +22,48 @@ if (!$user) {
 
 $fromPending = isset($_GET['pending']) && $_GET['pending'] == 1;
 
-include 'templates/header.php';
-?>
+// Check if this user has any linked accounts with pending deletion
+$pending = false;
+// Also check if any linked account is active
+$isAnyActive = false;
 
-
-<h2>User Details: <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?>
-    <?php
-    // Check if this user has any accounts pending deletion
-    $pending = false;
-    foreach ($user['accounts'] as $acc) {
-        if (isset($acc['id'])) {
-            $stmt = $db->prepare("SELECT pending_deletion FROM user_accounts WHERE id = ?");
-            $stmt->execute([$acc['id']]);
-            if ($stmt->fetchColumn()) {
+foreach ($user['accounts'] as $acc) {
+    if (isset($acc['id'])) {
+        $stmt = $db->prepare("SELECT pending_deletion, status FROM user_accounts WHERE id = ?");
+        $stmt->execute([$acc['id']]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            if ($row['pending_deletion']) {
                 $pending = true;
-                break;
+            }
+            if ($row['status'] === 'active') {
+                $isAnyActive = true;
             }
         }
     }
-    if ($pending): ?>
+}
+
+include 'templates/header.php';
+?>
+
+<h2>User Details: <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?>
+    <?php if ($pending): ?>
         <span class="badge bg-danger ms-2">Pending Deletion</span>
     <?php endif; ?>
-    <?php if ($defunctStatus === 'deleted'): ?>
+
+    <?php if (!$isAnyActive && $defunctStatus === 'deleted'): ?>
         <span class="badge bg-secondary ms-2">Deleted</span>
+    <?php elseif ($isAnyActive): ?>
+        <span class="badge bg-success ms-2">Active</span>
     <?php elseif ($defunctStatus === 'pending'): ?>
         <span class="badge bg-danger ms-2">Defunct (Pending)</span>
     <?php endif; ?>
 </h2>
 
 <?php if ($fromPending): ?>
-    <div class="alert alert-warning">You are reviewing this user as part of the pending deletions workflow. All accounts from all sources are shown below for admin review.</div>
+    <div class="alert alert-warning">
+        You are reviewing this user as part of the pending deletions workflow. All accounts from all sources are shown below for admin review.
+    </div>
 <?php endif; ?>
 
 <div class="row">
@@ -60,8 +71,8 @@ include 'templates/header.php';
         <h4>Basic Information</h4>
         <table class="table">
             <tr>
-                <th>Employee ID</th>
-                <td><?= htmlspecialchars($user['employee_id']) ?></td>
+                <th>Username</th>
+                <td><?= htmlspecialchars($user['username'] ?? '') ?></td>
             </tr>
             <tr>
                 <th>Email</th>
@@ -69,15 +80,18 @@ include 'templates/header.php';
             </tr>
             <tr>
                 <th>Status</th>
-                <td><?= htmlspecialchars($user['status']) ?></td>
+                <td><?= htmlspecialchars($isAnyActive ? 'active' : 'deleted') ?></td>
             </tr>
         </table>
     </div>
 </div>
 
 <h4>Linked Accounts</h4>
+
 <?php if ($pending): ?>
-    <div class="alert alert-danger">This user has one or more accounts flagged for deletion. Please review and take action.</div>
+    <div class="alert alert-danger">
+        This user has one or more accounts flagged for deletion. Please review and take action.
+    </div>
     <form method="post" action="user_action.php" class="mb-3">
         <?php foreach ($user['accounts'] as $account): ?>
             <?php
@@ -98,6 +112,7 @@ include 'templates/header.php';
         <button type="submit" name="restore_account" class="btn btn-success">Restore</button>
     </form>
 <?php endif; ?>
+
 <table class="table">
     <thead>
         <tr>
@@ -121,15 +136,15 @@ include 'templates/header.php';
             }
             echo $pending ? ' class="table-danger"' : '';
         ?>>
-            <td><?= htmlspecialchars($account['source_name'] . ' (' . $account['source_type'] . ')') ?></td>
-            <td><?= htmlspecialchars($account['account_id']) ?></td>
-            <td><?= htmlspecialchars($account['username']) ?></td>
-            <td><?= htmlspecialchars($account['email']) ?></td>
+            <td><?= htmlspecialchars(($account['source_name'] ?? '') . ' (' . ($account['source_type'] ?? '') . ')') ?></td>
+            <td><?= htmlspecialchars($account['account_id'] ?? '') ?></td>
+            <td><?= htmlspecialchars($account['username'] ?? '') ?></td>
+            <td><?= htmlspecialchars($account['email'] ?? '') ?></td>
             <td>
                 <?php if ($pending): ?>
                     <span class="badge bg-danger">Pending Deletion</span>
                 <?php elseif (isset($account['status'])): ?>
-                    <?php 
+                    <?php
                     $badgeClass = 'bg-secondary';
                     if ($account['status'] === 'active') {
                         $badgeClass = 'bg-success';
@@ -146,3 +161,4 @@ include 'templates/header.php';
 </table>
 
 <?php include 'templates/footer.php'; ?>
+

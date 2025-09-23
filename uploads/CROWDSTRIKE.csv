@@ -1,0 +1,9 @@
+CompanyCode,Firstname,Lastname,Email,SiteUsername,RT,AccessLevelNotes
+CROWDSTRIKE,anil,kumarkadium,kanil@corp.untd.com,kanil@corp.untd.com,,"Super User"
+CROWDSTRIKE,MohammedIrshad,Baba,mbaba@corp.untd.com,mbaba@corp.untd.com,,"Super User"
+CROWDSTRIKE,Craig,Lambert,craig.lambert@magicjack.com,clambert@corp.untd.com,,"Super User"
+CROWDSTRIKE,Steve,Sabados,steve.sabados@magicjack.com,steve.sabados@magicjack.com,,"Super User"
+CROWDSTRIKE,Srinivas,Gurubilli,srinig@corp.untd.com,srinig@corp.untd.com,,Manager
+CROWDSTRIKE,Net,Corpsys,net-corpsys-hyd@corp.untd.com,net-corpsys-hyd@corp.untd.com,,Manager
+CROWDSTRIKE,Net-Security-Hyd,UnitedOnline,net-security-hyd@corp.untd.com,net-security-hyd@corp.untd.com,,"Super User"
+CROWDSTRIKE,Net-Security-Tickets,Security,security@tickets.int.untd.com,security@tickets.int.untd.com,,User

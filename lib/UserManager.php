@@ -8,11 +8,12 @@ class UserManager {
     
     public function createUser($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO users (employee_id, first_name, last_name, email, status)
-            VALUES (:employee_id, :first_name, :last_name, :email, :status)
+            INSERT INTO users (username, employee_id, first_name, last_name, email, status)
+            VALUES (:username, :employee_id, :first_name, :last_name, :email, :status)
         ");
         
         $stmt->execute([
+	    ':username' => $data['username'],
             ':employee_id' => $data['employee_id'],
             ':first_name' => $data['first_name'],
             ':last_name' => $data['last_name'],
@@ -47,9 +48,9 @@ class UserManager {
     
     public function getUserWithAccounts($userId) {
         $stmt = $this->db->prepare("
-            SELECT u.*, 
-                   ua.id as account_id, ua.source_id, ua.account_id as source_account_id,
-                   ua.username, ua.email as account_email, ua.additional_data, ua.status as account_status,
+	    SELECT u.*,  -- u.username now included as it is a column on users table
+		   ua.id as account_id, ua.source_id, ua.account_id as source_account_id,
+		   ua.username as account_username, ua.email as account_email, ua.additional_data, ua.status as account_status,
                    s.name as source_name, s.type as source_type
             FROM users u
             LEFT JOIN user_accounts ua ON ua.user_id = u.id
@@ -68,6 +69,7 @@ class UserManager {
                     'employee_id' => $row['employee_id'],
                     'first_name' => $row['first_name'],
                     'last_name' => $row['last_name'],
+		    'username' => $row['username'],
                     'email' => $row['email'],
                     'status' => $row['status'],
                     'accounts' => []
@@ -81,10 +83,11 @@ class UserManager {
                     'source_name' => $row['source_name'],
                     'source_type' => $row['source_type'],
                     'account_id' => $row['source_account_id'],
-                    'username' => $row['username'],
+                    'username' => $row['account_username'],
                     'email' => $row['account_email'],
                     'status' => $row['account_status'] ?? 'active',
-                    'additional_data' => json_decode($row['additional_data'], true)
+		    'additional_data' => $row['additional_data'] ? json_decode($row['additional_data'], true) : []
+
                 ];
             }
         }

@@ -11,7 +11,7 @@ import re
 # Configuration
 CONFIG = {
     'db_host': 'localhost',
-    'db_name': 'idm_tool',
+    'db_name': 'idmdb1209',
     'db_user': 'idm_user',
     'db_password': 'test123',
     'log_file': '/var/www/html/idmtool/sync.log',
@@ -105,8 +105,10 @@ def load_xml_accounts(file_path, config):
         
         field_mappings = {
             'email': config.get('email_field', 'email'),
-            'username': config.get('username_field', 'username'),
-            'employee_id': config.get('employee_id_field', 'employee_id')
+            'firstname': config.get('firstname_field', 'firstname'),
+            #'username': config.get('username_field', 'username'),
+            'lastname': config.get('lastname_field', 'lastname')
+            #'employee_id': config.get('employee_id_field', 'employee_id')
         }
         
         for user in elements:
@@ -299,7 +301,8 @@ def save_correlated_accounts(conn, source_id, correlated):
                 item['user_id'],
                 source_id,
                 item['account_id'],
-                item['account_data'].get('username'),
+                #item['account_data'].get('username'),
+                item['account_data'].get('firstname'),
                 item['account_data'].get('email'),
                 json.dumps(item['account_data']),
                 json.dumps(item['matched_by'])
@@ -394,24 +397,63 @@ def create_role_account(conn, name, description=None):
     """, (name, description))
     conn.commit()
     return cursor.lastrowid
+
 # Implementation for baseline user insert
 def insert_baseline_users(conn, accounts, source_id):
     cursor = conn.cursor()
     for acc in accounts:
+        # Insert or update user in users table
         cursor.execute(
             """
-            INSERT INTO users (first_name, last_name, email, employee_id, status)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO users (username, first_name, last_name, email, employee_id, status, supervisor_email)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             ON DUPLICATE KEY UPDATE
+		username = VALUES(username),
                 first_name = VALUES(first_name),
                 last_name = VALUES(last_name),
                 email = VALUES(email),
                 status = VALUES(status),
+                supervisor_email = VALUES(supervisor_email),
                 updated_at = NOW()
             """,
-            (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+            (
+		acc.get('username', ''),
+                acc.get('first_name', acc.get('firstname', '')),
+                acc.get('last_name', acc.get('lastname', '')),
+                acc.get('email', ''),
+                acc.get('employee_id', ''),
+                acc.get('status', 'active'),
+                acc.get('supervisor_email', '')
+            )
         )
-    conn.commit()    
+        # Get user id for the inserted or existing user
+        cursor.execute(
+            "SELECT id FROM users WHERE email = %s",
+            (acc.get('email', ''),)
+        )
+        user_id = cursor.fetchone()[0]
+
+        # Insert or update corresponding user_accounts row to reflect accounts in the source
+        cursor.execute(
+            """
+            INSERT INTO user_accounts (user_id, source_id, account_id, username, email, matched_by, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, NOW(), NOW())
+            ON DUPLICATE KEY UPDATE
+                username = VALUES(username),
+                email = VALUES(email),
+                matched_by = VALUES(matched_by),
+                updated_at = NOW()
+            """,
+            (
+                user_id,
+                source_id,
+                acc.get('employee_id', acc.get('email', '')),  # or other unique account id
+                acc.get('first_name', acc.get('username', '')),
+                acc.get('email', ''),
+                '{"type": "baseline"}'  # JSON meta indicating baseline import
+            )
+        )
+    conn.commit()
 
 def handle_defunct_users(conn, baseline_accounts, source_id):
     """Detect users missing from baseline or other sources and handle their defunct status."""
@@ -434,7 +476,7 @@ def handle_defunct_users(conn, baseline_accounts, source_id):
         for user in db_users:
             empid = user.get('employee_id')
             email = user.get('email')
-            if (empid and empid not in baseline_empids) and (email and email not in baseline_emails):
+            if (empid and empid not in baseline_empids) or (email and email not in baseline_emails):
                 defunct.append(user)
 
         # For each defunct user
@@ -477,14 +519,23 @@ def handle_defunct_users(conn, baseline_accounts, source_id):
         for entry in pending:
             # Check if this user's account exists in the current source's data
             found = False
-            cursor.execute("SELECT email, employee_id FROM users WHERE id = %s", (entry['user_id'],))
+            cursor.execute("SELECT email FROM users WHERE id = %s", (entry['user_id'],))
             user_data = cursor.fetchone()
             if user_data:
-                for acc in baseline_accounts:
-                    if ((user_data['email'] and acc.get('email') == user_data['email']) or 
-                        (user_data['employee_id'] and acc.get('employee_id') == user_data['employee_id'])):
+                for acc in accounts:
+                    # Primary: email
+                    if acc.get('email') and user_data['email'] == acc.get('email'):
                         found = True
                         break
+                    # Optional fallback: employee_id
+                    elif acc.get('employee_id') and user_data.get('employee_id') == acc.get('employee_id'):
+                        found = True
+                        break
+#                    for acc in baseline_accounts:
+#                        if ((user_data['email'] and acc.get('email') == user_data['email']) or 
+#                           (user_data['employee_id'] and acc.get('employee_id') == user_data['employee_id'])):
+#                            found = True
+#                            break
             
             if not found:
                 logging.info(f"User {entry['user_id']} not found in source {source_id}, marking as deleted")

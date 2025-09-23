@@ -1,0 +1,1665 @@
+2025-08-13 14:55:31 - INFO - === Starting Correlation Sync ===
+2025-08-13 14:55:31 - INFO - Starting correlation sync for source 16
+2025-08-13 14:55:31 - INFO - Baseline user import completed for sshr: 0 users inserted.
+2025-08-13 14:55:31 - INFO - Database connection closed
+2025-08-13 15:07:37 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:07:37 - INFO - Starting correlation sync for source 18
+2025-08-13 15:07:37 - INFO - Loaded 0 correlation rules for source 18
+2025-08-13 15:07:38 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-13 15:07:38 - INFO - Database connection closed
+2025-08-13 15:07:43 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:07:43 - INFO - Starting correlation sync for source 18
+2025-08-13 15:07:43 - INFO - Loaded 0 correlation rules for source 18
+2025-08-13 15:07:43 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-13 15:07:43 - INFO - Database connection closed
+2025-08-13 15:10:19 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:10:19 - INFO - Starting correlation sync for source 18
+2025-08-13 15:10:19 - INFO - Loaded 0 correlation rules for source 18
+2025-08-13 15:10:20 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-13 15:10:20 - INFO - Database connection closed
+2025-08-13 15:11:36 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:11:36 - INFO - Starting correlation sync for source 20
+2025-08-13 15:11:36 - INFO - Loaded 0 correlation rules for source 20
+2025-08-13 15:11:36 - INFO - 
+            Correlation completed for sshr:
+            - Accounts processed: 0
+            - Successfully correlated: 0
+            - Unmatched accounts: 0
+        
+2025-08-13 15:11:36 - INFO - Database connection closed
+2025-08-13 15:11:43 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:11:43 - INFO - Starting correlation sync for source 18
+2025-08-13 15:11:43 - INFO - Loaded 0 correlation rules for source 18
+2025-08-13 15:11:43 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-13 15:11:43 - INFO - Database connection closed
+2025-08-13 15:11:44 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:11:44 - INFO - Starting correlation sync for source 20
+2025-08-13 15:11:44 - INFO - Loaded 0 correlation rules for source 20
+2025-08-13 15:11:44 - INFO - 
+            Correlation completed for sshr:
+            - Accounts processed: 0
+            - Successfully correlated: 0
+            - Unmatched accounts: 0
+        
+2025-08-13 15:11:44 - INFO - Database connection closed
+2025-08-13 15:13:07 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:13:07 - INFO - Starting correlation sync for source 20
+2025-08-13 15:13:07 - INFO - Loaded 0 correlation rules for source 20
+2025-08-13 15:13:07 - INFO - 
+            Correlation completed for sshr:
+            - Accounts processed: 0
+            - Successfully correlated: 0
+            - Unmatched accounts: 0
+        
+2025-08-13 15:13:07 - INFO - Database connection closed
+2025-08-13 15:36:23 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:36:23 - INFO - Starting correlation sync for source 22
+2025-08-13 15:36:23 - ERROR - Sync failed for source 22: 'first_name'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'first_name'
+2025-08-13 15:36:23 - INFO - Database connection closed
+2025-08-13 15:37:34 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:37:34 - INFO - Starting correlation sync for source 22
+2025-08-13 15:37:34 - ERROR - Sync failed for source 22: 'first_name'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'first_name'
+2025-08-13 15:37:34 - INFO - Database connection closed
+2025-08-13 15:49:56 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:49:56 - INFO - Starting correlation sync for source 22
+2025-08-13 15:49:56 - ERROR - Sync failed for source 22: 'first_name'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'first_name'
+2025-08-13 15:49:56 - INFO - Database connection closed
+2025-08-13 15:50:17 - INFO - === Starting Correlation Sync ===
+2025-08-13 15:50:17 - INFO - Starting correlation sync for source 22
+2025-08-13 15:50:17 - ERROR - Sync failed for source 22: 'first_name'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'first_name'
+2025-08-13 15:50:17 - INFO - Database connection closed
+2025-08-13 16:07:51 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:07:51 - INFO - Starting correlation sync for source 22
+2025-08-13 16:07:51 - ERROR - Sync failed for source 22: name 'insert_baseline_users' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 231, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+NameError: name 'insert_baseline_users' is not defined
+2025-08-13 16:07:51 - INFO - Database connection closed
+2025-08-13 16:08:03 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:08:03 - INFO - Starting correlation sync for source 22
+2025-08-13 16:08:03 - ERROR - Sync failed for source 22: name 'insert_baseline_users' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 231, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+NameError: name 'insert_baseline_users' is not defined
+2025-08-13 16:08:03 - INFO - Database connection closed
+2025-08-13 16:11:23 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:11:23 - INFO - Starting correlation sync for source 22
+2025-08-13 16:11:23 - ERROR - Sync failed for source 22: name 'insert_baseline_users' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 247, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+NameError: name 'insert_baseline_users' is not defined
+2025-08-13 16:11:23 - INFO - Database connection closed
+2025-08-13 16:11:42 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:11:42 - INFO - Starting correlation sync for source 22
+2025-08-13 16:11:42 - ERROR - Sync failed for source 22: name 'insert_baseline_users' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 247, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+NameError: name 'insert_baseline_users' is not defined
+2025-08-13 16:11:42 - INFO - Database connection closed
+2025-08-13 16:12:52 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:12:52 - INFO - Starting correlation sync for source 22
+2025-08-13 16:12:52 - ERROR - Sync failed for source 22: name 'insert_baseline_users' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 247, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+NameError: name 'insert_baseline_users' is not defined
+2025-08-13 16:12:52 - INFO - Database connection closed
+2025-08-13 16:12:55 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:12:55 - INFO - Starting correlation sync for source 22
+2025-08-13 16:12:55 - ERROR - Sync failed for source 22: name 'insert_baseline_users' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 247, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+NameError: name 'insert_baseline_users' is not defined
+2025-08-13 16:12:55 - INFO - Database connection closed
+2025-08-13 16:18:51 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:18:51 - INFO - Starting correlation sync for source 22
+2025-08-13 16:18:51 - ERROR - Sync failed for source 22: name 'load_csv_accounts' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 134, in sync_correlation_source
+    accounts = load_csv_accounts(
+NameError: name 'load_csv_accounts' is not defined
+2025-08-13 16:18:51 - INFO - Database connection closed
+2025-08-13 16:21:28 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:21:28 - INFO - Starting correlation sync for source 22
+2025-08-13 16:21:28 - INFO - Database connection closed
+2025-08-13 16:21:42 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:21:42 - INFO - Starting correlation sync for source 22
+2025-08-13 16:21:42 - INFO - Database connection closed
+2025-08-13 16:24:00 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:24:00 - INFO - Starting correlation sync for source 24
+2025-08-13 16:24:00 - INFO - Database connection closed
+2025-08-13 16:29:16 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:29:16 - INFO - Starting correlation sync for source 24
+2025-08-13 16:29:16 - INFO - Database connection closed
+2025-08-13 16:35:59 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:35:59 - INFO - Starting correlation sync for source 24
+2025-08-13 16:35:59 - INFO - Database connection closed
+2025-08-13 16:36:58 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:36:58 - INFO - Starting correlation sync for source 26
+2025-08-13 16:36:58 - INFO - Database connection closed
+2025-08-13 16:37:12 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:37:12 - INFO - Starting correlation sync for source 26
+2025-08-13 16:37:12 - INFO - Database connection closed
+2025-08-13 16:37:24 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:37:24 - INFO - Starting correlation sync for source 26
+2025-08-13 16:37:24 - INFO - Database connection closed
+2025-08-13 16:53:42 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:53:42 - INFO - Starting correlation sync for source 26
+2025-08-13 16:53:42 - INFO - Loaded 0 correlation rules for source 26
+2025-08-13 16:53:42 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-13 16:53:42 - INFO - Database connection closed
+2025-08-13 16:54:03 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:54:03 - INFO - Starting correlation sync for source 26
+2025-08-13 16:54:03 - INFO - Loaded 0 correlation rules for source 26
+2025-08-13 16:54:03 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-13 16:54:03 - INFO - Database connection closed
+2025-08-13 16:54:35 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:54:35 - INFO - Starting correlation sync for source 28
+2025-08-13 16:54:35 - INFO - Loaded 0 correlation rules for source 28
+2025-08-13 16:54:35 - INFO - 
+            Correlation completed for sshr-DB:
+            - Accounts processed: 0
+            - Successfully correlated: 0
+            - Unmatched accounts: 0
+        
+2025-08-13 16:54:35 - INFO - Database connection closed
+2025-08-13 16:55:48 - INFO - === Starting Correlation Sync ===
+2025-08-13 16:55:48 - INFO - Starting correlation sync for source 30
+2025-08-13 16:55:48 - INFO - Loaded 0 correlation rules for source 30
+2025-08-13 16:55:48 - INFO - 
+            Correlation completed for bullseyeappstore:
+            - Accounts processed: 13
+            - Successfully correlated: 0
+            - Unmatched accounts: 13
+        
+2025-08-13 16:55:48 - INFO - Database connection closed
+2025-08-14 14:37:01 - INFO - === Starting Correlation Sync ===
+2025-08-14 14:37:01 - INFO - Starting correlation sync for source 26
+2025-08-14 14:37:01 - INFO - Loaded 0 correlation rules for source 26
+2025-08-14 14:37:01 - INFO - 
+            Correlation completed for burpsuite:
+            - Accounts processed: 3
+            - Successfully correlated: 0
+            - Unmatched accounts: 3
+        
+2025-08-14 14:37:01 - INFO - Database connection closed
+2025-08-20 12:10:56 - INFO - === Starting Correlation Sync ===
+2025-08-20 12:10:56 - INFO - Starting correlation sync for source 28
+2025-08-20 12:10:57 - ERROR - Sync failed for source 28: 'first_name'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'first_name'
+2025-08-20 12:10:57 - INFO - Database connection closed
+2025-08-20 15:33:30 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:33:30 - INFO - Starting correlation sync for source 28
+2025-08-20 15:33:30 - ERROR - Sync failed for source 28: 'employee_id'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'employee_id'
+2025-08-20 15:33:30 - INFO - Database connection closed
+2025-08-20 15:38:45 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:38:45 - INFO - Starting correlation sync for source 28
+2025-08-20 15:38:45 - ERROR - Sync failed for source 28: 'employee_id'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'employee_id'
+2025-08-20 15:38:45 - INFO - Database connection closed
+2025-08-20 15:41:44 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:41:44 - INFO - Starting correlation sync for source 28
+2025-08-20 15:41:44 - ERROR - Sync failed for source 28: 'employee_id'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'employee_id'
+2025-08-20 15:41:44 - INFO - Database connection closed
+2025-08-20 15:48:18 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:48:18 - INFO - Starting correlation sync for source 28
+2025-08-20 15:48:18 - ERROR - Sync failed for source 28: name 'employee_id' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 547, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 418, in insert_baseline_users
+    employee_id,
+NameError: name 'employee_id' is not defined
+2025-08-20 15:48:18 - INFO - Database connection closed
+2025-08-20 15:49:46 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:49:46 - INFO - Starting correlation sync for source 28
+2025-08-20 15:49:46 - ERROR - Sync failed for source 28: name 'emp_id' is not defined
+Traceback (most recent call last):
+  File "run_sync.py", line 547, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 418, in insert_baseline_users
+    emp_id,
+NameError: name 'emp_id' is not defined
+2025-08-20 15:49:46 - INFO - Database connection closed
+2025-08-20 15:51:22 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:51:22 - INFO - Starting correlation sync for source 28
+2025-08-20 15:51:22 - ERROR - Sync failed for source 28: 'employee_id'
+Traceback (most recent call last):
+  File "run_sync.py", line 539, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 412, in insert_baseline_users
+    (acc['first_name'], acc['last_name'], acc['email'], acc['employee_id'], acc.get('status', 'active'))
+KeyError: 'employee_id'
+2025-08-20 15:51:22 - INFO - Database connection closed
+2025-08-20 15:59:41 - INFO - === Starting Correlation Sync ===
+2025-08-20 15:59:41 - INFO - Starting correlation sync for source 28
+2025-08-20 15:59:41 - INFO - Baseline user import completed for sshr-DB: 9 users inserted.
+2025-08-20 15:59:41 - INFO - Database connection closed
+2025-08-20 16:14:21 - INFO - === Starting Correlation Sync ===
+2025-08-20 16:14:21 - INFO - Starting correlation sync for source 32
+2025-08-20 16:14:21 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 16:14:21 - INFO - Database connection closed
+2025-08-20 16:15:03 - INFO - === Starting Correlation Sync ===
+2025-08-20 16:15:03 - INFO - Starting correlation sync for source 32
+2025-08-20 16:15:03 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 16:15:03 - INFO - Database connection closed
+2025-08-20 16:15:09 - INFO - === Starting Correlation Sync ===
+2025-08-20 16:15:09 - INFO - Starting correlation sync for source 32
+2025-08-20 16:15:09 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 16:15:09 - INFO - Database connection closed
+2025-08-20 16:16:01 - INFO - === Starting Correlation Sync ===
+2025-08-20 16:16:01 - INFO - Starting correlation sync for source 32
+2025-08-20 16:16:01 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 16:16:01 - INFO - Database connection closed
+2025-08-20 16:27:36 - INFO - === Starting Correlation Sync ===
+2025-08-20 16:27:36 - INFO - Starting correlation sync for source 32
+2025-08-20 16:27:36 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 16:27:36 - INFO - Database connection closed
+2025-08-20 17:09:08 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:09:08 - INFO - Starting correlation sync for source 32
+2025-08-20 17:09:08 - ERROR - Sync failed for source 32: 1054 (42S22): Unknown column 'supervisor' in 'field list'
+Traceback (most recent call last):
+  File "/usr/local/lib64/python3.6/site-packages/mysql/connector/connection_cext.py", line 526, in cmd_query
+    query_attrs=self._query_attrs)
+_mysql_connector.MySQLInterfaceError: Unknown column 'supervisor' in 'field list'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "run_sync.py", line 564, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 433, in insert_baseline_users
+    acc.get('supervisor_email', '')
+  File "/usr/local/lib64/python3.6/site-packages/mysql/connector/cursor_cext.py", line 271, in execute
+    raw_as_string=self._raw_as_string)
+  File "/usr/local/lib64/python3.6/site-packages/mysql/connector/connection_cext.py", line 529, in cmd_query
+    sqlstate=exc.sqlstate)
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'supervisor' in 'field list'
+2025-08-20 17:09:08 - INFO - Database connection closed
+2025-08-20 17:09:35 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:09:35 - INFO - Starting correlation sync for source 32
+2025-08-20 17:09:35 - ERROR - Sync failed for source 32: 1054 (42S22): Unknown column 'supervisor' in 'field list'
+Traceback (most recent call last):
+  File "/usr/local/lib64/python3.6/site-packages/mysql/connector/connection_cext.py", line 526, in cmd_query
+    query_attrs=self._query_attrs)
+_mysql_connector.MySQLInterfaceError: Unknown column 'supervisor' in 'field list'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "run_sync.py", line 564, in sync_correlation_source
+    insert_baseline_users(conn, accounts, source_id)
+  File "run_sync.py", line 433, in insert_baseline_users
+    acc.get('supervisor_email', '')
+  File "/usr/local/lib64/python3.6/site-packages/mysql/connector/cursor_cext.py", line 271, in execute
+    raw_as_string=self._raw_as_string)
+  File "/usr/local/lib64/python3.6/site-packages/mysql/connector/connection_cext.py", line 529, in cmd_query
+    sqlstate=exc.sqlstate)
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'supervisor' in 'field list'
+2025-08-20 17:09:35 - INFO - Database connection closed
+2025-08-20 17:10:43 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:10:43 - INFO - Starting correlation sync for source 32
+2025-08-20 17:10:43 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:10:43 - INFO - Database connection closed
+2025-08-20 17:17:48 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:17:48 - INFO - Starting correlation sync for source 32
+2025-08-20 17:17:48 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:17:48 - INFO - Database connection closed
+2025-08-20 17:18:08 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:18:08 - INFO - Starting correlation sync for source 32
+2025-08-20 17:18:08 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:18:08 - INFO - Database connection closed
+2025-08-20 17:21:34 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:21:34 - INFO - Starting correlation sync for source 32
+2025-08-20 17:21:34 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:21:34 - INFO - Database connection closed
+2025-08-20 17:21:36 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:21:36 - INFO - Starting correlation sync for source 32
+2025-08-20 17:21:36 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:21:36 - INFO - Database connection closed
+2025-08-20 17:21:40 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:21:40 - INFO - Starting correlation sync for source 32
+2025-08-20 17:21:40 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:21:40 - INFO - Database connection closed
+2025-08-20 17:21:45 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:21:45 - INFO - Starting correlation sync for source 32
+2025-08-20 17:21:45 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:21:45 - INFO - Database connection closed
+2025-08-20 17:24:16 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:24:16 - INFO - Starting correlation sync for source 32
+2025-08-20 17:24:16 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:24:16 - INFO - Database connection closed
+2025-08-20 17:24:20 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:24:20 - INFO - Starting correlation sync for source 32
+2025-08-20 17:24:20 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:24:20 - INFO - Database connection closed
+2025-08-20 17:24:38 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:24:38 - INFO - Starting correlation sync for source 32
+2025-08-20 17:24:38 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:24:38 - INFO - Database connection closed
+2025-08-20 17:53:35 - INFO - === Starting Correlation Sync ===
+2025-08-20 17:53:35 - INFO - Starting correlation sync for source 32
+2025-08-20 17:53:35 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-20 17:53:35 - INFO - Database connection closed
+2025-08-21 09:17:42 - INFO - === Starting Correlation Sync ===
+2025-08-21 09:17:42 - INFO - Starting correlation sync for source 32
+2025-08-21 09:17:42 - INFO - Baseline user import completed for sshr: 9 users inserted.
+2025-08-21 09:17:42 - INFO - Database connection closed
+2025-08-25 16:38:29 - INFO - === Starting Correlation Sync ===
+2025-08-25 16:38:29 - INFO - Starting correlation sync for source 34
+2025-08-25 16:38:29 - INFO - Loaded 0 correlation rules for source 34
+2025-08-25 16:38:30 - INFO - 
+            Correlation completed for ssh:
+            - Accounts processed: 447
+            - Successfully correlated: 9
+            - Unmatched accounts: 438
+        
+2025-08-25 16:38:30 - INFO - Database connection closed
+2025-08-25 16:39:04 - INFO - === Starting Correlation Sync ===
+2025-08-25 16:39:04 - INFO - Starting correlation sync for source 34
+2025-08-25 16:39:04 - INFO - Baseline user import completed for ssh: 447 users inserted.
+2025-08-25 16:39:04 - INFO - Database connection closed
+2025-08-25 16:43:11 - INFO - === Starting Correlation Sync ===
+2025-08-25 16:43:11 - INFO - Starting correlation sync for source 34
+2025-08-25 16:43:11 - INFO - Loaded 0 correlation rules for source 34
+2025-08-25 16:43:12 - INFO - 
+            Correlation completed for ssh:
+            - Accounts processed: 447
+            - Successfully correlated: 447
+            - Unmatched accounts: 0
+        
+2025-08-25 16:43:12 - INFO - Database connection closed
+2025-08-25 17:01:20 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:01:20 - INFO - Starting correlation sync for source 34
+2025-08-25 17:01:20 - INFO - Loaded 0 correlation rules for source 34
+2025-08-25 17:01:20 - INFO - 
+            Correlation completed for ssh:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-08-25 17:01:20 - INFO - Database connection closed
+2025-08-25 17:01:58 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:01:58 - INFO - Starting correlation sync for source 34
+2025-08-25 17:01:58 - INFO - Loaded 0 correlation rules for source 34
+2025-08-25 17:01:58 - INFO - 
+            Correlation completed for ssh:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-08-25 17:01:58 - INFO - Database connection closed
+2025-08-25 17:02:03 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:02:03 - INFO - Starting correlation sync for source 34
+2025-08-25 17:02:03 - INFO - Loaded 0 correlation rules for source 34
+2025-08-25 17:02:03 - INFO - 
+            Correlation completed for ssh:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-08-25 17:02:03 - INFO - Database connection closed
+2025-08-25 17:02:49 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:02:49 - INFO - Starting correlation sync for source 34
+2025-08-25 17:02:49 - INFO - Baseline user import completed for ssh: 9 users inserted.
+2025-08-25 17:02:49 - INFO - Database connection closed
+2025-08-25 17:03:40 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:03:40 - INFO - Starting correlation sync for source 34
+2025-08-25 17:03:40 - INFO - Baseline user import completed for ssh: 9 users inserted.
+2025-08-25 17:03:40 - INFO - Database connection closed
+2025-08-25 17:05:06 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:05:06 - INFO - Starting correlation sync for source 34
+2025-08-25 17:05:06 - ERROR - CSV processing failed: [Errno 2] No such file or directory: '/tmp_mnt/homefs/mnt/krishnamurala/New folder/hrdb_filtered.csv'
+2025-08-25 17:05:06 - ERROR - Sync failed for source 34: [Errno 2] No such file or directory: '/tmp_mnt/homefs/mnt/krishnamurala/New folder/hrdb_filtered.csv'
+Traceback (most recent call last):
+  File "run_sync.py", line 533, in sync_correlation_source
+    source['config'].get('field_mapping', {})
+  File "run_sync.py", line 168, in load_csv_accounts
+    with open(file_path, 'r', encoding='utf-8-sig') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp_mnt/homefs/mnt/krishnamurala/New folder/hrdb_filtered.csv'
+2025-08-25 17:05:06 - INFO - Database connection closed
+2025-08-25 17:09:10 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:09:10 - INFO - Starting correlation sync for source 34
+2025-08-25 17:09:10 - INFO - Baseline user import completed for ssh: 9 users inserted.
+2025-08-25 17:09:10 - INFO - Database connection closed
+2025-08-25 17:09:13 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:09:13 - INFO - Starting correlation sync for source 34
+2025-08-25 17:09:13 - INFO - Baseline user import completed for ssh: 9 users inserted.
+2025-08-25 17:09:13 - INFO - Database connection closed
+2025-08-25 17:44:09 - INFO - === Starting Correlation Sync ===
+2025-08-25 17:44:09 - INFO - Starting correlation sync for source 34
+2025-08-25 17:44:09 - INFO - Loaded 0 correlation rules for source 34
+2025-08-25 17:44:09 - INFO - 
+            Correlation completed for ssh:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-08-25 17:44:09 - INFO - Database connection closed
+2025-08-26 14:20:22 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:20:22 - INFO - Starting correlation sync for source 36
+2025-08-26 14:20:22 - INFO - Loaded 0 correlation rules for source 36
+2025-08-26 14:20:23 - INFO - 
+            Correlation completed for sshr:
+            - Accounts processed: 9
+            - Successfully correlated: 0
+            - Unmatched accounts: 9
+        
+2025-08-26 14:20:23 - INFO - Database connection closed
+2025-08-26 14:32:32 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:32:32 - INFO - Starting correlation sync for source 38
+2025-08-26 14:32:32 - INFO - Loaded 0 correlation rules for source 38
+2025-08-26 14:32:32 - INFO - 
+            Correlation completed for sshr-DB:
+            - Accounts processed: 9
+            - Successfully correlated: 0
+            - Unmatched accounts: 9
+        
+2025-08-26 14:32:32 - INFO - Database connection closed
+2025-08-26 14:40:45 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:40:45 - INFO - Starting correlation sync for source 40
+2025-08-26 14:40:45 - INFO - Loaded 0 correlation rules for source 40
+2025-08-26 14:40:46 - INFO - 
+            Correlation completed for sshr:
+            - Accounts processed: 447
+            - Successfully correlated: 0
+            - Unmatched accounts: 447
+        
+2025-08-26 14:40:46 - INFO - Database connection closed
+2025-08-26 14:41:06 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:41:06 - INFO - Starting correlation sync for source 40
+2025-08-26 14:41:07 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 14:41:07 - INFO - Database connection closed
+2025-08-26 14:42:47 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:42:47 - INFO - Starting correlation sync for source 40
+2025-08-26 14:42:47 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 14:42:47 - INFO - Database connection closed
+2025-08-26 14:43:10 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:43:10 - INFO - Starting correlation sync for source 40
+2025-08-26 14:43:10 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 14:43:10 - INFO - Database connection closed
+2025-08-26 14:46:04 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:46:04 - INFO - Starting correlation sync for source 40
+2025-08-26 14:46:04 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 14:46:04 - INFO - Database connection closed
+2025-08-26 14:46:41 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:46:41 - INFO - Starting correlation sync for source 40
+2025-08-26 14:46:41 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 14:46:41 - INFO - Database connection closed
+2025-08-26 14:46:59 - INFO - === Starting Correlation Sync ===
+2025-08-26 14:46:59 - INFO - Starting correlation sync for source 40
+2025-08-26 14:47:00 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 14:47:00 - INFO - Database connection closed
+2025-08-26 15:28:02 - INFO - === Starting Correlation Sync ===
+2025-08-26 15:28:02 - INFO - Starting correlation sync for source 40
+2025-08-26 15:28:02 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 15:28:02 - INFO - Database connection closed
+2025-08-26 15:51:16 - INFO - === Starting Correlation Sync ===
+2025-08-26 15:51:16 - INFO - Starting correlation sync for source 40
+2025-08-26 15:51:16 - INFO - Loaded 0 correlation rules for source 40
+2025-08-26 15:51:17 - INFO - 
+            Correlation completed for sshr:
+            - Accounts processed: 447
+            - Successfully correlated: 447
+            - Unmatched accounts: 0
+        
+2025-08-26 15:51:17 - INFO - Database connection closed
+2025-08-26 15:52:05 - INFO - === Starting Correlation Sync ===
+2025-08-26 15:52:05 - INFO - Starting correlation sync for source 40
+2025-08-26 15:52:05 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 15:52:05 - INFO - Database connection closed
+2025-08-26 15:52:29 - INFO - === Starting Correlation Sync ===
+2025-08-26 15:52:29 - INFO - Starting correlation sync for source 40
+2025-08-26 15:52:29 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 15:52:29 - INFO - Database connection closed
+2025-08-26 17:19:19 - INFO - === Starting Correlation Sync ===
+2025-08-26 17:19:19 - INFO - Starting correlation sync for source 40
+2025-08-26 17:19:20 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-26 17:19:20 - INFO - Database connection closed
+2025-08-26 17:20:22 - INFO - === Starting Correlation Sync ===
+2025-08-26 17:20:22 - INFO - Starting correlation sync for source 42
+2025-08-26 17:20:22 - INFO - Loaded 0 correlation rules for source 42
+2025-08-26 17:20:22 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-26 17:20:22 - INFO - Database connection closed
+2025-08-26 17:25:41 - INFO - === Starting Correlation Sync ===
+2025-08-26 17:25:41 - INFO - Starting correlation sync for source 42
+2025-08-26 17:25:41 - INFO - Loaded 0 correlation rules for source 42
+2025-08-26 17:25:42 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-26 17:25:42 - INFO - Database connection closed
+2025-08-26 17:27:08 - INFO - === Starting Correlation Sync ===
+2025-08-26 17:27:08 - INFO - Starting correlation sync for source 42
+2025-08-26 17:27:08 - INFO - Loaded 0 correlation rules for source 42
+2025-08-26 17:27:08 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-26 17:27:08 - INFO - Database connection closed
+2025-08-26 17:30:58 - INFO - === Starting Correlation Sync ===
+2025-08-26 17:30:58 - INFO - Starting correlation sync for source 42
+2025-08-26 17:30:58 - INFO - Loaded 0 correlation rules for source 42
+2025-08-26 17:30:58 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-26 17:30:58 - INFO - Database connection closed
+2025-08-28 15:23:19 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:23:19 - INFO - Starting correlation sync for source 44
+2025-08-28 15:23:19 - INFO - Loaded 0 correlation rules for source 44
+2025-08-28 15:23:19 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 15:23:19 - INFO - Database connection closed
+2025-08-28 15:23:32 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:23:32 - INFO - Starting correlation sync for source 44
+2025-08-28 15:23:32 - INFO - Loaded 0 correlation rules for source 44
+2025-08-28 15:23:33 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 15:23:33 - INFO - Database connection closed
+2025-08-28 15:26:33 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:26:33 - INFO - Starting correlation sync for source 44
+2025-08-28 15:26:33 - INFO - Loaded 1 correlation rules for source 44
+2025-08-28 15:26:33 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 15:26:33 - INFO - Database connection closed
+2025-08-28 15:33:08 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:33:08 - INFO - Starting correlation sync for source 42
+2025-08-28 15:33:08 - INFO - Loaded 0 correlation rules for source 42
+2025-08-28 15:33:08 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-28 15:33:08 - INFO - Database connection closed
+2025-08-28 15:39:46 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:39:46 - INFO - Starting correlation sync for source 40
+2025-08-28 15:39:46 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-28 15:39:46 - INFO - Database connection closed
+2025-08-28 15:39:46 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:39:46 - INFO - Starting correlation sync for source 42
+2025-08-28 15:39:46 - INFO - Loaded 0 correlation rules for source 42
+2025-08-28 15:39:46 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-28 15:39:46 - INFO - Database connection closed
+2025-08-28 15:39:47 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:39:47 - INFO - Starting correlation sync for source 44
+2025-08-28 15:39:47 - INFO - Loaded 0 correlation rules for source 44
+2025-08-28 15:39:47 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 15:39:47 - INFO - Database connection closed
+2025-08-28 15:47:41 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:47:41 - INFO - Starting correlation sync for source 44
+2025-08-28 15:47:41 - INFO - Loaded 0 correlation rules for source 44
+2025-08-28 15:47:41 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 15:47:41 - INFO - Database connection closed
+2025-08-28 15:51:58 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:51:58 - INFO - Starting correlation sync for source 46
+2025-08-28 15:51:58 - INFO - Loaded 0 correlation rules for source 46
+2025-08-28 15:51:58 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-08-28 15:51:58 - INFO - Database connection closed
+2025-08-28 15:52:57 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:52:57 - INFO - Starting correlation sync for source 40
+2025-08-28 15:52:57 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-28 15:52:57 - INFO - Database connection closed
+2025-08-28 15:52:58 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:52:58 - INFO - Starting correlation sync for source 42
+2025-08-28 15:52:58 - INFO - Loaded 0 correlation rules for source 42
+2025-08-28 15:52:58 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-28 15:52:58 - INFO - Database connection closed
+2025-08-28 15:52:58 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:52:58 - INFO - Starting correlation sync for source 44
+2025-08-28 15:52:58 - INFO - Loaded 0 correlation rules for source 44
+2025-08-28 15:52:59 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 15:52:59 - INFO - Database connection closed
+2025-08-28 15:52:59 - INFO - === Starting Correlation Sync ===
+2025-08-28 15:52:59 - INFO - Starting correlation sync for source 46
+2025-08-28 15:52:59 - INFO - Loaded 0 correlation rules for source 46
+2025-08-28 15:52:59 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-08-28 15:52:59 - INFO - Database connection closed
+2025-08-28 16:09:06 - INFO - === Starting Correlation Sync ===
+2025-08-28 16:09:06 - INFO - Starting correlation sync for source 40
+2025-08-28 16:09:07 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-28 16:09:07 - INFO - Database connection closed
+2025-08-28 16:09:07 - INFO - === Starting Correlation Sync ===
+2025-08-28 16:09:07 - INFO - Starting correlation sync for source 42
+2025-08-28 16:09:07 - INFO - Loaded 0 correlation rules for source 42
+2025-08-28 16:09:07 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-28 16:09:07 - INFO - Database connection closed
+2025-08-28 16:09:07 - INFO - === Starting Correlation Sync ===
+2025-08-28 16:09:07 - INFO - Starting correlation sync for source 44
+2025-08-28 16:09:07 - INFO - Loaded 0 correlation rules for source 44
+2025-08-28 16:09:07 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-28 16:09:07 - INFO - Database connection closed
+2025-08-28 16:09:07 - INFO - === Starting Correlation Sync ===
+2025-08-28 16:09:07 - INFO - Starting correlation sync for source 46
+2025-08-28 16:09:07 - INFO - Loaded 0 correlation rules for source 46
+2025-08-28 16:09:07 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-08-28 16:09:07 - INFO - Database connection closed
+2025-08-28 16:15:43 - INFO - === Starting Correlation Sync ===
+2025-08-28 16:15:43 - INFO - Starting correlation sync for source 42
+2025-08-28 16:15:43 - INFO - Loaded 1 correlation rules for source 42
+2025-08-28 16:15:43 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-28 16:15:43 - INFO - Database connection closed
+2025-08-29 11:17:29 - INFO - === Starting Correlation Sync ===
+2025-08-29 11:17:29 - INFO - Starting correlation sync for source 40
+2025-08-29 11:17:30 - INFO - Baseline user import completed for sshr: 447 users inserted.
+2025-08-29 11:17:30 - INFO - Database connection closed
+2025-08-29 11:17:30 - INFO - === Starting Correlation Sync ===
+2025-08-29 11:17:30 - INFO - Starting correlation sync for source 42
+2025-08-29 11:17:30 - INFO - Loaded 0 correlation rules for source 42
+2025-08-29 11:17:30 - INFO - 
+            Correlation completed for crowdstrike:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-08-29 11:17:30 - INFO - Database connection closed
+2025-08-29 11:17:31 - INFO - === Starting Correlation Sync ===
+2025-08-29 11:17:31 - INFO - Starting correlation sync for source 44
+2025-08-29 11:17:31 - INFO - Loaded 0 correlation rules for source 44
+2025-08-29 11:17:31 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-08-29 11:17:31 - INFO - Database connection closed
+2025-08-29 11:17:31 - INFO - === Starting Correlation Sync ===
+2025-08-29 11:17:31 - INFO - Starting correlation sync for source 46
+2025-08-29 11:17:31 - INFO - Loaded 0 correlation rules for source 46
+2025-08-29 11:17:31 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-08-29 11:17:31 - INFO - Database connection closed
+2025-08-29 12:58:32 - INFO - === Starting Correlation Sync ===
+2025-08-29 12:58:32 - INFO - Starting correlation sync for source 48
+2025-08-29 12:58:32 - INFO - Loaded 0 correlation rules for source 48
+2025-08-29 12:58:32 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-08-29 12:58:32 - INFO - Database connection closed
+2025-08-29 15:33:31 - INFO - === Starting Correlation Sync ===
+2025-08-29 15:33:31 - INFO - Starting correlation sync for source 50
+2025-08-29 15:33:31 - INFO - Loaded 0 correlation rules for source 50
+2025-08-29 15:33:31 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-08-29 15:33:31 - INFO - Database connection closed
+2025-09-01 14:51:12 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:51:12 - INFO - Starting correlation sync for source 40
+2025-09-01 14:51:12 - ERROR - CSV processing failed: [Errno 2] No such file or directory: '/tmp_mnt/homefs/mnt/krishnamurala/New folder/Copy_of_hrdb_filtered.csv'
+2025-09-01 14:51:12 - ERROR - Sync failed for source 40: [Errno 2] No such file or directory: '/tmp_mnt/homefs/mnt/krishnamurala/New folder/Copy_of_hrdb_filtered.csv'
+Traceback (most recent call last):
+  File "run_sync.py", line 533, in sync_correlation_source
+    source['config'].get('field_mapping', {})
+  File "run_sync.py", line 168, in load_csv_accounts
+    with open(file_path, 'r', encoding='utf-8-sig') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp_mnt/homefs/mnt/krishnamurala/New folder/Copy_of_hrdb_filtered.csv'
+2025-09-01 14:51:12 - INFO - Database connection closed
+2025-09-01 14:51:13 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:51:13 - INFO - Starting correlation sync for source 42
+2025-09-01 14:51:13 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 14:51:13 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-09-01 14:51:13 - INFO - Database connection closed
+2025-09-01 14:51:14 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:51:14 - INFO - Starting correlation sync for source 44
+2025-09-01 14:51:14 - INFO - Loaded 0 correlation rules for source 44
+2025-09-01 14:51:14 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-01 14:51:14 - INFO - Database connection closed
+2025-09-01 14:51:14 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:51:14 - INFO - Starting correlation sync for source 46
+2025-09-01 14:51:14 - INFO - Loaded 0 correlation rules for source 46
+2025-09-01 14:51:14 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-01 14:51:14 - INFO - Database connection closed
+2025-09-01 14:51:15 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:51:15 - INFO - Starting correlation sync for source 48
+2025-09-01 14:51:15 - INFO - Loaded 0 correlation rules for source 48
+2025-09-01 14:51:15 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-01 14:51:15 - INFO - Database connection closed
+2025-09-01 14:51:15 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:51:15 - INFO - Starting correlation sync for source 50
+2025-09-01 14:51:15 - INFO - Loaded 0 correlation rules for source 50
+2025-09-01 14:51:15 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-01 14:51:15 - INFO - Database connection closed
+2025-09-01 14:54:30 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:54:30 - INFO - Starting correlation sync for source 40
+2025-09-01 14:54:31 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-01 14:54:31 - INFO - Database connection closed
+2025-09-01 14:57:08 - INFO - === Starting Correlation Sync ===
+2025-09-01 14:57:08 - INFO - Starting correlation sync for source 42
+2025-09-01 14:57:08 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 14:57:08 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-09-01 14:57:08 - INFO - Database connection closed
+2025-09-01 15:01:19 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:01:19 - INFO - Starting correlation sync for source 42
+2025-09-01 15:01:19 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:01:19 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-01 15:01:19 - INFO - Database connection closed
+2025-09-01 15:20:16 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:20:16 - INFO - Starting correlation sync for source 42
+2025-09-01 15:20:16 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:20:16 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 7
+            - Unmatched accounts: 4
+        
+2025-09-01 15:20:16 - INFO - Database connection closed
+2025-09-01 15:35:40 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:35:40 - INFO - Starting correlation sync for source 42
+2025-09-01 15:35:40 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:35:40 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 7
+            - Unmatched accounts: 4
+        
+2025-09-01 15:35:40 - INFO - Database connection closed
+2025-09-01 15:54:59 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:54:59 - INFO - Starting correlation sync for source 42
+2025-09-01 15:54:59 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:54:59 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-01 15:54:59 - INFO - Database connection closed
+2025-09-01 15:55:21 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:55:21 - INFO - Starting correlation sync for source 40
+2025-09-01 15:55:22 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-01 15:55:22 - INFO - Database connection closed
+2025-09-01 15:55:22 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:55:22 - INFO - Starting correlation sync for source 42
+2025-09-01 15:55:22 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:55:22 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-01 15:55:22 - INFO - Database connection closed
+2025-09-01 15:55:23 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:55:23 - INFO - Starting correlation sync for source 44
+2025-09-01 15:55:23 - INFO - Loaded 0 correlation rules for source 44
+2025-09-01 15:55:23 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-01 15:55:23 - INFO - Database connection closed
+2025-09-01 15:55:23 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:55:23 - INFO - Starting correlation sync for source 46
+2025-09-01 15:55:23 - INFO - Loaded 0 correlation rules for source 46
+2025-09-01 15:55:23 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-01 15:55:23 - INFO - Database connection closed
+2025-09-01 15:55:24 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:55:24 - INFO - Starting correlation sync for source 48
+2025-09-01 15:55:24 - INFO - Loaded 0 correlation rules for source 48
+2025-09-01 15:55:24 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-01 15:55:24 - INFO - Database connection closed
+2025-09-01 15:55:24 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:55:24 - INFO - Starting correlation sync for source 50
+2025-09-01 15:55:24 - INFO - Loaded 0 correlation rules for source 50
+2025-09-01 15:55:24 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-01 15:55:24 - INFO - Database connection closed
+2025-09-01 15:57:00 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:57:00 - INFO - Starting correlation sync for source 42
+2025-09-01 15:57:00 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:57:00 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 12
+            - Successfully correlated: 8
+            - Unmatched accounts: 4
+        
+2025-09-01 15:57:00 - INFO - Database connection closed
+2025-09-01 15:57:53 - INFO - === Starting Correlation Sync ===
+2025-09-01 15:57:53 - INFO - Starting correlation sync for source 42
+2025-09-01 15:57:53 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 15:57:53 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 12
+            - Successfully correlated: 9
+            - Unmatched accounts: 3
+        
+2025-09-01 15:57:53 - INFO - Database connection closed
+2025-09-01 16:26:21 - INFO - === Starting Correlation Sync ===
+2025-09-01 16:26:21 - INFO - Starting correlation sync for source 42
+2025-09-01 16:26:21 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 16:26:21 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 12
+            - Successfully correlated: 9
+            - Unmatched accounts: 3
+        
+2025-09-01 16:26:21 - INFO - Database connection closed
+2025-09-01 16:27:04 - INFO - === Starting Correlation Sync ===
+2025-09-01 16:27:04 - INFO - Starting correlation sync for source 42
+2025-09-01 16:27:05 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 16:27:05 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 12
+            - Successfully correlated: 9
+            - Unmatched accounts: 3
+        
+2025-09-01 16:27:05 - INFO - Database connection closed
+2025-09-01 16:35:55 - INFO - === Starting Correlation Sync ===
+2025-09-01 16:35:55 - INFO - Starting correlation sync for source 42
+2025-09-01 16:35:55 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 16:35:55 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-01 16:35:55 - INFO - Database connection closed
+2025-09-01 16:40:44 - INFO - === Starting Correlation Sync ===
+2025-09-01 16:40:44 - INFO - Starting correlation sync for source 42
+2025-09-01 16:40:44 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 16:40:44 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 12
+            - Successfully correlated: 8
+            - Unmatched accounts: 4
+        
+2025-09-01 16:40:44 - INFO - Database connection closed
+2025-09-01 17:41:40 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:41:40 - INFO - Starting correlation sync for source 40
+2025-09-01 17:41:41 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-01 17:41:41 - INFO - Database connection closed
+2025-09-01 17:41:41 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:41:41 - INFO - Starting correlation sync for source 42
+2025-09-01 17:41:41 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 17:41:41 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 12
+            - Successfully correlated: 9
+            - Unmatched accounts: 3
+        
+2025-09-01 17:41:41 - INFO - Database connection closed
+2025-09-01 17:41:41 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:41:41 - INFO - Starting correlation sync for source 44
+2025-09-01 17:41:41 - INFO - Loaded 0 correlation rules for source 44
+2025-09-01 17:41:42 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-01 17:41:42 - INFO - Database connection closed
+2025-09-01 17:41:42 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:41:42 - INFO - Starting correlation sync for source 46
+2025-09-01 17:41:42 - INFO - Loaded 0 correlation rules for source 46
+2025-09-01 17:41:42 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-01 17:41:42 - INFO - Database connection closed
+2025-09-01 17:41:42 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:41:42 - INFO - Starting correlation sync for source 48
+2025-09-01 17:41:42 - INFO - Loaded 0 correlation rules for source 48
+2025-09-01 17:41:42 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-01 17:41:42 - INFO - Database connection closed
+2025-09-01 17:41:42 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:41:42 - INFO - Starting correlation sync for source 50
+2025-09-01 17:41:42 - INFO - Loaded 0 correlation rules for source 50
+2025-09-01 17:41:42 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-01 17:41:42 - INFO - Database connection closed
+2025-09-01 17:45:46 - INFO - === Starting Correlation Sync ===
+2025-09-01 17:45:46 - INFO - Starting correlation sync for source 42
+2025-09-01 17:45:46 - INFO - Loaded 0 correlation rules for source 42
+2025-09-01 17:45:46 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 13
+            - Successfully correlated: 9
+            - Unmatched accounts: 4
+        
+2025-09-01 17:45:46 - INFO - Database connection closed
+2025-09-02 10:58:07 - INFO - === Starting Correlation Sync ===
+2025-09-02 10:58:07 - INFO - Starting correlation sync for source 42
+2025-09-02 10:58:07 - INFO - User 35332 not found in source 42, marking as deleted
+2025-09-02 10:58:07 - INFO - Loaded 0 correlation rules for source 42
+2025-09-02 10:58:07 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-09-02 10:58:07 - INFO - Database connection closed
+2025-09-02 12:50:21 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:50:21 - INFO - Starting correlation sync for source 40
+2025-09-02 12:50:22 - INFO - Baseline user import completed for SSHR: 448 users inserted.
+2025-09-02 12:50:22 - INFO - Database connection closed
+2025-09-02 12:50:27 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:50:27 - INFO - Starting correlation sync for source 42
+2025-09-02 12:50:27 - INFO - Loaded 0 correlation rules for source 42
+2025-09-02 12:50:27 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-02 12:50:27 - INFO - Database connection closed
+2025-09-02 12:52:37 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:52:37 - INFO - Starting correlation sync for source 46
+2025-09-02 12:52:37 - INFO - Loaded 0 correlation rules for source 46
+2025-09-02 12:52:37 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-02 12:52:37 - INFO - Database connection closed
+2025-09-02 12:52:55 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:52:55 - INFO - Starting correlation sync for source 46
+2025-09-02 12:52:55 - INFO - Loaded 0 correlation rules for source 46
+2025-09-02 12:52:55 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-02 12:52:55 - INFO - Database connection closed
+2025-09-02 12:54:05 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:54:05 - INFO - Starting correlation sync for source 46
+2025-09-02 12:54:05 - INFO - Loaded 0 correlation rules for source 46
+2025-09-02 12:54:05 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-02 12:54:05 - INFO - Database connection closed
+2025-09-02 12:56:15 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:56:15 - INFO - Starting correlation sync for source 46
+2025-09-02 12:56:15 - INFO - Loaded 0 correlation rules for source 46
+2025-09-02 12:56:15 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 3
+            - Successfully correlated: 3
+            - Unmatched accounts: 0
+        
+2025-09-02 12:56:15 - INFO - Database connection closed
+2025-09-02 12:57:03 - INFO - === Starting Correlation Sync ===
+2025-09-02 12:57:03 - INFO - Starting correlation sync for source 46
+2025-09-02 12:57:03 - INFO - Loaded 0 correlation rules for source 46
+2025-09-02 12:57:03 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-02 12:57:03 - INFO - Database connection closed
+2025-09-02 17:21:34 - INFO - === Starting Correlation Sync ===
+2025-09-02 17:21:34 - INFO - Starting correlation sync for source 40
+2025-09-02 17:21:34 - INFO - Baseline user import completed for SSHR: 448 users inserted.
+2025-09-02 17:21:34 - INFO - Database connection closed
+2025-09-02 17:21:35 - INFO - === Starting Correlation Sync ===
+2025-09-02 17:21:35 - INFO - Starting correlation sync for source 42
+2025-09-02 17:21:35 - INFO - Loaded 0 correlation rules for source 42
+2025-09-02 17:21:35 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-02 17:21:35 - INFO - Database connection closed
+2025-09-02 17:21:35 - INFO - === Starting Correlation Sync ===
+2025-09-02 17:21:35 - INFO - Starting correlation sync for source 44
+2025-09-02 17:21:35 - INFO - Loaded 0 correlation rules for source 44
+2025-09-02 17:21:35 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-02 17:21:35 - INFO - Database connection closed
+2025-09-02 17:21:36 - INFO - === Starting Correlation Sync ===
+2025-09-02 17:21:36 - INFO - Starting correlation sync for source 46
+2025-09-02 17:21:36 - INFO - Loaded 0 correlation rules for source 46
+2025-09-02 17:21:36 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-02 17:21:36 - INFO - Database connection closed
+2025-09-02 17:21:36 - INFO - === Starting Correlation Sync ===
+2025-09-02 17:21:36 - INFO - Starting correlation sync for source 48
+2025-09-02 17:21:36 - INFO - Loaded 0 correlation rules for source 48
+2025-09-02 17:21:36 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-02 17:21:36 - INFO - Database connection closed
+2025-09-02 17:21:36 - INFO - === Starting Correlation Sync ===
+2025-09-02 17:21:36 - INFO - Starting correlation sync for source 50
+2025-09-02 17:21:36 - INFO - Loaded 0 correlation rules for source 50
+2025-09-02 17:21:36 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-02 17:21:36 - INFO - Database connection closed
+2025-09-04 16:21:24 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:21:24 - INFO - Starting correlation sync for source 40
+2025-09-04 16:21:25 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-04 16:21:25 - INFO - Database connection closed
+2025-09-04 16:23:14 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:14 - INFO - Starting correlation sync for source 40
+2025-09-04 16:23:14 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-04 16:23:14 - INFO - Database connection closed
+2025-09-04 16:23:17 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:17 - INFO - Starting correlation sync for source 40
+2025-09-04 16:23:17 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-04 16:23:17 - INFO - Database connection closed
+2025-09-04 16:23:18 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:18 - INFO - Starting correlation sync for source 42
+2025-09-04 16:23:18 - INFO - Loaded 0 correlation rules for source 42
+2025-09-04 16:23:18 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-04 16:23:18 - INFO - Database connection closed
+2025-09-04 16:23:18 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:18 - INFO - Starting correlation sync for source 44
+2025-09-04 16:23:18 - INFO - Loaded 0 correlation rules for source 44
+2025-09-04 16:23:18 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-04 16:23:18 - INFO - Database connection closed
+2025-09-04 16:23:19 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:19 - INFO - Starting correlation sync for source 46
+2025-09-04 16:23:19 - INFO - Loaded 0 correlation rules for source 46
+2025-09-04 16:23:19 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-04 16:23:19 - INFO - Database connection closed
+2025-09-04 16:23:19 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:19 - INFO - Starting correlation sync for source 48
+2025-09-04 16:23:19 - INFO - Loaded 0 correlation rules for source 48
+2025-09-04 16:23:19 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-04 16:23:19 - INFO - Database connection closed
+2025-09-04 16:23:19 - INFO - === Starting Correlation Sync ===
+2025-09-04 16:23:19 - INFO - Starting correlation sync for source 50
+2025-09-04 16:23:19 - INFO - Loaded 0 correlation rules for source 50
+2025-09-04 16:23:19 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-04 16:23:19 - INFO - Database connection closed
+2025-09-05 12:22:30 - INFO - === Starting Correlation Sync ===
+2025-09-05 12:22:30 - INFO - Starting correlation sync for source 40
+2025-09-05 12:22:30 - INFO - Baseline user import completed for SSHR: 447 users inserted.
+2025-09-05 12:22:30 - INFO - Database connection closed
+2025-09-05 12:22:31 - INFO - === Starting Correlation Sync ===
+2025-09-05 12:22:31 - INFO - Starting correlation sync for source 42
+2025-09-05 12:22:31 - INFO - Loaded 0 correlation rules for source 42
+2025-09-05 12:22:31 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 11
+            - Successfully correlated: 8
+            - Unmatched accounts: 3
+        
+2025-09-05 12:22:31 - INFO - Database connection closed
+2025-09-05 12:22:31 - INFO - === Starting Correlation Sync ===
+2025-09-05 12:22:31 - INFO - Starting correlation sync for source 44
+2025-09-05 12:22:31 - INFO - Loaded 0 correlation rules for source 44
+2025-09-05 12:22:31 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-05 12:22:31 - INFO - Database connection closed
+2025-09-05 12:22:32 - INFO - === Starting Correlation Sync ===
+2025-09-05 12:22:32 - INFO - Starting correlation sync for source 46
+2025-09-05 12:22:32 - INFO - Loaded 0 correlation rules for source 46
+2025-09-05 12:22:32 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-05 12:22:32 - INFO - Database connection closed
+2025-09-05 12:22:32 - INFO - === Starting Correlation Sync ===
+2025-09-05 12:22:32 - INFO - Starting correlation sync for source 48
+2025-09-05 12:22:32 - INFO - Loaded 0 correlation rules for source 48
+2025-09-05 12:22:32 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-05 12:22:32 - INFO - Database connection closed
+2025-09-05 12:22:32 - INFO - === Starting Correlation Sync ===
+2025-09-05 12:22:32 - INFO - Starting correlation sync for source 50
+2025-09-05 12:22:32 - INFO - Loaded 0 correlation rules for source 50
+2025-09-05 12:22:32 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-05 12:22:32 - INFO - Database connection closed
+2025-09-09 16:09:09 - INFO - === Starting Correlation Sync ===
+2025-09-09 16:09:09 - INFO - Starting correlation sync for source 40
+2025-09-09 16:09:10 - INFO - Baseline user import completed for SSHR: 446 users inserted.
+2025-09-09 16:09:10 - INFO - Database connection closed
+2025-09-11 15:19:29 - INFO - === Starting Correlation Sync ===
+2025-09-11 15:19:29 - INFO - Starting correlation sync for source 40
+2025-09-11 15:19:29 - INFO - Baseline user import completed for SSHR: 445 users inserted.
+2025-09-11 15:19:29 - INFO - Database connection closed
+2025-09-11 15:19:30 - INFO - === Starting Correlation Sync ===
+2025-09-11 15:19:30 - INFO - Starting correlation sync for source 42
+2025-09-11 15:19:30 - INFO - Loaded 0 correlation rules for source 42
+2025-09-11 15:19:30 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 10
+            - Successfully correlated: 7
+            - Unmatched accounts: 3
+        
+2025-09-11 15:19:30 - INFO - Database connection closed
+2025-09-11 15:19:30 - INFO - === Starting Correlation Sync ===
+2025-09-11 15:19:30 - INFO - Starting correlation sync for source 44
+2025-09-11 15:19:30 - INFO - Loaded 0 correlation rules for source 44
+2025-09-11 15:19:30 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-11 15:19:30 - INFO - Database connection closed
+2025-09-11 15:19:31 - INFO - === Starting Correlation Sync ===
+2025-09-11 15:19:31 - INFO - Starting correlation sync for source 46
+2025-09-11 15:19:31 - INFO - Loaded 0 correlation rules for source 46
+2025-09-11 15:19:31 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-11 15:19:31 - INFO - Database connection closed
+2025-09-11 15:19:31 - INFO - === Starting Correlation Sync ===
+2025-09-11 15:19:31 - INFO - Starting correlation sync for source 48
+2025-09-11 15:19:31 - INFO - Loaded 0 correlation rules for source 48
+2025-09-11 15:19:31 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-11 15:19:31 - INFO - Database connection closed
+2025-09-11 15:19:32 - INFO - === Starting Correlation Sync ===
+2025-09-11 15:19:32 - INFO - Starting correlation sync for source 50
+2025-09-11 15:19:32 - INFO - Loaded 0 correlation rules for source 50
+2025-09-11 15:19:32 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-11 15:19:32 - INFO - Database connection closed
+2025-09-12 10:58:03 - INFO - === Starting Correlation Sync ===
+2025-09-12 10:58:03 - INFO - Starting correlation sync for source 40
+2025-09-12 10:58:03 - INFO - Baseline user import completed for SSHR: 445 users inserted.
+2025-09-12 10:58:03 - INFO - Database connection closed
+2025-09-12 10:58:04 - INFO - === Starting Correlation Sync ===
+2025-09-12 10:58:04 - INFO - Starting correlation sync for source 42
+2025-09-12 10:58:04 - INFO - User 20148 not found in source 42, marking as deleted
+2025-09-12 10:58:04 - INFO - Loaded 0 correlation rules for source 42
+2025-09-12 10:58:04 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 9
+            - Successfully correlated: 6
+            - Unmatched accounts: 3
+        
+2025-09-12 10:58:04 - INFO - Database connection closed
+2025-09-12 10:58:04 - INFO - === Starting Correlation Sync ===
+2025-09-12 10:58:04 - INFO - Starting correlation sync for source 44
+2025-09-12 10:58:04 - INFO - Loaded 0 correlation rules for source 44
+2025-09-12 10:58:04 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-12 10:58:04 - INFO - Database connection closed
+2025-09-12 10:58:05 - INFO - === Starting Correlation Sync ===
+2025-09-12 10:58:05 - INFO - Starting correlation sync for source 46
+2025-09-12 10:58:05 - INFO - Loaded 0 correlation rules for source 46
+2025-09-12 10:58:05 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-12 10:58:05 - INFO - Database connection closed
+2025-09-12 10:58:05 - INFO - === Starting Correlation Sync ===
+2025-09-12 10:58:05 - INFO - Starting correlation sync for source 48
+2025-09-12 10:58:05 - INFO - Loaded 0 correlation rules for source 48
+2025-09-12 10:58:05 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-12 10:58:05 - INFO - Database connection closed
+2025-09-12 10:58:05 - INFO - === Starting Correlation Sync ===
+2025-09-12 10:58:05 - INFO - Starting correlation sync for source 50
+2025-09-12 10:58:05 - INFO - Loaded 0 correlation rules for source 50
+2025-09-12 10:58:05 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-12 10:58:05 - INFO - Database connection closed
+2025-09-12 11:00:46 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:00:46 - INFO - Starting correlation sync for source 40
+2025-09-12 11:00:46 - INFO - Baseline user import completed for SSHR: 445 users inserted.
+2025-09-12 11:00:46 - INFO - Database connection closed
+2025-09-12 11:01:48 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:01:48 - INFO - Starting correlation sync for source 40
+2025-09-12 11:01:48 - INFO - Baseline user import completed for SSHR: 445 users inserted.
+2025-09-12 11:01:48 - INFO - Database connection closed
+2025-09-12 11:04:11 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:04:11 - INFO - Starting correlation sync for source 40
+2025-09-12 11:04:11 - INFO - Baseline user import completed for SSHR: 445 users inserted.
+2025-09-12 11:04:11 - INFO - User 20148 not found in source 40, marking as deleted
+2025-09-12 11:04:11 - INFO - Database connection closed
+2025-09-12 11:06:15 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:06:15 - INFO - Starting correlation sync for source 40
+2025-09-12 11:06:15 - INFO - Baseline user import completed for SSHR: 444 users inserted.
+2025-09-12 11:06:15 - INFO - Database connection closed
+2025-09-12 11:14:40 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:14:40 - INFO - Starting correlation sync for source 40
+2025-09-12 11:14:41 - INFO - Baseline user import completed for SSHR: 444 users inserted.
+2025-09-12 11:14:41 - INFO - Database connection closed
+2025-09-12 11:14:41 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:14:41 - INFO - Starting correlation sync for source 42
+2025-09-12 11:14:41 - INFO - Loaded 0 correlation rules for source 42
+2025-09-12 11:14:41 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 8
+            - Successfully correlated: 5
+            - Unmatched accounts: 3
+        
+2025-09-12 11:14:41 - INFO - Database connection closed
+2025-09-12 11:14:42 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:14:42 - INFO - Starting correlation sync for source 44
+2025-09-12 11:14:42 - INFO - Loaded 0 correlation rules for source 44
+2025-09-12 11:14:42 - INFO - 
+            Correlation completed for CORDIAL:
+            - Accounts processed: 18
+            - Successfully correlated: 16
+            - Unmatched accounts: 2
+        
+2025-09-12 11:14:42 - INFO - Database connection closed
+2025-09-12 11:14:42 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:14:42 - INFO - Starting correlation sync for source 46
+2025-09-12 11:14:42 - INFO - Loaded 0 correlation rules for source 46
+2025-09-12 11:14:42 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-12 11:14:42 - INFO - Database connection closed
+2025-09-12 11:14:43 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:14:43 - INFO - Starting correlation sync for source 48
+2025-09-12 11:14:43 - INFO - Loaded 0 correlation rules for source 48
+2025-09-12 11:14:43 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-12 11:14:43 - INFO - Database connection closed
+2025-09-12 11:14:43 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:14:43 - INFO - Starting correlation sync for source 50
+2025-09-12 11:14:43 - INFO - Loaded 0 correlation rules for source 50
+2025-09-12 11:14:43 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-12 11:14:43 - INFO - Database connection closed
+2025-09-12 11:21:16 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:21:16 - INFO - Starting correlation sync for source 40
+2025-09-12 11:21:17 - INFO - Baseline user import completed for SSHR: 444 users inserted.
+2025-09-12 11:21:17 - INFO - Database connection closed
+2025-09-12 11:21:17 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:21:17 - INFO - Starting correlation sync for source 42
+2025-09-12 11:21:17 - INFO - Loaded 0 correlation rules for source 42
+2025-09-12 11:21:17 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 8
+            - Successfully correlated: 5
+            - Unmatched accounts: 3
+        
+2025-09-12 11:21:17 - INFO - Database connection closed
+2025-09-12 11:21:18 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:21:18 - INFO - Starting correlation sync for source 46
+2025-09-12 11:21:18 - INFO - Loaded 0 correlation rules for source 46
+2025-09-12 11:21:18 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-12 11:21:18 - INFO - Database connection closed
+2025-09-12 11:21:18 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:21:18 - INFO - Starting correlation sync for source 48
+2025-09-12 11:21:18 - INFO - Loaded 0 correlation rules for source 48
+2025-09-12 11:21:18 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-12 11:21:18 - INFO - Database connection closed
+2025-09-12 11:21:18 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:21:18 - INFO - Starting correlation sync for source 50
+2025-09-12 11:21:18 - INFO - Loaded 0 correlation rules for source 50
+2025-09-12 11:21:18 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-12 11:21:18 - INFO - Database connection closed
+2025-09-12 11:23:06 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:23:06 - INFO - Starting correlation sync for source 40
+2025-09-12 11:23:07 - INFO - Baseline user import completed for SSHR: 444 users inserted.
+2025-09-12 11:23:07 - INFO - Database connection closed
+2025-09-12 11:23:07 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:23:07 - INFO - Starting correlation sync for source 42
+2025-09-12 11:23:07 - INFO - Loaded 0 correlation rules for source 42
+2025-09-12 11:23:07 - INFO - 
+            Correlation completed for CROWDSTRIKE:
+            - Accounts processed: 8
+            - Successfully correlated: 5
+            - Unmatched accounts: 3
+        
+2025-09-12 11:23:07 - INFO - Database connection closed
+2025-09-12 11:23:07 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:23:07 - INFO - Starting correlation sync for source 46
+2025-09-12 11:23:07 - INFO - Loaded 0 correlation rules for source 46
+2025-09-12 11:23:07 - INFO - 
+            Correlation completed for BURPSUITE:
+            - Accounts processed: 4
+            - Successfully correlated: 4
+            - Unmatched accounts: 0
+        
+2025-09-12 11:23:07 - INFO - Database connection closed
+2025-09-12 11:23:08 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:23:08 - INFO - Starting correlation sync for source 48
+2025-09-12 11:23:08 - INFO - Loaded 0 correlation rules for source 48
+2025-09-12 11:23:08 - INFO - 
+            Correlation completed for BULLSEYEFIREBASE:
+            - Accounts processed: 9
+            - Successfully correlated: 9
+            - Unmatched accounts: 0
+        
+2025-09-12 11:23:08 - INFO - Database connection closed
+2025-09-12 11:23:08 - INFO - === Starting Correlation Sync ===
+2025-09-12 11:23:08 - INFO - Starting correlation sync for source 50
+2025-09-12 11:23:08 - INFO - Loaded 0 correlation rules for source 50
+2025-09-12 11:23:08 - INFO - 
+            Correlation completed for BULLSEYEAPPSTORE:
+            - Accounts processed: 13
+            - Successfully correlated: 8
+            - Unmatched accounts: 5
+        
+2025-09-12 11:23:08 - INFO - Database connection closed

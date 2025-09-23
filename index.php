@@ -22,7 +22,15 @@ $totalActiveUsers = $db->query("SELECT COUNT(*) FROM users WHERE status = 'activ
 $totalInactiveUsers = $db->query("SELECT COUNT(*) FROM users WHERE status != 'active'")->fetchColumn();
 $totalSources = $db->query("SELECT COUNT(*) FROM account_sources")->fetchColumn();
 $totalRules = $db->query("SELECT COUNT(*) FROM correlation_rules")->fetchColumn();
-$recentUsers = $db->query("SELECT * FROM users WHERE status = 'active' ORDER BY created_at DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
+$recentUsers = $db->query("
+    SELECT u.*
+    FROM users u
+    LEFT JOIN defunct_users d ON d.email = u.email OR d.employee_id = u.employee_id
+    WHERE u.status = 'active' AND (d.status IS NULL OR d.status != 'deleted')
+    ORDER BY u.created_at DESC
+    LIMIT 5
+")->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Get last sync status and total users in SSHRData
 $sshrUserCountStmt = $db->query("
@@ -158,10 +166,10 @@ include 'templates/header.php';
                             <tr>
                                 <td>
                                     <a href="user_detail.php?id=<?= $user['id'] ?>">
-                                        <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?>
-                                    </a>
-                                </td>
-                                <td><?= htmlspecialchars($user['email']) ?></td>
+				<?= htmlspecialchars(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '')) ?>
+			    </a>
+			</td>
+			<td><?= htmlspecialchars($user['email'] ?? '') ?></td>
                                 <td><?= date('M j', strtotime($user['created_at'])) ?></td>
                             </tr>
                             <?php endforeach; ?>
@@ -275,7 +283,7 @@ include 'templates/header.php';
                     ");
                     if ($uncorrStmt === false) {
                         $errorInfo = $db->errorInfo();
-                        echo '<div class="alert alert-danger">SQL Error: ' . htmlspecialchars($errorInfo[2]) . '</div>';
+                        echo '<div class="alert alert-danger">SQL Error: ' . htmlspecialchars($errorInfo[2] ?? '') . '</div>';
                         $uncorrAccounts = [];
                     } else {
                         $uncorrAccounts = $uncorrStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -299,10 +307,10 @@ include 'templates/header.php';
                             <?php foreach ($uncorrAccounts as $acc): ?>
                             <tr>
                                 <td><?= $acc['id'] ?></td>
-                                <td><?= htmlspecialchars($acc['source_name']) ?></td>
-                                <td><?= htmlspecialchars($acc['account_id']) ?></td>
-                                <td><?= htmlspecialchars($acc['username']) ?></td>
-                                <td><?= htmlspecialchars($acc['email']) ?></td>
+                                <td><?= htmlspecialchars($acc['source_name'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($acc['account_id'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($acc['username'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($acc['email'] ?? '') ?></td>
                                 <td><?= htmlspecialchars($acc['role_name'] ?? '') ?></td>
                                 <td><?= date('M j, H:i', strtotime($acc['created_at'])) ?></td>
                                 <td>

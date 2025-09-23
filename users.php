@@ -25,18 +25,47 @@ $success = '';
 $editUser = null;
 $searchTerm = '';
 
-// Handle Delete
 if (isset($_GET['delete'])) {
     $deleteId = intval($_GET['delete']);
-    // Optional: Delete user_accounts first if no ON DELETE CASCADE
-    // $db->prepare("DELETE FROM user_accounts WHERE user_id=?")->execute([$deleteId]);
-    $stmt = $db->prepare("DELETE FROM users WHERE id=?");
-    if ($stmt->execute([$deleteId])) {
-        $success = "User deleted successfully.";
+
+    // Fetch user info
+    $stmt = $db->prepare("SELECT id, employee_id, email FROM users WHERE id=?");
+    $stmt->execute([$deleteId]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        // Set user status to inactive
+        $update = $db->prepare("UPDATE users SET status='inactive' WHERE id=?");
+        $ok = $update->execute([$deleteId]);
+
+        // Get all source_ids for this user
+        $sourceStmt = $db->prepare("SELECT DISTINCT source_id FROM user_accounts WHERE user_id = ?");
+        $sourceStmt->execute([$user['id']]);
+        $sourceIds = $sourceStmt->fetchAll(PDO::FETCH_COLUMN);
+        if (empty($sourceIds)) {
+            $sourceIds = [40]; // Default fallback, adjust to your baseline source_id
+        }
+
+        $allOk = true;
+        foreach ($sourceIds as $sourceId) {
+            $defunct = $db->prepare("
+                INSERT INTO defunct_users (user_id, source_id, employee_id, email, deleted_at, status)
+                VALUES (?, ?, ?, ?, NOW(), 'pending')
+                ON DUPLICATE KEY UPDATE status='pending', deleted_at=NOW()
+            ");
+            $allOk = $allOk && $defunct->execute([$user['id'], $sourceId, $user['employee_id'], $user['email']]);
+        }
+
+        if ($ok && $allOk) {
+            $success = "User marked as inactive and pending deletion.";
+        } else {
+            $errors[] = "Failed to mark user as inactive/pending deletion.";
+        }
     } else {
-        $errors[] = "Failed to delete user.";
+        $errors[] = "User not found.";
     }
 }
+
 
 // Handle Edit: Show form
 if (isset($_GET['edit'])) {
@@ -56,15 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
     $email = trim($_POST['email']);
-    $employee_id = trim($_POST['employee_id']);
+    $supervisor_email = trim($_POST['supervisor_email']);
     $status = trim($_POST['status']);
 
     // Basic validation
-    if (!$first_name || !$last_name || !$email || !$employee_id || !$status) {
+    if (!$first_name || !$last_name || !$email || !$supervisor_email || !$status) {
         $errors[] = "All fields are required.";
     } else {
-        $stmt = $db->prepare("UPDATE users SET first_name=?, last_name=?, email=?, employee_id=?, status=? WHERE id=?");
-        if ($stmt->execute([$first_name, $last_name, $email, $employee_id, $status, $id])) {
+        $stmt = $db->prepare("UPDATE users SET first_name=?, last_name=?, email=?, supervisor_email=?, status=? WHERE id=?");
+        if ($stmt->execute([$first_name, $last_name, $email, $supervisor_email, $status, $id])) {
             $success = "User updated successfully.";
             $editUser = null; // Hide edit form after update
         } else {
@@ -110,7 +139,7 @@ $pendingUserIds = $pendingStmt ? $pendingStmt->fetchAll(PDO::FETCH_COLUMN) : [];
         <div class="alert alert-danger"><?= implode('<br>', $errors) ?></div>
     <?php endif; ?>
     <?php if ($success): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+        <div class="alert alert-success"><?= htmlspecialchars($success ?? '') ?></div>
     <?php endif; ?>
 
     <!-- Search Form -->
@@ -121,7 +150,7 @@ $pendingUserIds = $pendingStmt ? $pendingStmt->fetchAll(PDO::FETCH_COLUMN) : [];
                 <div class="col-md-8">
                     <input type="text" name="search" class="form-control" 
                            placeholder="Search by name, email, or employee ID..." 
-                           value="<?= htmlspecialchars($searchTerm) ?>">
+                           value="<?= htmlspecialchars($searchTerm ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary">Search</button>
@@ -141,7 +170,7 @@ $pendingUserIds = $pendingStmt ? $pendingStmt->fetchAll(PDO::FETCH_COLUMN) : [];
                 <form method="post" class="row g-3">
                     <input type="hidden" name="id" value="<?= $editUser['id'] ?>">
                     <?php if (!empty($searchTerm)): ?>
-                        <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm ?? '') ?>">
                     <?php endif; ?>
                     <div class="col-md-3">
                         <label class="form-label">First Name</label>
@@ -156,8 +185,8 @@ $pendingUserIds = $pendingStmt ? $pendingStmt->fetchAll(PDO::FETCH_COLUMN) : [];
                         <input type="email" name="email" class="form-control" required value="<?= htmlspecialchars($editUser['email']) ?>">
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Employee ID</label>
-                        <input type="text" name="employee_id" class="form-control" required value="<?= htmlspecialchars($editUser['employee_id']) ?>">
+                        <label class="form-label">Supervisor Email</label>
+                        <input type="email" name="supervisor_email" class="form-control" required value="<?= htmlspecialchars($editUser['supervisor_email']) ?>">
                     </div>
                     <div class="col-md-1">
                         <label class="form-label">Status</label>
@@ -175,17 +204,18 @@ $pendingUserIds = $pendingStmt ? $pendingStmt->fetchAll(PDO::FETCH_COLUMN) : [];
     <!-- Results Summary -->
     <?php if (!empty($searchTerm)): ?>
         <div class="alert alert-info">
-            Showing <?= count($users) ?> result(s) for "<?= htmlspecialchars($searchTerm) ?>"
+            Showing <?= count($users) ?> result(s) for "<?= htmlspecialchars($searchTerm ?? '') ?>"
         </div>
     <?php endif; ?>
 
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th style="width: 20%">Name</th>
-                <th style="width: 30%">Email</th>
-                <th style="width: 15%">Employee ID</th>
-                <th style="width: 15%">Status</th>
+                <th style="width: 15%">Name</th>
+                <th style="width: 20%">Email</th>
+                <th style="width: 15%">Supervisor Email</th>
+                <th style="width: 10%">Status</th>
+                <th style="width: 15%">Created Date</th>
                 <th style="width: 20%">Actions</th>
             </tr>
         </thead>
@@ -206,8 +236,10 @@ $pendingUserIds = $pendingStmt ? $pendingStmt->fetchAll(PDO::FETCH_COLUMN) : [];
                             <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td><?= htmlspecialchars($user['employee_id']) ?></td>
+                        <td><?= htmlspecialchars($user['supervisor_email'] ?? '') ?></td>
                         <td><?= htmlspecialchars($user['status']) ?></td>
+                        <td><?= !empty($user['created_at']) ? date('M j, Y', strtotime($user['created_at'])) : ''  ?></td>
+			
                         <td>
                             <div class="btn-group btn-group-sm">
                                 <a href="users.php?edit=<?= $user['id'] ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?>" 

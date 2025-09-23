@@ -3,6 +3,15 @@ require_once 'config/database.php';
 require_once 'lib/UserManager.php';
 require_once 'lib/CorrelationEngine.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_deleted'])) {
+    $userId = intval($_POST['user_id']);
+    $sourceId = intval($_POST['source_id']);
+    $stmt = $db->prepare("UPDATE defunct_users SET status='deleted', deleted_at=NOW() WHERE user_id=? AND source_id=?");
+    $stmt->execute([$userId, $sourceId]);
+    // Optionally: add a success message or reload page
+}
+
+
 $db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 $userManager = new UserManager($db);
 $correlationEngine = new CorrelationEngine($db);
@@ -12,6 +21,7 @@ $correlationEngine = new CorrelationEngine($db);
 $pendingStmt = $db->query("
     SELECT DISTINCT 
         du.user_id,
+	du.source_id,
         du.email,
         du.employee_id,
         GROUP_CONCAT(s.name) as source_names,
@@ -55,9 +65,16 @@ include 'templates/header.php';
                         <br>
                         <small class="text-muted"><?= htmlspecialchars($user['source_names']) ?></small>
                     </td>
-                    <td>
-                        <a href="user_detail.php?user_id=<?= $user['user_id'] ?>&pending=1" class="btn btn-sm btn-outline-danger">Review</a>
-                    </td>
+		    <td>
+			<a href="user_detail.php?user_id=<?= $user['user_id'] ?>&pending=1" class="btn btn-sm btn-info">Review</a>
+		        <form method="post" style="display:inline;">
+		            <input type="hidden" name="user_id" value="<?= $user['user_id'] ?>">
+		            <input type="hidden" name="source_id" value="<?= $user['source_id'] ?>">
+		            <button type="submit" name="mark_deleted" class="btn btn-sm btn-outline-success"
+		                onclick="return confirm('Confirm backend deletion?')">Mark as Deleted</button>
+		        </form>
+		    </td>
+
                 </tr>
                 <?php endforeach; ?>
             </tbody>

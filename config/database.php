@@ -2,7 +2,7 @@
 // Database Configuration
 $dbHost = 'localhost';
 //$dbName = 'idm_tool';
-$dbName = 'idmdb';
+$dbName = 'idmdb1209';
 $dbUser = 'idm_user';
 $dbPass = 'test123'; // Change to your actual password
 
@@ -16,6 +16,7 @@ $dbPass = 'test123'; // Change to your actual password
  * Production Settings (comment out the above and uncomment below):
  * // error_reporting(0);
  * // ini_set('display_errors', 0);
+  ini_set('display_errors', 1);
  * // ini_set('log_errors', 1);
  * // ini_set('error_log', __DIR__.'/../logs/php_errors.log');
  */
