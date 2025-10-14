@@ -57,7 +57,7 @@ $pageTitle = "Dashboard";
 include 'templates/header.php';
 ?>
 
-<div class="container mt-4">
+<div class="container-fluid px-4 py-4">
     <h2>Identity Management Dashboard</h2>
     
     <div class="row mt-4">

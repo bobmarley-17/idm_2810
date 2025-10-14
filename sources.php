@@ -1,4 +1,3 @@
-sources.php
 <?php
 require_once 'config/database.php';
 require_once 'lib/UserManager.php';
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'field_mapping' => [
                             'email' => $_POST['email_field'] ?? 'email',
                             'firstname' => $_POST['firstname_field'] ?? 'firstname',
-                            //'username' => $_POST['username_field'] ?? 'username',
+                            'username' => $_POST['username_field'] ?? 'username',
                             //'employee_id' => $_POST['employee_id_field'] ?? 'employee_id',
                             'lastname' => $_POST['lastname_field'] ?? 'lastname',
                             'supervisor_email' => $_POST['supervisor_email_field'] ?? 'supervisor_email'

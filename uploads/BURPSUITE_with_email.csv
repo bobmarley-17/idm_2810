@@ -1,5 +1,5 @@
 CompanyCode,Firstname,Lastname,Email,SiteUsername,RT,AccessLevelNotes,username,emailaddress
+BURPSUITE,Krishna,Murala,krishnamurala@corp.untd.com,krishnamurala@corp.untd.com,,User,krishnamurala,krishnamurala@corp.untd.com
 BURPSUITE,mohammedirshad,baba,mbaba@corp.untd.com,mbaba@corp.und.com,,User,mbaba,mbaba@corp.untd.com
 BURPSUITE,Curt,Varner,cvarner@corp.untd.com,netsecurity@corp.untd.com,,Admin,cvarner,cvarner@corp.untd.com
-BURPSUITE,Krishna,Murala,krishnamurala@corp.untd.com,krishnamurala@corp.untd.com,,User,krishnamurala,krishnamurala@corp.untd.com
-BURPSUITE,John,Doe,jdoe@corp.untd.com,jdoe@corp.untd.com,,User,jdoe,jdoe@corp.untd.com
+BURPSUITE,Anil,Kadium,kanil@corp.untd.com,kanil@corp.untd.com,,Admin,kanil,kanil@corp.untd.com

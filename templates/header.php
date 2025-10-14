@@ -53,7 +53,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Identity Management';
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid px-4">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">

@@ -75,8 +75,20 @@ include 'templates/header.php';
                 <td><?= htmlspecialchars($user['username'] ?? '') ?></td>
             </tr>
             <tr>
+                <th>First Name</th>
+                <td><?= htmlspecialchars($user['first_name'] ?? '') ?></td>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <td><?= htmlspecialchars($user['last_name'] ?? '') ?></td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td><?= htmlspecialchars($user['email']) ?></td>
+            </tr>
+            <tr>
+                <th>Supervisor Email</th>
+                <td><?= htmlspecialchars($user['supervisor_email'] ?? 'Not Assigned') ?></td>
             </tr>
             <tr>
                 <th>Status</th>
@@ -117,7 +129,7 @@ include 'templates/header.php';
     <thead>
         <tr>
             <th>Source</th>
-            <th>Account ID</th>
+            <th>User ID</th>
             <th>Username</th>
             <th>Email</th>
             <th>Status</th>
@@ -137,7 +149,7 @@ include 'templates/header.php';
             echo $pending ? ' class="table-danger"' : '';
         ?>>
             <td><?= htmlspecialchars(($account['source_name'] ?? '') . ' (' . ($account['source_type'] ?? '') . ')') ?></td>
-            <td><?= htmlspecialchars($account['account_id'] ?? '') ?></td>
+            <td><?= htmlspecialchars($account['user_id'] ?? '') ?></td>
             <td><?= htmlspecialchars($account['username'] ?? '') ?></td>
             <td><?= htmlspecialchars($account['email'] ?? '') ?></td>
             <td>

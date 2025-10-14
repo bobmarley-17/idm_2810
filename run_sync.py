@@ -8,6 +8,39 @@ from datetime import datetime
 import os
 import re
 
+
+def load_snapshot(snapshot_path):
+    if os.path.exists(snapshot_path):
+        try:
+            with open(snapshot_path, 'r') as f:
+                data = json.load(f)
+                # Convert list to dict keyed by email or employee_id
+                snapshot = {}
+                for row in data:
+                    key = row.get('email') or row.get('employee_id')
+                    if key:
+                        snapshot[key] = row
+                return snapshot
+        except Exception as e:
+            logging.error(f"Failed to load snapshot from {snapshot_path}: {e}")
+            return {}
+    return {}
+
+
+def save_snapshot(data, snapshot_path):
+    try:
+        with open(snapshot_path, 'w') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        logging.error(f"Failed to save snapshot to {snapshot_path}: {e}")
+
+
+def detect_deleted_accounts(prev_data, curr_data):
+    """Compare previous and current data to find deleted users"""
+    deleted_keys = set(prev_data.keys()) - set(curr_data.keys())
+    return [prev_data[k] for k in deleted_keys]
+
+
 # Configuration
 CONFIG = {
     'db_host': 'localhost',
@@ -53,8 +86,8 @@ def get_correlation_rules(conn, source_id):
     cursor = conn.cursor(dictionary=True)
     cursor.execute("""
         SELECT match_field, match_type, priority
-        FROM correlation_rules 
-        WHERE source_id = %s 
+        FROM correlation_rules
+        WHERE source_id = %s
         ORDER BY priority
     """, (source_id,))
     rules = cursor.fetchall()
@@ -65,7 +98,7 @@ def get_source_config(conn, source_id):
     """Get source configuration with field mappings"""
     cursor = conn.cursor(dictionary=True)
     cursor.execute("""
-        SELECT * FROM account_sources 
+        SELECT * FROM account_sources
         WHERE id = %s
     """, (source_id,))
     source = cursor.fetchone()
@@ -85,14 +118,14 @@ def load_xml_accounts(file_path, config):
     try:
         tree = ET.parse(file_path)
         root = tree.getroot()
-        
+
         # Get user elements using XPath
         user_path = config.get('xml_user_path', '//user')
-        
+
         # ElementTree doesn't support full XPath, so we need to handle the path parts
         path_parts = user_path.split('/')
         path_parts = [part for part in path_parts if part] # Remove empty strings from leading/trailing slashes
-        
+
         # Start with root and traverse down
         elements = [root]
         for part in path_parts:
@@ -102,7 +135,7 @@ def load_xml_accounts(file_path, config):
             for element in elements:
                 new_elements.extend(element.findall(part))
             elements = new_elements
-        
+
         field_mappings = {
             'email': config.get('email_field', 'email'),
             'firstname': config.get('firstname_field', 'firstname'),
@@ -110,7 +143,7 @@ def load_xml_accounts(file_path, config):
             'lastname': config.get('lastname_field', 'lastname')
             #'employee_id': config.get('employee_id_field', 'employee_id')
         }
-        
+
         for user in elements:
             account = {}
             for target_field, field_path in field_mappings.items():
@@ -121,7 +154,7 @@ def load_xml_accounts(file_path, config):
                         if element is not None:
                             account[target_field] = element.text or ''
                         continue
-                        
+
                     # Handle nested paths
                     path_parts = field_path.split('/')
                     current = user
@@ -136,7 +169,7 @@ def load_xml_accounts(file_path, config):
                 except Exception as e:
                     logging.warning(f"Error extracting field {field_path}: {str(e)}")
                     account[target_field] = ''
-            
+
             # Handle additional fields if configured
             additional_fields = config.get('additional_fields', {})
             if additional_fields:
@@ -150,12 +183,12 @@ def load_xml_accounts(file_path, config):
                         logging.warning(f"Error extracting additional field {xpath}: {str(e)}")
                 if extra_data:
                     account['additional_data'] = json.dumps(extra_data)
-            
+
             accounts.append(account)
-        
+
         logging.info(f"Loaded {len(accounts)} accounts from XML file")
         return accounts
-        
+
     except ET.ParseError as e:
         logging.error(f"Failed to parse XML file: {e}")
         return accounts
@@ -169,27 +202,27 @@ def load_csv_accounts(file_path, field_mappings):
     try:
         with open(file_path, 'r', encoding='utf-8-sig') as f:
             headers = [h.strip().lower() for h in f.readline().strip().split(',')]
-            
+
             # Create mapping from CSV headers to standard fields
             reverse_mapping = {v: k for k, v in field_mappings.items()}
-            
+
             for line in f:
                 values = line.strip().split(',')
                 if len(values) != len(headers):
                     continue
-                
+
                 account = {}
                 for header, value in zip(headers, values):
                     if header in reverse_mapping:
                         account[reverse_mapping[header]] = value.strip()
                     account[header] = value.strip()  # Keep original fields
-                
+
                 accounts.append(account)
-                
+
     except Exception as e:
         logging.error(f"CSV processing failed: {str(e)}")
         raise
-    
+
     return accounts
 
 def correlate_accounts(conn, source_id, accounts):
@@ -198,24 +231,24 @@ def correlate_accounts(conn, source_id, accounts):
     rules = get_correlation_rules(conn, source_id)
     correlated = []
     unmatched = []
-    
+
     for account in accounts:
         try:
             matched = False
             account_id = account.get('username') or account.get('email') or str(hash(frozenset(account.items())))
-            
+
             # Try each rule in priority order
             for rule in rules:
                 field_value = account.get(rule['match_field'])
                 if not field_value:
                     continue
-                    
+
                 query = build_correlation_query(rule)
                 params = prepare_rule_parameters(field_value, rule)
-                
+
                 cursor.execute(query, params)
                 user = cursor.fetchone()
-                
+
                 if user:
                     correlated.append({
                         'user_id': user['id'],
@@ -229,7 +262,7 @@ def correlate_accounts(conn, source_id, accounts):
                     })
                     matched = True
                     break
-            
+
             # Fallback to default correlation field if no rules matched
             if not matched and CONFIG['default_correlation_field']:
                 field_value = account.get(CONFIG['default_correlation_field'])
@@ -251,14 +284,14 @@ def correlate_accounts(conn, source_id, accounts):
                             }
                         })
                         matched = True
-            
+
             if not matched:
                 unmatched.append(account)
-                
+
         except Exception as e:
             logging.error(f"Correlation failed for account: {str(e)}")
             unmatched.append(account)
-    
+
     return correlated, unmatched
 
 def build_correlation_query(rule):
@@ -288,7 +321,7 @@ def save_correlated_accounts(conn, source_id, correlated):
     for item in correlated:
         try:
             cursor.execute("""
-                INSERT INTO user_accounts 
+                INSERT INTO user_accounts
                 (user_id, source_id, account_id, username, email, additional_data, matched_by)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
@@ -399,16 +432,16 @@ def create_role_account(conn, name, description=None):
     return cursor.lastrowid
 
 # Implementation for baseline user insert
-def insert_baseline_users(conn, accounts, source_id):
+def insert_baseline_users(conn, accounts_list, source_id):
     cursor = conn.cursor()
-    for acc in accounts:
+    for acc in accounts_list:
         # Insert or update user in users table
         cursor.execute(
             """
             INSERT INTO users (username, first_name, last_name, email, employee_id, status, supervisor_email)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
             ON DUPLICATE KEY UPDATE
-		username = VALUES(username),
+                username = VALUES(username),
                 first_name = VALUES(first_name),
                 last_name = VALUES(last_name),
                 email = VALUES(email),
@@ -417,7 +450,7 @@ def insert_baseline_users(conn, accounts, source_id):
                 updated_at = NOW()
             """,
             (
-		acc.get('username', ''),
+                acc.get('username', ''),
                 acc.get('first_name', acc.get('firstname', '')),
                 acc.get('last_name', acc.get('lastname', '')),
                 acc.get('email', ''),
@@ -458,103 +491,55 @@ def insert_baseline_users(conn, accounts, source_id):
 def handle_defunct_users(conn, baseline_accounts, source_id):
     """Detect users missing from baseline or other sources and handle their defunct status."""
     cursor = conn.cursor(dictionary=True)
-    
-    # For baseline source (SSHRData)
-    if source_id == 1:  # Assuming SSHRData has source_id = 1
-        # Build set of employee_ids and emails from baseline
-        baseline_empids = set()
-        baseline_emails = set()
-        for acc in baseline_accounts:
-            if acc.get('employee_id'): baseline_empids.add(acc['employee_id'])
-            if acc.get('email'): baseline_emails.add(acc['email'])
 
-        # Find users in DB not present in baseline
-        cursor.execute("SELECT id, employee_id, email FROM users WHERE status = 'active'")
+    # Baseline source logic
+    if source_id == 1:  # SSHRData baseline
+        baseline_empids = {acc['employee_id'] for acc in baseline_accounts if acc.get('employee_id')}
+        baseline_emails = {acc['email'] for acc in baseline_accounts if acc.get('email')}
+
+        cursor.execute("SELECT id, employee_id, email FROM users WHERE status='active'")
         db_users = cursor.fetchall()
         defunct = []
-        
+
         for user in db_users:
-            empid = user.get('employee_id')
-            email = user.get('email')
+            empid, email = user.get('employee_id'), user.get('email')
             if (empid and empid not in baseline_empids) or (email and email not in baseline_emails):
                 defunct.append(user)
 
-        # For each defunct user
         for user in defunct:
-            # Get all sources where the user has accounts
-            cursor.execute("""
-                SELECT DISTINCT ua.source_id
-                FROM user_accounts ua
-                WHERE ua.user_id = %s
-            """, (user['id'],))
+            cursor.execute("SELECT DISTINCT ua.source_id FROM user_accounts ua WHERE ua.user_id=%s", (user['id'],))
             sources = cursor.fetchall()
-            
-            # Add entry to defunct_users for each source
             for src in sources:
                 cursor.execute("""
-                    INSERT INTO defunct_users 
-                    (user_id, source_id, employee_id, email, deleted_at, status)
+                    INSERT INTO defunct_users (user_id, source_id, employee_id, email, deleted_at, status)
                     VALUES (%s, %s, %s, %s, NOW(), 'pending')
-                    ON DUPLICATE KEY UPDATE
-                    status = 'pending',
-                    deleted_at = NOW()
+                    ON DUPLICATE KEY UPDATE status='pending', deleted_at=NOW()
                 """, (user['id'], src['source_id'], user['employee_id'], user['email']))
+            cursor.execute("UPDATE users SET status='inactive' WHERE id=%s", (user['id'],))
 
-            # Update user status to inactive instead of deleting
-            cursor.execute("UPDATE users SET status = 'inactive' WHERE id = %s", (user['id'],))
-            
         conn.commit()
         if defunct:
-            logging.info(f"Added {len(defunct)} users to defunct_users table and marked them inactive.")
-            
+            logging.info(f"Added {len(defunct)} users to defunct_users and marked inactive.")
+
     else:
-        # For non-baseline sources: check if any users in defunct_users are missing from this source
-        cursor.execute("""
-            SELECT du.user_id, du.source_id 
-            FROM defunct_users du
-            WHERE du.source_id = %s AND du.status = 'pending'
-        """, (source_id,))
+        # Non-baseline sources
+        cursor.execute("SELECT du.user_id, du.source_id FROM defunct_users du WHERE du.source_id=%s AND du.status='pending'", (source_id,))
         pending = cursor.fetchall()
-        
         for entry in pending:
-            # Check if this user's account exists in the current source's data
             found = False
-            cursor.execute("SELECT email FROM users WHERE id = %s", (entry['user_id'],))
+            cursor.execute("SELECT email, employee_id FROM users WHERE id=%s", (entry['user_id'],))
             user_data = cursor.fetchone()
             if user_data:
-                for acc in accounts:
-                    # Primary: email
-                    if acc.get('email') and user_data['email'] == acc.get('email'):
+                for acc in baseline_accounts:
+                    if (acc.get('email') and acc.get('email') == user_data['email']) or \
+                       (acc.get('employee_id') and acc.get('employee_id') == user_data['employee_id']):
                         found = True
                         break
-                    # Optional fallback: employee_id
-                    elif acc.get('employee_id') and user_data.get('employee_id') == acc.get('employee_id'):
-                        found = True
-                        break
-#                    for acc in baseline_accounts:
-#                        if ((user_data['email'] and acc.get('email') == user_data['email']) or 
-#                           (user_data['employee_id'] and acc.get('employee_id') == user_data['employee_id'])):
-#                            found = True
-#                            break
-            
-            if not found:
-                logging.info(f"User {entry['user_id']} not found in source {source_id}, marking as deleted")
-                # Update defunct_users status to deleted
-                cursor.execute("""
-                    UPDATE defunct_users 
-                    SET status = 'deleted', deleted_at = NOW()
-                    WHERE user_id = %s AND source_id = %s
-                """, (entry['user_id'], source_id))
-                
-                # Update user_accounts status to deleted (changed from inactive to match the ENUM)
-                cursor.execute("""
-                    UPDATE user_accounts 
-                    SET status = 'deleted', updated_at = NOW()
-                    WHERE user_id = %s AND source_id = %s
-                """, (entry['user_id'], source_id))
-                
-                # Commit each update to ensure it's saved
-                conn.commit()
+            #if not found:
+            #    logging.info(f"User {entry['user_id']} not found in source {source_id}, marking as deleted")
+            #    cursor.execute("UPDATE defunct_users SET status='deleted', deleted_at=NOW() WHERE user_id=%s AND source_id=%s", (entry['user_id'], source_id))
+            #    cursor.execute("UPDATE user_accounts SET status='deleted', updated_at=NOW() WHERE user_id=%s AND source_id=%s", (entry['user_id'], source_id))
+            #    conn.commit()
 
 def sync_correlation_source(source_id):
     """Main sync function"""
@@ -562,13 +547,13 @@ def sync_correlation_source(source_id):
     conn = None
     try:
         conn = get_db_connection()
-        
+
         # Get source configuration
         source = get_source_config(conn, source_id)
         if not source:
             logging.error(f"Source ID {source_id} not found")
             return False
-            
+
         # Load accounts based on source type
         if source['type'] == 'CSV':
             accounts = load_csv_accounts(
@@ -583,46 +568,111 @@ def sync_correlation_source(source_id):
         else:
             logging.error(f"Unsupported source type: {source['type']}")
             return False
-        
+
+        accounts_list = accounts  # preserve original list for defunct logic
+
+        # === Snapshot Comparison ===
+        filename = os.path.basename(source["config"]["file_path"])
+        snapshot_path = os.path.join('uploads', 'previous_' + filename)
+        prev_data = load_snapshot(snapshot_path)
+        curr_data = {
+            acc.get('email') or acc.get('employee_id'): acc
+            for acc in accounts if acc.get('email') or acc.get('employee_id')
+        }
+
+        accounts_list = list(curr_data.values())
+
+
+        if prev_data:
+            deleted_accounts = detect_deleted_accounts(prev_data, curr_data)
+            cursor = conn.cursor()
+            for acc in deleted_accounts:
+                identifier = acc.get('email') or acc.get('employee_id')
+                logging.info(f"[{source['name']}] Detected missing account (will mark pending): {identifier}")
+                cursor.execute("SELECT id FROM users WHERE email=%s OR employee_id=%s LIMIT 1", (acc.get('email'), acc.get('employee_id')))
+                user = cursor.fetchone()
+                if user:
+                    user_id = user[0]
+                    cursor.execute("""
+                        INSERT INTO defunct_users (user_id, source_id, employee_id, email, deleted_at, status)
+                        VALUES (%s, %s, %s, %s, NOW(), 'pending')
+                        ON DUPLICATE KEY UPDATE status='pending', deleted_at=NOW()
+                    """, (user_id, source_id, acc.get('employee_id'), acc.get('email')))
+                    cursor.execute("UPDATE users SET status='inactive' WHERE id=%s", (user_id,))
+            conn.commit()
+
+
+        # Save snapshot for next sync
+        save_snapshot(list(curr_data.values()), snapshot_path)
+	
+        # === Reactivate users who reappeared ===
+        cursor = conn.cursor()
+        for key, acc in curr_data.items():
+            cursor.execute("""
+                SELECT ua.user_id, ua.status
+                FROM user_accounts ua
+                JOIN users u ON ua.user_id = u.id
+                WHERE ua.source_id = %s AND (u.email = %s OR u.employee_id = %s)
+                LIMIT 1
+            """, (source_id, acc.get('email'), acc.get('employee_id')))
+            result = cursor.fetchone()
+            if result and result[1] == 'deleted':
+                logging.info(f"[{source['name']}] Reactivating user {key}")
+                # Update main users table
+                cursor.execute("""
+                    UPDATE users SET status='active', updated_at=NOW() WHERE id=%s
+                """, (result[0],))
+                # Update user_accounts
+                cursor.execute("""
+                    UPDATE user_accounts SET status='active', updated_at=NOW()
+                    WHERE user_id=%s AND source_id=%s
+                """, (result[0], source_id))
+                # Update defunct_users
+                cursor.execute("""
+                    UPDATE defunct_users SET status='pending', deleted_at=NULL
+                    WHERE user_id=%s AND source_id=%s
+                """, (result[0], source_id))
+        conn.commit()
+
         # === BASELINE LOGIC ===
         if source['is_baseline'] == 1:
             # Baseline: Insert users, skip correlation
-            insert_baseline_users(conn, accounts, source_id)
+            insert_baseline_users(conn, accounts_list, source_id)
             logging.info(f"Baseline user import completed for {source['name']}: {len(accounts)} users inserted.")
 
             # Detect and handle defunct users (delete from users, add to defunct_users)
-            handle_defunct_users(conn, accounts, source_id)
+            handle_defunct_users(conn, accounts_list, source_id)
 
             # Update last sync time
             cursor = conn.cursor()
             cursor.execute("""
-                UPDATE account_sources 
-                SET last_sync = NOW() 
+                UPDATE account_sources
+                SET last_sync = NOW()
                 WHERE id = %s
             """, (source_id,))
             conn.commit()
             return True
 
         # === NON-BASELINE LOGIC: Check for defunct users to mark as deleted ===
-        handle_defunct_users(conn, accounts, source_id)
+        handle_defunct_users(conn, accounts_list, source_id)
         conn.commit()
-        
+
         # Correlate accounts
         correlated, unmatched = correlate_accounts(conn, source_id, accounts)
-        
+
         # Save results
         save_correlated_accounts(conn, source_id, correlated)
         save_uncorrelated_accounts(conn, source_id, unmatched)
-        
+
         # Update last sync time
         cursor = conn.cursor()
         cursor.execute("""
-            UPDATE account_sources 
-            SET last_sync = NOW() 
+            UPDATE account_sources
+            SET last_sync = NOW()
             WHERE id = %s
         """, (source_id,))
         conn.commit()
-        
+
         # Log results
         logging.info(f"""
             Correlation completed for {source['name']}:
@@ -648,3 +698,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     success = sync_correlation_source(args.source)
     sys.exit(0 if success else 1)
+

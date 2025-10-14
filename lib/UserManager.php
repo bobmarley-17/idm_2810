@@ -49,7 +49,7 @@ class UserManager {
     public function getUserWithAccounts($userId) {
         $stmt = $this->db->prepare("
 	    SELECT u.*,  -- u.username now included as it is a column on users table
-		   ua.id as account_id, ua.source_id, ua.account_id as source_account_id,
+		   ua.id as account_id, ua.user_id as account_user_id, ua.source_id, ua.account_id as source_account_id,
 		   ua.username as account_username, ua.email as account_email, ua.additional_data, ua.status as account_status,
                    s.name as source_name, s.type as source_type
             FROM users u
@@ -72,6 +72,8 @@ class UserManager {
 		    'username' => $row['username'],
                     'email' => $row['email'],
                     'status' => $row['status'],
+                    'user_id' => $row['account_user_id'],
+                    'supervisor_email' => $row['supervisor_email'],
                     'accounts' => []
                 ];
             }
@@ -79,6 +81,7 @@ class UserManager {
             if ($row['account_id']) {
                 $user['accounts'][] = [
                     'id' => $row['account_id'],
+                    'user_id' => $row['account_user_id'],
                     'source_id' => $row['source_id'],
                     'source_name' => $row['source_name'],
                     'source_type' => $row['source_type'],
