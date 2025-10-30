@@ -1,17 +1,19 @@
 <?php
+require_once 'bootstrap.php';
+require_once 'auth_check.php';
 require_once 'config/database.php';
 require_once 'lib/UserManager.php';
 require_once 'lib/CorrelationEngine.php';
 
-$db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
+//$db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 $userManager = new UserManager($db);
 $correlationEngine = new CorrelationEngine($db);
 
 
 // Count distinct users in defunct_users with pending status
 $pendingUsersStmt = $db->query("
-    SELECT COUNT(DISTINCT user_id) 
-    FROM defunct_users 
+    SELECT COUNT(DISTINCT user_id)
+    FROM defunct_users
     WHERE status = 'pending'
 ");
 $pendingCount = $pendingUsersStmt ? (int)$pendingUsersStmt->fetchColumn() : 0;
@@ -34,9 +36,9 @@ $recentUsers = $db->query("
 
 // Get last sync status and total users in SSHRData
 $sshrUserCountStmt = $db->query("
-    SELECT COUNT(*) as total 
-    FROM user_accounts ua 
-    JOIN account_sources s ON ua.source_id = s.id 
+    SELECT COUNT(*) as total
+    FROM user_accounts ua
+    JOIN account_sources s ON ua.source_id = s.id
     WHERE LOWER(s.name) = 'sshrdata'
 ");
 $totalUsers = $sshrUserCountStmt ? (int)$sshrUserCountStmt->fetchColumn() : 0;
@@ -53,13 +55,15 @@ $lastSync = $db->query("
     LIMIT 3
 ")->fetchAll(PDO::FETCH_ASSOC);
 
+$lastSyncTimeForFooter = ($lastSync && isset($lastSync[0]['last_sync'])) ? date('M j, Y H:i', strtotime($lastSync[0]['last_sync'])) : 'Never';
+
 $pageTitle = "Dashboard";
 include 'templates/header.php';
 ?>
 
 <div class="container-fluid px-4 py-4">
     <h2>Identity Management Dashboard</h2>
-    
+
     <div class="row mt-4">
         <!-- Stats Cards -->
         <div class="col">
@@ -76,7 +80,7 @@ include 'templates/header.php';
                 </div>
             </div>
         </div>
-        
+
         <div class="col">
             <div class="card text-white bg-success h-100">
                 <div class="card-body">
@@ -86,7 +90,7 @@ include 'templates/header.php';
                 </div>
             </div>
         </div>
-        
+
         <div class="col">
             <div class="card text-white bg-info h-100">
                 <div class="card-body">
@@ -96,11 +100,11 @@ include 'templates/header.php';
                 </div>
             </div>
         </div>
-        
+
         <div class="col">
             <div class="card text-white bg-secondary h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Reports</h5>                    
+                    <h5 class="card-title">Reports</h5>
                     <a href="reports.php" class="text-white">Generate</a>
                 </div>
             </div>
@@ -143,7 +147,7 @@ include 'templates/header.php';
             </div>
         </div>
     </div>
-    
+
     <div class="row mt-4">
         <!-- Recent Users -->
         <div class="col-md-6">
@@ -166,10 +170,10 @@ include 'templates/header.php';
                             <tr>
                                 <td>
                                     <a href="user_detail.php?id=<?= $user['id'] ?>">
-				<?= htmlspecialchars(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '')) ?>
-			    </a>
-			</td>
-			<td><?= htmlspecialchars($user['email'] ?? '') ?></td>
+                                <?= htmlspecialchars(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '')) ?>
+                            </a>
+                        </td>
+                        <td><?= htmlspecialchars($user['email'] ?? '') ?></td>
                                 <td><?= date('M j', strtotime($user['created_at'])) ?></td>
                             </tr>
                             <?php endforeach; ?>
@@ -178,7 +182,7 @@ include 'templates/header.php';
                 </div>
             </div>
         </div>
-        
+
         <!-- Last Sync Status -->
         <div class="col-md-6">
             <div class="card">
@@ -203,8 +207,8 @@ include 'templates/header.php';
                                     </span>
                                 </div>
                                 <small class="text-muted">
-                                    <?= $source['last_sync'] ? 
-                                        'Last sync: ' . date('M j, H:i', strtotime($source['last_sync'])) : 
+                                    <?= $source['last_sync'] ?
+                                        'Last sync: ' . date('M j, H:i', strtotime($source['last_sync'])) :
                                         'Never synced' ?>
                                 </small>
                             </div>
@@ -220,7 +224,7 @@ include 'templates/header.php';
             </div>
         </div>
     </div>
-    
+
     <!-- Quick Actions -->
     <div class="row mt-4">
         <div class="col-12">
@@ -255,7 +259,7 @@ include 'templates/header.php';
             </div>
         </div>
     </div>
-    
+
     <!-- Uncorrelated Accounts Section -->
     <div class="row mt-4">
         <div class="col-12 mb-2">

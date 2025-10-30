@@ -58,6 +58,13 @@ include 'templates/header.php';
     <?php elseif ($defunctStatus === 'pending'): ?>
         <span class="badge bg-danger ms-2">Defunct (Pending)</span>
     <?php endif; ?>
+    <!-- The new button goes on the right -->
+    <a href="user_access.php?id=<?= $user['id'] ?>" class="btn btn-primary">
+        <i class="fas fa-user-shield"></i> Manage Login Access
+    </a>
+    
+
+
 </h2>
 
 <?php if ($fromPending): ?>
@@ -129,7 +136,9 @@ include 'templates/header.php';
     <thead>
         <tr>
             <th>Source</th>
+            <th>Category</th>
             <th>User ID</th>
+            <th>Deletion Date</th>
             <th>Username</th>
             <th>Email</th>
             <th>Status</th>
@@ -149,7 +158,9 @@ include 'templates/header.php';
             echo $pending ? ' class="table-danger"' : '';
         ?>>
             <td><?= htmlspecialchars(($account['source_name'] ?? '') . ' (' . ($account['source_type'] ?? '') . ')') ?></td>
+            <td><?= htmlspecialchars($account['category'] ?? '') ?></td>
             <td><?= htmlspecialchars($account['user_id'] ?? '') ?></td>
+            <td><?= !empty($account['deletion_date']) ? htmlspecialchars(date('M j, Y', strtotime($account['deletion_date']))) : '' ?></td>
             <td><?= htmlspecialchars($account['username'] ?? '') ?></td>
             <td><?= htmlspecialchars($account['email'] ?? '') ?></td>
             <td>

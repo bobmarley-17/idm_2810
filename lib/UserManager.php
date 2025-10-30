@@ -50,8 +50,8 @@ class UserManager {
         $stmt = $this->db->prepare("
 	    SELECT u.*,  -- u.username now included as it is a column on users table
 		   ua.id as account_id, ua.user_id as account_user_id, ua.source_id, ua.account_id as source_account_id,
-		   ua.username as account_username, ua.email as account_email, ua.additional_data, ua.status as account_status,
-                   s.name as source_name, s.type as source_type
+		   ua.username as account_username, ua.email as account_email, ua.additional_data, ua.status as account_status,ua.deletion_date,
+                   s.name as source_name, s.type as source_type, s.category AS category
             FROM users u
             LEFT JOIN user_accounts ua ON ua.user_id = u.id
             LEFT JOIN account_sources s ON s.id = ua.source_id
@@ -85,6 +85,7 @@ class UserManager {
                     'source_id' => $row['source_id'],
                     'source_name' => $row['source_name'],
                     'source_type' => $row['source_type'],
+                    'category' => $row['category'],
                     'account_id' => $row['source_account_id'],
                     'username' => $row['account_username'],
                     'email' => $row['account_email'],

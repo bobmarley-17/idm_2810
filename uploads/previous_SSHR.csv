@@ -1,5 +1,12 @@
 [
   {
+    "email": "jlopez@corp.untd.com",
+    "firstname": "Jennifer",
+    "lastname": "Lopez",
+    "username": "jlopez",
+    "supervisor_email": "krishnamurala@corp.untd.com"
+  },
+  {
     "email": "krishnamurala@corp.untd.com",
     "firstname": "Krishna",
     "lastname": "Murala",

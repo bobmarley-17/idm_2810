@@ -309,6 +309,7 @@ include 'templates/header.php';
                             <option value="Application" <?= ($currentSource['category'] ?? '') === 'Application' ? 'selected' : '' ?>>Application</option>
                             <option value="OS" <?= ($currentSource['category'] ?? '') === 'OS' ? 'selected' : '' ?>>OS</option>
                             <option value="Database" <?= ($currentSource['category'] ?? '') === 'Database' ? 'selected' : '' ?>>Database</option>
+                            <option value="External" <?= ($currentSource['category'] ?? '') === 'External' ? 'selected' : '' ?>>External</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -715,6 +716,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <option value="Application" <?= ($category ?? '') === 'Application' ? 'selected' : '' ?>>Application</option>
                             <option value="OS" <?= ($category ?? '') === 'OS' ? 'selected' : '' ?>>OS</option>
                             <option value="Database" <?= ($category ?? '') === 'Database' ? 'selected' : '' ?>>Database</option>
+                            <option value="External" <?= ($category ?? '') === 'External' ? 'selected' : '' ?>>External</option>
                         </select>
                     </div>
 

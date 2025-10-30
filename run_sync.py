@@ -44,7 +44,7 @@ def detect_deleted_accounts(prev_data, curr_data):
 # Configuration
 CONFIG = {
     'db_host': 'localhost',
-    'db_name': 'idmdb1209',
+    'db_name': 'idmdb2810',
     'db_user': 'idm_user',
     'db_password': 'test123',
     'log_file': '/var/www/html/idmtool/sync.log',

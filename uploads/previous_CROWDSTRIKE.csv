@@ -73,6 +73,15 @@
   },
   {
     "companycode": "CROWDSTRIKE",
+    "firstname": "Jennifer",
+    "lastname": "Lopez",
+    "email": "jlopez@corp.untd.com",
+    "siteusername": "jlopez@corp.untd.com",
+    "rt": "",
+    "accesslevelnotes": "\"Super User\"`"
+  },
+  {
+    "companycode": "CROWDSTRIKE",
     "firstname": "Net-Security-Tickets",
     "lastname": "Security",
     "email": "security@tickets.int.untd.com",
