@@ -90,7 +90,8 @@ class UserManager {
                     'username' => $row['account_username'],
                     'email' => $row['account_email'],
                     'status' => $row['account_status'] ?? 'active',
-		    'additional_data' => $row['additional_data'] ? json_decode($row['additional_data'], true) : []
+		    'additional_data' => $row['additional_data'] ? json_decode($row['additional_data'], true) : [],
+                    'deletion_date' => $row['deletion_date']
 
                 ];
             }

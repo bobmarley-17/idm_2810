@@ -1,0 +1,101 @@
+[
+  {
+    "user name": "amadduri",
+    "email": "amadduri@corp.untd.com",
+    "group info": "DBA;FRAUDOPS;HYD_INT_DEFAULT;MWS_BAPPRIV_USERS",
+    "full name": "Abhishek Madduri",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "bezboron",
+    "email": "nbezborodova@corp.untd.com",
+    "group info": "BASTION_INT;BILLING_DEV_US_PROD;DBA;DB_OPS;DB_OPS_MJ;FMOWNER;FRAUDOPS;FREEMAIL;JUNO_DB;MWS_BAPPRIV_USERS;REMEDY_GROUP",
+    "full name": "Natalia Bezborodova",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "indran",
+    "email": "indran@corp.untd.com",
+    "group info": "AD_TECH;ADTECH_OLDLOGS_USERS;CLIENT_HYD;CVSWDEV_GROUP_USERS;CVSMWS_GROUP_USERS;EMAIL_HYD_ADMIN;EMAIL_HYD_USERS;HYD_INT_DEFAULT;IPCACHE_USERS;MAGICJACK_MJ_JUMP_USERS;MAGICJACK_MJ_SMS_USERS;MAGICJACK_ASTERISK_DTMF_USERS;MAGICJACK_VM_USERS;MWS_BAPPRIV_USERS;MWS_CGI_USERS;MWS_DB_DEV;GITREPO_HYD;WEBDEV_HYD",
+    "full name": "Navaneethan; Ravindran",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "kpavan",
+    "email": "kpavan@corp.untd.com",
+    "group info": "DBA;HYD_INT_DEFAULT",
+    "full name": "Pavan Kumar Reddy Kunduru",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "kpittala",
+    "email": "kpittala@corp.untd.com",
+    "group info": "ANTISPAM_DEV;EMAIL_HYD_USERS;HYD_INT_DEFAULT;IPCACHE_USERS;MAGICJACK_USERS;SOFTDEV_HYD_TRAINEE",
+    "full name": "Pittala; Krishna Reddy",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "mthiyaga",
+    "email": "mthiyaga@corp.untd.com",
+    "group info": "ANTISPAM_DEV;ANTISPAM_QA_HYD;EMAIL_HYD_ADMIN;EMAIL_HYD_USERS;EMAIL_MASTERDNS_USERS;GRAYLOG_USERS;HYD_INT_DEFAULT;IPCACHE_USERS;MAGICJACK_MJ_JUMP_USERS;MAGICJACK_USERS;SPAMDESK;GITREPO_HYD;TG5MON_USERS;GITREPO_HYD;TG5MON_USERS",
+    "full name": "Muthulakshmanan; Thiyagarajan",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "narendra",
+    "email": "narendra@corp.untd.com",
+    "group info": "DBA;FRAUDOPS;HYD_INT_DEFAULT;MWS_BAPPRIV_USERS",
+    "full name": "Narendra Krishna; P. G. V. V.",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "nsivan",
+    "email": "nsivan@corp.untd.com",
+    "group info": "AD_TECH;EMAIL_HYD_ADMIN;EMAIL_HYD_USERS;HYD_INT_DEFAULT;MAGICJACK_MJ_JUMP_USERS;MAGICJACK_MJ_SMS_USERS;MAGICJACK_ASTERISK_DTMF_USERS;MAGICJACK_VM_USERS;git",
+    "full name": "Nandakumar Sivanandam",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "sbala",
+    "email": "SBala@corp.untd.com",
+    "group info": "BASTION_INT;BILLING_DEV_US_PROD;DBA_NO_PORTAL;DB_OPS;MWS_BAPPRIV_USERS;MWS_UTIL_USERS;REMEDY_OPS_US;TELECOM_GROUP",
+    "full name": "Sridharan Balamanickam",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "smudiyal",
+    "email": "smudiyal@corp.untd.com",
+    "group info": "DBA;DB_OPS;FRAUDOPS;GRAYLOG_USERS;HYD_INT_DEFAULT;MAGICJACK_MJ_JUMP_USERS;MWS_BAPPRIV_USERS;MWS_CGI_USERS",
+    "full name": "Mudiyala Siva Reddy",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "tmohan",
+    "email": "tmohan@corp.untd.com",
+    "group info": "DBA;DB_OPS_MJ;HYD_INT_DEFAULT;MAGICJACK_MJ_SMS_USERS",
+    "full name": "Tipirneni; Mohan Chand",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "ticketsdb01.dca.int.untd.com;ticketsdb01.vgs.int.untd.com",
+    "appropriate (y/n)": ""
+  }
+]

@@ -1,5 +1,7 @@
 {
     "require": {
-        "monolog/monolog": "^2.0"
+        "monolog/monolog": "^2.0",
+        "box/spout": "^3.3",
+        "phpoffice/phpspreadsheet": "^5.2"
     }
 }

@@ -34,6 +34,17 @@
   },
   {
     "companycode": "BURPSUITE",
+    "firstname": "Jennifer",
+    "lastname": "Lopez",
+    "email": "jlopez@corp.untd.com",
+    "siteusername": "jlopez@corp.untd.com",
+    "rt": "",
+    "accesslevelnotes": "User",
+    "username": "jlopez",
+    "emailaddress": "jlopez@corp.untd.com"
+  },
+  {
+    "companycode": "BURPSUITE",
     "firstname": "Anil",
     "lastname": "Kadium",
     "email": "kanil@corp.untd.com",

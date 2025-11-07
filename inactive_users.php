@@ -1,150 +1,109 @@
 <?php
+// inactive_users.php - REVISED LOGIC v2
+
+// FIX: Standardize the file startup for security, sessions, and database connection.
+require_once 'bootstrap.php';
+require_once 'auth_check.php';
 require_once 'config/database.php';
-require_once 'lib/UserManager.php';
-require_once 'lib/CorrelationEngine.php';
-include 'templates/header.php';
 
-$db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
-$userManager = new UserManager($db);
-$correlationEngine = new CorrelationEngine($db);
+// FIX: REMOVED the redundant, insecure database connection. We now use '$db' from bootstrap.
 
-$status = isset($_GET['status']) ? $_GET['status'] : 'inactive';
+$status = $_GET['status'] ?? 'inactive'; // Default to the "pending" view
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
-$source_id = isset($_GET['source_id']) ? (int)$_GET['source_id'] : null;
 
-$source_name = '';
-if ($source_id) {
-    $sourceStmt = $db->prepare("SELECT name FROM account_sources WHERE id = ?");
-    $sourceStmt->execute([$source_id]);
-    $source = $sourceStmt->fetch(PDO::FETCH_ASSOC);
-    $source_name = $source ? $source['name'] : '';
+// --- Build the SQL Query Based on the New, Correct Logic ---
+
+// This part of the query is common to both views. It gets the user and a summary of their account statuses.
+$baseQuery = "
+    SELECT 
+        u.id, u.employee_id, u.first_name, u.last_name, u.email, u.updated_at,
+        GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS source_names,
+        SUM(CASE WHEN ua.status = 'active' THEN 1 ELSE 0 END) as active_account_count
+    FROM users u
+    LEFT JOIN user_accounts ua ON u.id = ua.user_id
+    LEFT JOIN account_sources s ON ua.source_id = s.id
+";
+
+// Common WHERE clause for filtering by search term.
+$whereClause = " WHERE 1=1 ";
+if ($searchTerm) {
+    $whereClause .= " AND (u.email LIKE :search OR u.employee_id LIKE :search OR u.first_name LIKE :search OR u.last_name LIKE :search)";
 }
 
+$groupByClause = " GROUP BY u.id ";
+$orderByClause = " ORDER BY u.updated_at DESC";
+
+// --- Logic for the Two Different Tabs ---
+
 if ($status === 'inactive') {
-    $query = "SELECT u.*,
-            GROUP_CONCAT(DISTINCT s.name) AS source_names,
-            GROUP_CONCAT(DISTINCT ua.status) AS account_statuses
-        FROM users u
-        LEFT JOIN user_accounts ua ON u.id = ua.user_id
-        LEFT JOIN account_sources s ON ua.source_id = s.id
-        WHERE u.status = 'inactive'
-          AND EXISTS (SELECT 1 FROM defunct_users d WHERE d.user_id = u.id AND d.status = 'pending')";
-    if ($source_id) {
-        $query .= " AND EXISTS (SELECT 1 FROM user_accounts ua2 WHERE ua2.user_id = u.id AND ua2.source_id = :source_id)";
-    }
-    if ($searchTerm) {
-        $query .= " AND (
-            u.email LIKE :search_email OR 
-            u.employee_id LIKE :search_employee OR 
-            u.first_name LIKE :search_first OR 
-            u.last_name LIKE :search_last
-        )";
-    }
-    $query .= " GROUP BY u.id ORDER BY u.updated_at DESC";
+    // "INACTIVE / PENDING DELETION" Tab
+    // A user is here if they have a 'pending' record in the defunct_users table. This is your "to-do" list.
+    // This logic from your original file was correct for this tab's purpose.
+    $query = $baseQuery . 
+             " JOIN defunct_users d ON u.id = d.user_id AND d.status = 'pending' " .
+             $whereClause . 
+             $groupByClause . 
+             $orderByClause;
 
-} elseif ($status === 'deleted') {
-    $query = "SELECT u.*,
-            GROUP_CONCAT(DISTINCT s.name) AS source_names,
-            GROUP_CONCAT(DISTINCT ua.status) AS account_statuses
-        FROM users u
-        LEFT JOIN user_accounts ua ON u.id = ua.user_id
-        LEFT JOIN account_sources s ON ua.source_id = s.id
-        WHERE u.status = 'inactive'
-          AND NOT EXISTS (SELECT 1 FROM defunct_users d WHERE d.user_id = u.id AND d.status = 'pending')
-          AND EXISTS (SELECT 1 FROM defunct_users d WHERE d.user_id = u.id AND d.status = 'deleted')";
-    if ($source_id) {
-        $query .= " AND EXISTS (SELECT 1 FROM user_accounts ua2 WHERE ua2.user_id = u.id AND ua2.source_id = :source_id)";
-    }
-    if ($searchTerm) {
-        $query .= " AND (
-            u.email LIKE :search_email OR 
-            u.employee_id LIKE :search_employee OR 
-            u.first_name LIKE :search_first OR 
-            u.last_name LIKE :search_last
-        )";
-    }
-    $query .= " GROUP BY u.id ORDER BY u.updated_at DESC";
-
-} else {
-    // Default fallback
-    $query = "SELECT u.*,
-            GROUP_CONCAT(DISTINCT s.name) AS source_names,
-            GROUP_CONCAT(DISTINCT ua.status) AS account_statuses
-        FROM users u
-        LEFT JOIN user_accounts ua ON u.id = ua.user_id
-        LEFT JOIN account_sources s ON ua.source_id = s.id
-        WHERE u.status = :status";
-    if ($source_id) {
-        $query .= " AND EXISTS (SELECT 1 FROM user_accounts ua2 WHERE ua2.user_id = u.id AND ua2.source_id = :source_id)";
-    }
-    if ($searchTerm) {
-        $query .= " AND (
-            u.email LIKE :search_email OR 
-            u.employee_id LIKE :search_employee OR 
-            u.first_name LIKE :search_first OR 
-            u.last_name LIKE :search_last
-        )";
-    }
-    $query .= " GROUP BY u.id ORDER BY u.updated_at DESC";
+} else { // Default to 'deleted' view
+    // "DELETED" Tab
+    // A user is here if their defunct record is 'deleted' AND they have ZERO active accounts left.
+    $status = 'deleted'; // Ensure status is set correctly for the active tab
+    $query = $baseQuery . 
+             " JOIN defunct_users d ON u.id = d.user_id AND d.status = 'deleted' " .
+             $whereClause . 
+             $groupByClause . 
+             " HAVING active_account_count = 0 " . // THIS IS THE CRUCIAL NEW CONDITION
+             $orderByClause;
 }
 
 $stmt = $db->prepare($query);
 
-// Bind :status always if used in query
-if (strpos($query, ':status') !== false) {
-    $stmt->bindValue(':status', $status);
-}
-
-// Conditionally bind :source_id if in query
-if ($source_id !== null && strpos($query, ':source_id') !== false) {
-    $stmt->bindValue(':source_id', $source_id);
-}
-
-// Conditionally bind search placeholders if in query
-if ($searchTerm && strpos($query, ':search_email') !== false) {
+// Bind the search term if it exists.
+if ($searchTerm) {
     $searchPattern = "%$searchTerm%";
-    $stmt->bindValue(':search_email', $searchPattern);
-    $stmt->bindValue(':search_employee', $searchPattern);
-    $stmt->bindValue(':search_first', $searchPattern);
-    $stmt->bindValue(':search_last', $searchPattern);
+    $stmt->bindValue(':search', $searchPattern);
 }
 
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$pageTitle = "Inactive/Deleted Users";
+include 'templates/header.php';
 ?>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2>Inactive/Deleted Users</h2>
-            <?php if ($source_name): ?>
-                <p class="text-muted">Filtered by source: <?= htmlspecialchars($source_name) ?></p>
-            <?php endif; ?>
+            <h2>Inactive & Defunct Users</h2>
+            <p class="text-muted">Review users pending deletion or view historical records of fully deleted users.</p>
         </div>
         <div>
-            <?php if ($source_id): ?>
-                <a href="sources.php?source_id=<?= $source_id ?>" class="btn btn-secondary me-2">Back to Source</a>
-            <?php endif; ?>
             <a href="users.php" class="btn btn-primary">View Active Users</a>
         </div>
     </div>
+
     <div class="card mb-4">
         <div class="card-header">
             <div class="row align-items-center">
                 <div class="col">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link <?= $status === 'inactive' ? 'active' : '' ?>" href="?status=inactive">Inactive Users</a>
+                            <a class="nav-link <?= $status === 'inactive' ? 'active' : '' ?>" href="?status=inactive">
+                                Pending Deletion
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= $status === 'deleted' ? 'active' : '' ?>" href="?status=deleted">Deleted Users</a>
+                            <a class="nav-link <?= $status === 'deleted' ? 'active' : '' ?>" href="?status=deleted">
+                                Fully Deleted Archive
+                            </a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <form class="d-flex" method="GET">
                         <input type="hidden" name="status" value="<?= htmlspecialchars($status) ?>">
-                        <input type="text" name="search" class="form-control" placeholder="Search users..." value="<?= htmlspecialchars($searchTerm) ?>">
+                        <input type="text" name="search" class="form-control" placeholder="Search..." value="<?= htmlspecialchars($searchTerm) ?>">
                         <button type="submit" class="btn btn-outline-secondary ms-2">Search</button>
                     </form>
                 </div>
@@ -152,14 +111,14 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Employee ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Sources</th>
-                            <th>Account Statuses</th>
+                            <th>Active Accounts</th>
                             <th>Last Updated</th>
                             <th>Actions</th>
                         </tr>
@@ -167,7 +126,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                     <?php if (empty($users)): ?>
                         <tr>
-                            <td colspan="7" class="text-center">No <?= htmlspecialchars($status) ?> users found.</td>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                No users found in this category.
+                            </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($users as $user): ?>
@@ -175,11 +136,17 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?= htmlspecialchars($user['employee_id']) ?></td>
                                 <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
-                                <td><?= htmlspecialchars($user['source_names'] ?? 'None') ?></td>
-                                <td><?= htmlspecialchars($user['account_statuses'] ?? 'None') ?></td>
-                                <td><?= htmlspecialchars($user['updated_at']) ?></td>
+                                <td><?= htmlspecialchars(str_replace(',', ', ', $user['source_names'] ?? 'None')) ?></td>
                                 <td>
-                                    <a href="user_detail.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-info">View Details</a>
+                                    <span class="badge bg-<?= $user['active_account_count'] > 0 ? 'success' : 'secondary' ?>">
+                                        <?= (int)$user['active_account_count'] ?>
+                                    </span>
+                                </td>
+                                <td><?= date('M j, Y', strtotime($user['updated_at'])) ?></td>
+                                <td>
+                                    <a href="user_detail.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -192,4 +159,3 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <?php include 'templates/footer.php'; ?>
-

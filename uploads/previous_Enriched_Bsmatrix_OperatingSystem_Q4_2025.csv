@@ -1,0 +1,164 @@
+[
+  {
+    "user name": "asuresh",
+    "email": "asuresh@corp.untd.com",
+    "group info": "CRM_CHARGEBACK;CRM_LINGO;FRAUDOPS;HYD_INT_DEFAULT;HYD_STAFF;HYD_HYDSTAFF;SECURITY_ABUSE;SA_PROD",
+    "full name": "Suresh Akkapeddi",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "cprasanth",
+    "email": "cprasanth@corp.untd.com",
+    "group info": "CVS_US_USERS;CVSWDEV_GROUP_USERS;HYD_INT_DEFAULT;SERVER_OPS;TRANSFER_STAFF_USERS;WEB_LINGO_QA",
+    "full name": "Prasanth Chowdary Chamallamudi",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "gbasappa",
+    "email": "gbasappa@corp.untd.com",
+    "group info": "CVSWDEV_GROUP_USERS;HYD_INT_DEFAULT;HYD_STAFF;HYD_HYDSTAFF;MWS_BAPPRIV_USERS;NZHELP_ADMIN;SERVER_APP_HYD;SERVER_OPS;GITREPO_HYD;TRANSFER_STAFF_USERS",
+    "full name": "Kari Basappa Gudekota",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "geshwer",
+    "email": "geshwer@corp.untd.com",
+    "group info": "BILLING_DEV_HYD;HYD_INT_DEFAULT;MUA_QA_GROUP",
+    "full name": "Eshwer Garnepalli",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "gsapan",
+    "email": "gsapan@corp.untd.com",
+    "group info": "BRIDGE_QA_USERS;CLAMAV_GROUP;FRAUDOPS;HYD_INT_DEFAULT;HYD_STAFF;HYD_HYDSTAFF;JSMTPD_QA_HYD;MAGICJACK_MJ_WEB_USERS;MAGICJACK_QA_USERS;SECURITY_ABUSE;SA_LEGAL;SA_PROD",
+    "full name": "Sapan Gupta",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "jpavan",
+    "email": "jpavan@corp.untd.com",
+    "group info": "BILLING_DEV_HYD;HYD_INT_DEFAULT;MUA_QA_GROUP",
+    "full name": "Pavan Kalyan Jangam",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "jpradeep",
+    "email": "jpradeep@corp.untd.com",
+    "group info": "CRM_LINGO;HYD_INT_DEFAULT;SECURITY_ABUSE;SA_PROD;SA_TRAINEE",
+    "full name": "Pradeep Jorrigala",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "lsheguri",
+    "email": "lsheguri@corp.untd.com",
+    "group info": "ADSALES;CRM_FAX;CRM_LINGO;CRM_MUA;CRM_PM;CRM_SUTH;FRAUDOPS;HYD_INT_DEFAULT;HYD_STAFF;HYD_HYDSTAFF;SECURITY_ABUSE;SA_TRAINEE",
+    "full name": "Sheguri; Lavanya",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "mahender",
+    "email": "mahender@corp.untd.com",
+    "group info": "CHARGEBACK_QA_HYD;CHARGEBACK_HYD_USERS;CVS_SHELL_USERS;DB_DEV_HYD;ECRM_OPS_USERS;HYD_INT_DEFAULT;HYD_STAFF;HYD_HYDSTAFF;MWS_BAPPRIV_USERS;MWS_UTIL_USERS;REMEDY_OPS_HYD;ZCAST_DEV",
+    "full name": "Balusani; Mahender",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "mgontala",
+    "email": "mgontala@corp.untd.com",
+    "group info": "CVSWDEV_GROUP_USERS;HYD_INT_DEFAULT;HYD_HYDSTAFF;MAGICJACK_MJ_SMS_USERS;SERVER_OPS;TRANSFER_STAFF_USERS",
+    "full name": "Manoj Kumar Gontala",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "pananya",
+    "email": "pananya@corp.untd.com",
+    "group info": "CRM_FAX;FRAUDOPS;HYD_INT_DEFAULT;HYD_HYDSTAFF;SA;SECURITY_ABUSE;SA_TRAINEE",
+    "full name": "Ananya Pancholi",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "pnangun",
+    "email": "pnangun@corp.untd.com",
+    "group info": "CVSWDEV_GROUP_USERS;HYD_INT_DEFAULT;REMDEV_ON_CVS;REMEDY_DEV;SERVER_OPS;TRANSFER_STAFF_USERS",
+    "full name": "Praveen Nangunoori",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "prprabhu",
+    "email": "prprabhu@corp.untd.com",
+    "group info": "BILLING_DEV_HYD;BILLING_DEV_HYD_LINGO;CHARGEBACK_QA_HYD;ECRM_OPS_USERS;HYD_INT_DEFAULT;REMDEV_ON_CVS;REMEDY_DEV;REMEDY_OPS_HYD",
+    "full name": "Rameshprabhu Palani",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "rkapart",
+    "email": "rkapart@corp.untd.com",
+    "group info": "CHARGEBACK_QA_HYD;CHARGEBACK_HYD_USERS;CVS_SHELL_USERS;DB_DEV_HYD;ECRM_OPS_USERS;HYD_INT_DEFAULT;MUA_QA_GROUP;MWS_BAPPRIV_USERS;MWS_UTIL_USERS;REMEDY_OPS_HYD;ZCAST_DEV",
+    "full name": "Kaparthi; Ramesh",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "sathpv",
+    "email": "sathpv@corp.untd.com",
+    "group info": "BILLING_DEV_HYD;BILLING_DEV_HYD_PORTAL;CHARGEBACK_QA_HYD;CVS_HYD_SHELL_USERS;CVS_SHELL_USERS.HYD_TEMP_CHARGBCK_USERS;HYD_INT_DEFAULT;HYD_STAFF;HYD_HYDSTAFF;QA_BILLING_HYD;REMEDY_DEV;GITREPO_HYD",
+    "full name": "Periyattu Veetil; Satheesan",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "sbala",
+    "email": "SBala@corp.untd.com",
+    "group info": "BASTION_INT;BILLING_DEV_US_PROD;DBA_NO_PORTAL;DB_OPS;MWS_BAPPRIV_USERS;MWS_UTIL_USERS;REMEDY_OPS_US;TELECOM_GROUP",
+    "full name": "Sridharan Balamanickam",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "sghosh",
+    "email": "sghosh@corp.untd.com",
+    "group info": "BILLING_DEV;EMAIL_HYD_USERS;CLIENT_HYD;GRAYLOG_USERS;HYD_INT_DEFAULT;MAGICJACK_MJ_LOG_USERS;MAGICJACK_MJ_WEB_USERS;REMDEV_ON_CVS;SECURITY_ABUSE;GITREPO_HYD",
+    "full name": "Ghosh; Saurav",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  },
+  {
+    "user name": "spotham",
+    "email": "spotham@corp.untd.com",
+    "group info": "CVSWDEV_GROUP_USERS;ECRM_OPS_USERS;HYD_INT_DEFAULT;REMDEV_ON_CVS;REMEDY_DEV;SERVER_APP_HYD;SERVER_OPS",
+    "full name": "Satyanarayana Potham",
+    "reasonforaccess": "authorized_keys on this host.",
+    "host name": "bsmatrix01.dca.untd.com;bsmatrix01.vgs.untd.com",
+    "appropriate (y/n)": ""
+  }
+]

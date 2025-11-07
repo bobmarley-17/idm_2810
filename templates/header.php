@@ -9,7 +9,6 @@ $pageTitle = $pageTitle ?? 'Identity Management';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?> - IDM Tool</title>
 
-    <!-- CSS (Correctly placed in the head) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -43,6 +42,7 @@ $pageTitle = $pageTitle ?? 'Identity Management';
                                     <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['username']); ?>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <!-- The "My Profile" link is now restored -->
                                     <li><a class="dropdown-item" href="user_detail.php?id=<?= $_SESSION['user_id'] ?>"><i class="fas fa-id-badge fa-fw me-2"></i>My Profile</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item text-danger" href="logout.php"><i class="fas fa-sign-out-alt fa-fw me-2"></i>Logout</a></li>

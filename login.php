@@ -15,11 +15,11 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Identity Manager</title>
-    
+
     <!-- External CSS from Bootstrap for styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <!-- All custom styling is contained here -->
     <style>
         /*
@@ -30,13 +30,13 @@ if (isset($_SESSION['user_id'])) {
         :root {
             /* 1. Change the main color for the button */
             --primary-color: #005A9C; /* A professional blue. Change to your company's hex color. */
-            
+
             /* 2. Change the background color of the whole page */
             --background-color: #f4f7f6;
-            
+
             /* 3. Change the size of your logo */
             --logo-height: 40px;
-            
+
             /* 4. Change the width of the login box */
             --card-max-width: 1900px;
         }
@@ -112,7 +112,7 @@ if (isset($_SESSION['user_id'])) {
             <img src="undefined.png" alt="Company Logo" class="logo">
             <h4>Identity Manager</h4>
         </div>
-        
+
         <?php if (isset($_SESSION['login_error'])): ?>
             <div class="error-message mt-4">
                 <i class="fas fa-exclamation-triangle me-2"></i><?php echo htmlspecialchars($_SESSION['login_error']); ?>
@@ -123,7 +123,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="login-body">
             <form action="handle_login.php" method="POST">
                 <?php echo csrf_input(); // Security token ?>
-                
+
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username" required autocomplete="username">
@@ -146,3 +146,4 @@ if (isset($_SESSION['user_id'])) {
 
 </body>
 </html>
+
