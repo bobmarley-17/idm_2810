@@ -4,12 +4,19 @@ require_once 'auth_check.php';
 require_once 'config/database.php';
 require_once 'lib/UserManager.php';
 require_once 'lib/CorrelationEngine.php';
+require_once 'lib/LogHelper.php';
 
 
 //$db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 $userManager = new UserManager($db);
 $correlationEngine = new CorrelationEngine($db);
 
+
+// Log dashboard access
+//LogHelper::logDataAccess('dashboard', 'view', [
+//    'user_id' => $_SESSION['user_id'] ?? null,
+//    'username' => $_SESSION['username'] ?? 'unknown'
+//]);
 
 // Count distinct users in defunct_users with pending status
 $pendingUsersStmt = $db->query("
@@ -25,6 +32,7 @@ $totalActiveUsers = $db->query("SELECT COUNT(*) FROM users WHERE status = 'activ
 $totalInactiveUsers = $db->query("SELECT COUNT(*) FROM users WHERE status != 'active'")->fetchColumn();
 $totalSources = $db->query("SELECT COUNT(*) FROM account_sources")->fetchColumn();
 $totalRules = $db->query("SELECT COUNT(*) FROM correlation_rules")->fetchColumn();
+$totalAuditLogs = $db->query("SELECT COUNT(*) FROM audit_logs")->fetchColumn();
 $recentUsers = $db->query("
     SELECT u.*
     FROM users u
@@ -58,6 +66,18 @@ $lastSync = $db->query("
 
 $lastSyncTimeForFooter = ($lastSync && isset($lastSync[0]['last_sync'])) ? date('M j, Y H:i', strtotime($lastSync[0]['last_sync'])) : 'Never';
 
+
+
+// Log dashboard statistics access
+//LogHelper::logDataAccess('dashboard_statistics', 'retrieved', [
+//    'active_users' => $totalActiveUsers,
+//    'inactive_users' => $totalInactiveUsers,
+//    'total_sources' => $totalSources,
+//    'pending_deletions' => $pendingCount,
+//    'total_sshr_users' => $totalUsers
+//]);
+
+
 $pageTitle = "Dashboard";
 include 'templates/header.php';
 ?>
@@ -65,89 +85,103 @@ include 'templates/header.php';
 <div class="container-fluid px-4 py-4">
     <h2>Identity Management Dashboard</h2>
 
-    <div class="row mt-4">
-        <!-- Stats Cards -->
-        <div class="col">
-            <div class="card text-white bg-primary h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Users</h5>
-                    <p class="card-text display-4"><?php echo $totalActiveUsers; ?></p>
-                    <div class="d-flex flex-column">
-                        <a href="users.php" class="text-white">View Active Users</a>
-                        <?php if ($totalInactiveUsers > 0): ?>
-                        <a href="inactive_users.php" class="text-white">View <?php echo $totalInactiveUsers; ?> inactive/deleted</a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
+    <div class="tile-grid">
+    
+      <div class="tile bg-blue">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Users</div>
+            <div class="metric"><?= (int)$totalActiveUsers ?></div>
+          </div>
+          <div class="icon" aria-hidden="true">
+            <i class="fas fa-users"></i>
+          </div>
         </div>
-
-        <div class="col">
-            <div class="card text-white bg-success h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Data Sources</h5>
-                    <p class="card-text display-5"><?= $totalSources ?></p>
-                    <a href="sources.php" class="text-white">Manage</a>
-                </div>
-            </div>
+        <div class="d-flex justify-content-between align-items-center meta">
+          <div>
+            <a href="users.php">View Active Users</a>
+            <?php if ($totalInactiveUsers > 0): ?>
+              &nbsp;•&nbsp;<a href="inactive_users.php">View <?= $totalInactiveUsers ?> inactive</a>
+            <?php endif; ?>
+          </div>
+          <small><?= htmlspecialchars($lastSyncTimeForFooter) ?></small>
         </div>
-
-        <div class="col">
-            <div class="card text-white bg-info h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Correlation Rules</h5>
-                    <p class="card-text display-5"><?= $totalRules ?></p>
-                    <a href="sources.php" class="text-white">Configure</a>
-                </div>
-            </div>
+      </div>
+    
+      <div class="tile bg-green">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Data Sources</div>
+            <div class="metric"><?= (int)$totalSources ?></div>
+          </div>
+          <div class="icon" aria-hidden="true"><i class="fas fa-database"></i></div>
         </div>
-
-        <div class="col">
-            <div class="card text-white bg-secondary h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Reports</h5>
-                    <a href="reports.php" class="text-white">Generate</a>
-                </div>
-            </div>
+        <div class="meta"><a href="sources.php">Manage</a></div>
+      </div>
+    
+      <div class="tile bg-cyan">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Correlation Rules</div>
+            <div class="metric"><?= (int)$totalRules ?></div>
+          </div>
+          <div class="icon" aria-hidden="true"><i class="fas fa-sliders-h"></i></div>
         </div>
-
-
-        <!-- Action Required Card -->
-        <div class="col">
-            <?php
-            $actionCardBg = $pendingCount > 0 ? 'bg-danger text-white' : 'bg-white text-danger border-danger';
-            $actionCardText = $pendingCount > 0 ? 'Users Pending Deletion' : 'No Action Required';
-            ?>
-            <div class="card h-100 <?= $actionCardBg ?> border border-2 border-danger">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h5 class="card-title">Action Required</h5>
-                    <p class="card-text display-6 fw-bold mb-1">
-                        <?= $pendingCount ?>
-                    </p>
-                    <span class="mb-2 small">
-                        <?= $actionCardText ?>
-                    </span>
-                    <a href="pending_deletions.php" class="btn btn-outline-light btn-sm <?= $pendingCount > 0 ? '' : 'text-danger border-danger' ?>">Review</a>
-                </div>
-            </div>
+        <div class="meta"><a href="sources.php">Configure</a></div>
+      </div>
+    
+      <!-- AUDIT LOGS TILE - NEW -->
+      <div class="tile bg-purple">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Audit Logs</div>
+            <div class="metric"><?= number_format((int)$totalAuditLogs) ?></div>
+          </div>
+          <div class="icon" aria-hidden="true"><i class="fas fa-clipboard-list"></i></div>
         </div>
-
-        <div class="col">
-            <div class="card text-white bg-warning h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Sync Status</h5>
-                    <p class="card-text">
-                        <?php if ($lastSync && $lastSync[0]['last_sync']): ?>
-                            Last: <?= date('M j, H:i', strtotime($lastSync[0]['last_sync'])) ?>
-                        <?php else: ?>
-                            Never synced
-                        <?php endif; ?>
-                    </p>
-                    <a href="sync.php" class="text-white">Run Sync</a>
-                </div>
-            </div>
+        <div class="meta"><a href="audit_logs.php">View Logs</a></div>
+      </div>
+    
+      <div class="tile bg-gray">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Reports</div>
+            <div class="metric">Generate</div>
+          </div>
+          <div class="icon" aria-hidden="true"><i class="fas fa-file-alt"></i></div>
         </div>
-    </div>
+        <div class="meta"><a href="reports.php">Run Reports</a></div>
+      </div>
+    
+      <div class="tile tile-action <?= $pendingCount>0 ? 'bg-red' : 'bg-gray' ?>">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Action Required</div>
+            <div class="metric"><?= (int)$pendingCount ?></div>
+          </div>
+          <div class="icon" aria-hidden="true"><i class="fas fa-exclamation-triangle"></i></div>
+        </div>
+        <div class="meta">
+          <?php if ($pendingCount>0): ?>
+            <a href="pending_deletions.php">Review</a>
+          <?php else: ?>
+            <span>No Action Required</span>
+          <?php endif; ?>
+        </div>
+      </div>
+    
+      <div class="tile bg-yellow">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div class="text-uppercase small">Sync Status</div>
+            <div class="metric"><?= htmlspecialchars($lastSync && $lastSync[0]['last_sync'] ? 'Ready' : 'Never') ?></div>
+          </div>
+          <div class="icon" aria-hidden="true"><i class="fas fa-sync-alt"></i></div>
+        </div>
+        <div class="meta"><a href="sync.php">Run Sync</a></div>
+      </div>
+    
+    </div> <!-- tile-grid -->
 
     <div class="row mt-4">
         <!-- Recent Users -->
@@ -292,6 +326,13 @@ include 'templates/header.php';
                         $uncorrAccounts = [];
                     } else {
                         $uncorrAccounts = $uncorrStmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        // Log uncorrelated accounts access
+                       // if (!empty($uncorrAccounts)) {
+                       //     LogHelper::logDataAccess('uncorrelated_accounts', 'view', [
+                       //         'count' => count($uncorrAccounts)
+                       //   ]);
+                       // }
                     }
                     if ($uncorrAccounts):
                     ?>
@@ -319,15 +360,18 @@ include 'templates/header.php';
                                 <td><?= htmlspecialchars($acc['role_name'] ?? '') ?></td>
                                 <td><?= date('M j, H:i', strtotime($acc['created_at'])) ?></td>
                                 <td>
-                                    <a href="manual_correlate.php?id=<?= $acc['id'] ?>" class="btn btn-sm btn-primary">Correlate</a>
+                                    <a href="manual_correlate.php?id=<?= $acc['id'] ?>" class="btn btn-sm btn-primary">Manual Correlate</a>
                                     <form method="post" action="assign_role.php" style="display:inline-block">
                                         <input type="hidden" name="account_id" value="<?= $acc['id'] ?>">
-                                        <select name="role_account_id" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
+                                        <select name="role_account_id" class="form-select form-select-sm d-inline w-auto">
                                             <option value="">Assign Role</option>
                                             <?php foreach ($roleAccounts as $role): ?>
-                                                <option value="<?= $role['id'] ?>" <?= ($acc['role_name'] == $role['name']) ? 'selected' : '' ?>><?= htmlspecialchars($role['name']) ?></option>
+                                                <option value="<?= $role['id'] ?>" <?= ($acc['role_name'] == $role['name']) ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($role['name']) ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
+                                        <button type="submit" class="btn btn-sm btn-primary ms-1">Correlate</button>
                                     </form>
                                 </td>
                             </tr>
@@ -370,40 +414,85 @@ include 'templates/header.php';
     </div>
 </div>
 
-<!-- Add User Modal (unchanged) -->
+
+<!-- Add User Modal -->
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add New User</h5>
+                <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Add New User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="add_user.php" method="POST">
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Employee ID</label>
-                        <input type="text" name="employee_id" class="form-control" required>
+                    <!-- ID Type Dropdown + ID Value -->
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label">ID Type <span class="text-danger">*</span></label>
+                            <select name="id_type" id="modal_id_type" class="form-select" required>
+                                <option value="">-- Select --</option>
+                                <option value="employee_id">Employee ID</option>
+                                <option value="rt">RT</option>
+                                <option value="cmr">CMR</option>
+                            </select>
+                        </div>
+                        <div class="col-md-7 mb-3">
+                            <label class="form-label" id="modal_id_label">ID Value <span class="text-danger">*</span></label>
+                            <input type="text" name="employee_id" id="modal_id_value" class="form-control" required
+                                   placeholder="Enter ID value">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text" name="first_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" name="last_name" class="form-control" required>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" name="first_name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" name="last_name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" name="email" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add User</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i> Add User
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+// Update label based on ID type selection in modal
+document.getElementById('modal_id_type').addEventListener('change', function() {
+    const label = document.getElementById('modal_id_label');
+    const input = document.getElementById('modal_id_value');
+
+    switch(this.value) {
+        case 'employee_id':
+            label.innerHTML = 'Employee ID <span class="text-danger">*</span>';
+            input.placeholder = 'Enter Employee ID';
+            break;
+        case 'rt':
+            label.innerHTML = 'RT Number <span class="text-danger">*</span>';
+            input.placeholder = 'Enter RT Number';
+            break;
+        case 'cmr':
+            label.innerHTML = 'CMR Number <span class="text-danger">*</span>';
+            input.placeholder = 'Enter CMR Number';
+            break;
+        default:
+            label.innerHTML = 'ID Value <span class="text-danger">*</span>';
+            input.placeholder = 'Enter ID value';
+    }
+});
+</script>
+
 
 <?php include 'templates/footer.php'; ?>

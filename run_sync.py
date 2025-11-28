@@ -8,7 +8,6 @@ from datetime import datetime
 import os
 import re
 
-
 def load_snapshot(snapshot_path):
     if os.path.exists(snapshot_path):
         try:
@@ -196,34 +195,101 @@ def load_xml_accounts(file_path, config):
         logging.error(f"Error loading XML accounts: {e}")
         return accounts
 
+
+
+# In run_sync.py
+
 def load_csv_accounts(file_path, field_mappings):
-    """Load and map CSV account data"""
+    """
+    Load and map CSV account data robustly.
+    - Handles case-insensitive and space-insensitive headers.
+    - Detects delimiter (comma / tab / semicolon) automatically.
+    - Detects username/email header variants and preserves other columns.
+    """
+    import csv
     accounts = []
     try:
-        with open(file_path, 'r', encoding='utf-8-sig') as f:
-            headers = [h.strip().lower() for h in f.readline().strip().split(',')]
+        with open(file_path, 'r', encoding='utf-8-sig', newline='') as f:
+            # read a sample to detect delimiter, then rewind
+            sample = f.read(2048)
+            f.seek(0)
+            try:
+                dialect = csv.Sniffer().sniff(sample, delimiters=",\t;")
+            except csv.Error:
+                dialect = csv.get_dialect('excel')  # fallback to comma
 
-            # Create mapping from CSV headers to standard fields
-            reverse_mapping = {v: k for k, v in field_mappings.items()}
+            reader = csv.DictReader(f, dialect=dialect)
+            #logging.info(f"Detected CSV delimiter: {repr(dialect.delimiter)}")
+            #logging.info(f"Detected CSV headers: {reader.fieldnames}")
 
-            for line in f:
-                values = line.strip().split(',')
-                if len(values) != len(headers):
-                    continue
+            if not reader.fieldnames:
+                logging.error(f"No headers found in CSV: {file_path}")
+                return accounts
 
+            # Normalize headers (lowercase, no spaces/tabs)
+            normalized_headers = {h.strip().lower().replace(' ', '').replace('\t', ''): h for h in reader.fieldnames}
+
+            # Define variant groups
+            username_variants = ['username', 'user', 'user_name', 'username', 'siteusername', 'user name']
+            email_variants = ['email', 'mail', 'emailaddress', 'emailaddress', 'email address']
+
+            for row in reader:
                 account = {}
-                for header, value in zip(headers, values):
-                    if header in reverse_mapping:
-                        account[reverse_mapping[header]] = value.strip()
-                    account[header] = value.strip()  # Keep original fields
 
-                accounts.append(account)
+                # --- Detect USERNAME (case/space tolerant) ---
+                username_value = None
+                for variant in username_variants:
+                    norm = variant.lower().replace(' ', '').replace('\t', '')
+                    if norm in normalized_headers:
+                        account_field = normalized_headers[norm]
+                        username_value = (row.get(account_field) or '').strip()
+                        if username_value:
+                            break
+                if username_value:
+                    account['username'] = username_value
+
+                # --- Detect EMAIL (case/space tolerant) ---
+                email_value = None
+                for variant in email_variants:
+                    norm = variant.lower().replace(' ', '').replace('\t', '')
+                    if norm in normalized_headers:
+                        account_field = normalized_headers[norm]
+                        email_value = (row.get(account_field) or '').strip()
+                        if email_value:
+                            break
+                if email_value:
+                    account['email'] = email_value
+
+                # --- Map configured fields (if provided in source config) ---
+                for target_field, csv_field in (field_mappings or {}).items():
+                    key = (csv_field or '').lower().replace(' ', '').replace('\t', '')
+                    if key in normalized_headers:
+                        original_field = normalized_headers[key]
+                        account[target_field] = (row.get(original_field) or '').strip()
+
+                # --- Auto-map all remaining headers (convert header -> snake_case keys) ---
+                for raw_header, value in row.items():
+                    clean_key = re.sub(r'[\s\t]+', '_', raw_header.strip().lower())
+                    account[clean_key] = (value or '').strip()
+
+                # Keep raw data for later storage/export
+                account['original_data'] = {k: (v or '').strip() for k, v in row.items()}
+                #logging.info(f"Parsed CSV row: {json.dumps(account, ensure_ascii=False)}")
+
+                # only accept rows that have at least a username or email
+                if account.get('username') or account.get('email'):
+                    accounts.append(account)
+
+        logging.info(f"Loaded {len(accounts)} accounts from CSV file: {file_path}")
 
     except Exception as e:
-        logging.error(f"CSV processing failed: {str(e)}")
+        logging.error(f"CSV processing failed for {file_path}: {str(e)}", exc_info=True)
         raise
 
     return accounts
+
+
+
 
 def correlate_accounts(conn, source_id, accounts):
     """Correlate accounts using rules from database"""
@@ -337,7 +403,7 @@ def save_correlated_accounts(conn, source_id, correlated):
                 #item['account_data'].get('username'),
                 item['account_data'].get('firstname'),
                 item['account_data'].get('email'),
-                json.dumps(item['account_data']),
+                json.dumps(item['account_data'].get('original_data', item['account_data'])),
                 json.dumps(item['matched_by'])
             ))
         except Exception as e:
@@ -386,7 +452,7 @@ def save_uncorrelated_accounts(conn, source_id, unmatched):
                 """, (
                     account.get('username'),
                     account.get('email'),
-                    json.dumps(account),
+                    json.dumps(account.get('original_data', account)),
                     source_id,
                     account_id
                 ))
@@ -408,7 +474,7 @@ def save_uncorrelated_accounts(conn, source_id, unmatched):
                     account_id,
                     account.get('username'),
                     account.get('email'),
-                    json.dumps(account),
+                    json.dumps(account.get('original_data', account)),
                     role_account_id
                 ))
         except Exception as e:
@@ -467,14 +533,16 @@ def insert_baseline_users(conn, accounts_list, source_id):
         user_id = cursor.fetchone()[0]
 
         # Insert or update corresponding user_accounts row to reflect accounts in the source
+        additional_json = json.dumps(acc.get('original_data', acc))
         cursor.execute(
             """
-            INSERT INTO user_accounts (user_id, source_id, account_id, username, email, matched_by, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, NOW(), NOW())
+            INSERT INTO user_accounts (user_id, source_id, account_id, username, email, matched_by, additional_data, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), NOW())
             ON DUPLICATE KEY UPDATE
                 username = VALUES(username),
                 email = VALUES(email),
                 matched_by = VALUES(matched_by),
+                additional_data = VALUES(additional_data),
                 updated_at = NOW()
             """,
             (
@@ -483,7 +551,8 @@ def insert_baseline_users(conn, accounts_list, source_id):
                 acc.get('employee_id', acc.get('email', '')),  # or other unique account id
                 acc.get('first_name', acc.get('username', '')),
                 acc.get('email', ''),
-                '{"type": "baseline"}'  # JSON meta indicating baseline import
+                '{"type": "baseline"}',  # JSON meta indicating baseline import
+                additional_json
             )
         )
     conn.commit()
@@ -573,7 +642,14 @@ def sync_correlation_source(source_id):
 
         # === Snapshot Comparison ===
         filename = os.path.basename(source["config"]["file_path"])
-        snapshot_path = os.path.join('uploads', 'previous_' + filename)
+        #snapshot_path = os.path.join('uploads', 'previous_' + filename)
+        # Define the new dedicated snapshot directory
+        snapshot_dir = os.path.join('uploads', 'previous')
+        # Ensure the directory exists
+        os.makedirs(snapshot_dir, exist_ok=True)
+        # Create the full path for the snapshot file inside the new directory
+        snapshot_path = os.path.join(snapshot_dir, filename)
+
         prev_data = load_snapshot(snapshot_path)
         curr_data = {
             acc.get('email') or acc.get('employee_id'): acc
@@ -604,7 +680,7 @@ def sync_correlation_source(source_id):
 
         # Save snapshot for next sync
         save_snapshot(list(curr_data.values()), snapshot_path)
-	
+
         # === Reactivate users who reappeared ===
         cursor = conn.cursor()
         for key, acc in curr_data.items():

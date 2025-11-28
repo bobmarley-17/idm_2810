@@ -1,5 +1,4 @@
 email,firstname,lastname,username,supervisor_email
-jlopez@corp.untd.com,Jennifer,Lopez,jlopez,krishnamurala@corp.untd.com
 krishnamurala@corp.untd.com,Krishna,Murala,krishnamurala,mbaba@corp.untd.com
 rorozco@brileyfin.com,Raquel,Orozco,rorozco,pmurphy@brileyfin.com
 karambulo@corp.untd.com,Karl,Arambulo,karambulo,
@@ -121,9 +120,9 @@ kkoteswar@corp.untd.com,Koteswararao,Konide,kkoteswar,srinig@corp.untd.com
 psaraswathi@corp.untd.com,Saraswathi,Pooja,psaraswathi,sabhishek@corp.untd.com
 pshiva@corp.untd.com,Shiva Sai,Pulimamidi,pshiva,vsai@corp.untd.com
 sabhishek@corp.untd.com,Abhishek,Sharma,sabhishek,lsheguri@corp.untd.com
-bob.salvo@ymaxcorp.com,#NAME?,Salvo,bob.salvo,mcoffey@credomobile.com
-tina.tecce@ymaxcorp.com,#NAME?,Tecce,tina.tecce,mcoffey@credomobile.com
-steve.orourke@ymaxcorp.com,#NAME?,O'Rourke,steve.orourke,mcoffey@credomobile.com
+bob.salvo@ymaxcorp.com,Bob,Salvo,bob.salvo,mcoffey@credomobile.com
+tina.tecce@ymaxcorp.com,Tina,Tecce,tina.tecce,mcoffey@credomobile.com
+steve.orourke@ymaxcorp.com,Steve,O'Rourke,steve.orourke,mcoffey@credomobile.com
 gmallikharjun@corp.untd.com,Mallikharjuna,Gummadidala,gmallikharjun,kimmanen@corp.untd.com
 thanujap@corp.untd.com,Thanuja,Pedapudi,thanujap,jnirmal@corp.untd.com
 mcrump@credomobile.com,Matthew,Crump,mcrump,rmascola@credomobile.com
@@ -131,16 +130,16 @@ zandra.curry@magicjack.com,Zandra,Curry,zandra.curry,tina.tecce@ymaxcorp.com
 steven.licari@magicjack.com,Steven,Licari,steven.licari,agabrielyan@corp.untd.com
 kmcmullen@credomobile.com,Kathleen,McMullen,kmcmullen,mcoffey@credomobile.com
 sebastian.mosquera@magicjack.com,Sebastian,Mosquera,sebastian.mosquera,tina.tecce@ymaxcorp.com
-marcia.murray@magicjack.com,#NAME?,Murray,marcia.murray,karambulo@corp.untd.com
+marcia.murray@magicjack.com,Marcia,Murray,marcia.murray,karambulo@corp.untd.com
 melodie.nathan@magicjack.com,Melodie,Nathan,melodie.nathan,edward.graybeal@magicjack.com
-rsemyonov@credomobile.com,#NAME?,Semyonov,rsemyonov,mcoffey@credomobile.com
+rsemyonov@credomobile.com,R,Semyonov,rsemyonov,mcoffey@credomobile.com
 jenifer.sims@magicjack.com,Jenifer,Sims,jenifer.sims,bob.salvo@ymaxcorp.com
 james.slater@magicjack.com,James,Slater,james.slater,agabrielyan@corp.untd.com
 jsun@lingo.com,Jasmin,Sun,jsun,danilo.cruz@ymaxcorp.com
 pthridandam@credomobile.com,Priya,Thridandam,pthridandam,rmascola@credomobile.com
 kwoo@credomobile.com,Karina,Woo,kwoo,rmascola@credomobile.com
 smccarthy@credomobile.com,Susan,McCarthy,smccarthy,rmascola@credomobile.com
-stacey.caplan@magicjack.com,#NAME?,Caplan,stacey.caplan,
+stacey.caplan@magicjack.com,Stacey,Caplan,stacey.caplan,
 skotamraju@corp.untd.com,Sai Sree Ram,Kotamraju,skotamraju,kmedi@corp.untd.com
 spasupula@corp.untd.com,Siri,Pasupula,spasupula,rpraveen@corp.untd.com
 mravulapalli@corp.untd.com,Mohan,Ravulapalli,mravulapalli,dagarwal@corp.untd.com

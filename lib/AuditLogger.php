@@ -1,74 +1,148 @@
 <?php
-// In lib/AuditLogger.php
+/**
+ * AuditLogger - Logs to both database and audit.log file
+ */
 
-// This line is crucial! It loads Monolog and makes it available to our script.
-require_once __DIR__ . '/../vendor/autoload.php';
+class AuditLogger
+{
+    private static $pdo = null;
+    private static $loggers = [];
+    private static $logFile = null;
+    private $channel;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\JsonFormatter;
-use Monolog\Processor\WebProcessor;
+    public static function setPdo(PDO $pdo): void
+    {
+        self::$pdo = $pdo;
+    }
 
-class AuditLogger {
-    private static $logger = null;
+    public static function setLogFile(string $path): void
+    {
+        self::$logFile = $path;
+        
+        // Ensure directory exists
+        $dir = dirname($path);
+        if ($dir && !is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+    }
 
-    // A private constructor prevents anyone from creating a new instance with 'new AuditLogger()'.
-    private function __construct() {}
+    public static function getLogger(string $channel = 'app'): self
+    {
+        if (!isset(self::$loggers[$channel])) {
+            self::$loggers[$channel] = new self($channel);
+        }
+        return self::$loggers[$channel];
+    }
 
-    /**
-     * This is the main function you will call from other files.
-     * It uses the "Singleton" pattern to ensure only one logger instance is ever created.
-     */
-    public static function getLogger() {
-        if (self::$logger === null) {
-            // 1. Create the logger instance
-            // The name 'IDM_AUDIT' will appear in each log entry to identify its source.
-            self::$logger = new Logger('IDM_AUDIT');
+    private function __construct(string $channel)
+    {
+        $this->channel = $channel;
+    }
 
-            // 2. Create a "Handler" to tell the logger WHERE to send the logs.
-            // We'll log everything with a level of INFO or higher to a file named 'audit.log'
-            // in the project's root directory.
-            $logFile = __DIR__ . '/../audit.log';
-            $stream = new StreamHandler($logFile, Logger::INFO);
+    public function info(string $msg, array $context = []) { $this->log('info', $msg, $context); }
+    public function warning(string $msg, array $context = []) { $this->log('warning', $msg, $context); }
+    public function error(string $msg, array $context = []) { $this->log('error', $msg, $context); }
+    public function critical(string $msg, array $context = []) { $this->log('critical', $msg, $context); }
 
-            // 3. (Highly Recommended) Create a "Formatter" to define HOW the logs look.
-            // JSON format is excellent for auditing because it's structured and easy to parse later.
-            $formatter = new JsonFormatter();
-            $stream->setFormatter($formatter);
+    public function log(string $level, string $message, array $context = []): void
+    {
+        $meta = [
+            'user_id'     => $_SESSION['user_id'] ?? null,
+            'username'    => $_SESSION['username'] ?? null,
+            'ip_address'  => $_SERVER['REMOTE_ADDR'] ?? null,
+            'request_uri' => $_SERVER['REQUEST_URI'] ?? null,
+            'php_sapi'    => PHP_SAPI
+        ];
 
-            // 4. Push the configured handler to the logger.
-            self::$logger->pushHandler($stream);
-            
-            // 5. (Optional but useful) Add a "Processor" to automatically include data
-            // like IP address, URL, and HTTP method in every log record.
-            self::$logger->pushProcessor(new WebProcessor());
+        $fullContext = array_merge($meta, $context);
+        $timestamp = date('Y-m-d H:i:s');
+
+        // 1. Write to DATABASE
+        if (self::$pdo instanceof PDO) {
+            try {
+                $stmt = self::$pdo->prepare("
+                    INSERT INTO audit_logs (
+                        created_at, channel, level, message,
+                        context_json, user_id, username, ip_address, request_uri
+                    ) VALUES (
+                        NOW(), :channel, :level, :message,
+                        :context_json, :user_id, :username, :ip_address, :request_uri
+                    )
+                ");
+                $stmt->execute([
+                    ':channel'      => $this->channel,
+                    ':level'        => $level,
+                    ':message'      => $message,
+                    ':context_json' => json_encode($fullContext),
+                    ':user_id'      => $fullContext['user_id'],
+                    ':username'     => $fullContext['username'],
+                    ':ip_address'   => $fullContext['ip_address'],
+                    ':request_uri'  => $fullContext['request_uri']
+                ]);
+            } catch (Throwable $e) {
+                error_log("AuditLogger DB error: " . $e->getMessage());
+            }
         }
 
-        return self::$logger;
+        // 2. Write to FILE (audit.log)
+        $this->writeToFile($timestamp, $level, $message, $fullContext);
+
+        // 3. Also log to PHP error log (optional, for debugging)
+        $short = "[AUDIT][{$this->channel}][{$level}] $message";
+        error_log($short);
     }
 
     /**
-     * A helper function to build a standard array of context data for our audit logs.
-     * This ensures consistency across all log messages.
-     * 
-     * @param string|null $target_entity The user, role, or resource being acted upon (e.g., 'john.doe').
-     * @param array $extra_data Any additional key-value data to include.
-     * @return array The complete context array.
+     * Write log entry to audit.log file
      */
-    public static function buildContext($target_entity = null, $extra_data = []) {
-        // Start with the user performing the action (the "actor").
-        // We assume their details are stored in the PHP session after they log in.
-        $context = [
-            'actor_username' => $_SESSION['username'] ?? 'UNKNOWN_OR_SYSTEM',
-            'actor_id'       => $_SESSION['user_id'] ?? 'UNKNOWN_OR_SYSTEM',
-        ];
-
-        // If a target was specified, add it.
-        if ($target_entity) {
-            $context['target_entity'] = $target_entity;
+    private function writeToFile(string $timestamp, string $level, string $message, array $context): void
+    {
+        // Default log file path if not set
+        if (self::$logFile === null) {
+            self::$logFile = __DIR__ . '/../logs/audit.log';
+            
+            // Ensure directory exists
+            $dir = dirname(self::$logFile);
+            if ($dir && !is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
         }
-        
-        // Merge any extra, specific data provided for this particular log event.
-        return array_merge($context, $extra_data);
+
+        try {
+            // Format: [timestamp] [channel] [LEVEL] [user] [ip] message | context_json
+            $username = $context['username'] ?? 'anonymous';
+            $ip = $context['ip_address'] ?? 'unknown';
+            $uri = $context['request_uri'] ?? '';
+            
+            // Compact context (remove redundant fields for file)
+            $fileContext = array_filter($context, function($key) {
+                return !in_array($key, ['user_id', 'username', 'ip_address', 'request_uri', 'php_sapi']);
+            }, ARRAY_FILTER_USE_KEY);
+            
+            $contextJson = !empty($fileContext) ? json_encode($fileContext, JSON_UNESCAPED_SLASHES) : '';
+            
+            // Build log line
+            $logLine = sprintf(
+                "[%s] [%s] [%s] [%s] [%s] %s",
+                $timestamp,
+                $this->channel,
+                strtoupper($level),
+                $username,
+                $ip,
+                $message
+            );
+            
+            if ($contextJson) {
+                $logLine .= " | " . $contextJson;
+            }
+            
+            $logLine .= PHP_EOL;
+            
+            // Append to file
+            file_put_contents(self::$logFile, $logLine, FILE_APPEND | LOCK_EX);
+            
+        } catch (Throwable $e) {
+            error_log("AuditLogger file write error: " . $e->getMessage());
+        }
     }
 }

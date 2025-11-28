@@ -1,0 +1,8 @@
+User Name,email,Group Info,Full Name,ReasonForAccess,Host name,Appropriate (Y/N)
+amadduri,amadduri@corp.untd.com,DBA;FRAUDOPS;HYD_INT_DEFAULT;MWS_BAPPRIV_USERS,Abhishek Madduri,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,
+bezboron,nbezborodova@corp.untd.com,BASTION_INT;BILLING_DEV_US_PROD;DBA;DB_OPS;DB_OPS_MJ;FMOWNER;FRAUDOPS;FREEMAIL;JUNO_DB;MWS_BAPPRIV_USERS;REMEDY_GROUP,Natalia Bezborodova,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,
+kpavan,kpavan@corp.untd.com,DBA;HYD_INT_DEFAULT,Pavan Kumar Reddy Kunduru,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,
+narendra,narendra@corp.untd.com,DBA;FRAUDOPS;HYD_INT_DEFAULT;MWS_BAPPRIV_USERS,Narendra Krishna; P. G. V. V.,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,
+sbala,SBala@corp.untd.com,BASTION_INT;BILLING_DEV_US_PROD;DBA_NO_PORTAL;DB_OPS;MWS_BAPPRIV_USERS;MWS_UTIL_USERS;REMEDY_OPS_US;TELECOM_GROUP,Sridharan Balamanickam,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,
+smudiyal,smudiyal@corp.untd.com,DBA;DB_OPS;FRAUDOPS;GRAYLOG_USERS;HYD_INT_DEFAULT;MAGICJACK_MJ_JUMP_USERS;MWS_BAPPRIV_USERS;MWS_CGI_USERS,Mudiyala Siva Reddy,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,
+tmohan,tmohan@corp.untd.com,DBA;DB_OPS_MJ;HYD_INT_DEFAULT;MAGICJACK_MJ_SMS_USERS,Tipirneni; Mohan Chand,authorized_keys on this host.,cognosdb01.dca.int.untd.com;cognosdb01.vgs.int.untd.com,

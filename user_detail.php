@@ -57,9 +57,9 @@ include 'templates/header.php';
     <?php elseif ($defunctStatus === 'pending'): ?>
         <span class="badge bg-danger ms-2">Defunct (Pending)</span>
     <?php endif; ?>
-    <a href="user_access.php?id=<?= $user['id'] ?>" class="btn btn-primary">
+    <!-- <a href="user_access.php?id=<?= $user['id'] ?>" class="btn btn-primary">
         <i class="fas fa-user-shield"></i> Manage Login Access
-    </a>
+    </a> -->
 </h2>
 
 <?php if ($fromPending): ?>

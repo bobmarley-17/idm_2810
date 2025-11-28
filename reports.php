@@ -10,7 +10,7 @@ include 'templates/header.php'; // Include your site's header and nav here
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <h2>Reports</h2>
     <div class="row">
         <!-- Source Report Card -->

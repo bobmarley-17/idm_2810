@@ -1,11 +1,21 @@
 <?php
+require_once 'bootstrap.php';
+require_once 'auth_check.php';
 require_once 'config/database.php';
 require_once 'lib/UserManager.php';
 require_once 'lib/CorrelationEngine.php';
+require_once 'lib/LogHelper.php';
 
 $db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 $userManager = new UserManager($db);
 $correlationEngine = new CorrelationEngine($db);
+
+// Log page access
+//$currentSourceId = $_GET['source_id'] ?? null;
+//LogHelper::logDataAccess('sources_page', 'view', [
+//    'viewing_source_id' => $currentSourceId
+//]);
+
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,6 +60,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insertStmt = $db->prepare("INSERT INTO account_sources (name, type, category, is_baseline, description, config) VALUES (?, ?, ?, ?, ?, ?)");
             $inserted = $insertStmt->execute([$name, $type, $category, $is_baseline, $description, $configJson]);
             if ($inserted) {
+                $newSourceId = $db->lastInsertId();
+                
+                // Log source creation
+                LogHelper::logConfig('Data source created', [
+                    'source_id' => $newSourceId,
+                    'source_name' => $name,
+                    'source_type' => $type,
+                    'category' => $category,
+                    'is_baseline' => $is_baseline,
+                    'created_by' => $_SESSION['username'] ?? 'unknown'
+                ]);
+                
+                LogHelper::logDatabaseChange('account_sources', 'INSERT', $newSourceId, [
+                    'name' => $name,
+                    'type' => $type,
+                    'category' => $category,
+                    'is_baseline' => $is_baseline
+                ]);
                 $_SESSION['message'] = "Source added successfully!";
                 $_SESSION['message_type'] = "success";
             } else {
@@ -97,6 +125,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateStmt = $db->prepare("UPDATE account_sources SET name=?, type=?, category=?, is_baseline=?, description=?, config=? WHERE id=?");
             $updated = $updateStmt->execute([$name, $type, $category, $is_baseline, $description, $configJson, $sourceId]);
             if ($updated) {
+                // Log source update
+                LogHelper::logConfig('Data source updated', [
+                    'source_id' => $sourceId,
+                    'source_name' => $name,
+                    'source_type' => $type,
+                    'category' => $category,
+                    'is_baseline' => $is_baseline,
+                    'updated_by' => $_SESSION['username'] ?? 'unknown'
+                ]);
+                
+                LogHelper::logDatabaseChange('account_sources', 'UPDATE', $sourceId, [
+                    'name' => $name,
+                    'type' => $type,
+                    'category' => $category,
+                    'config' => $configJson
+                ]);
                 $_SESSION['message'] = "Source updated successfully!";
                 $_SESSION['message_type'] = "success";
             } else {
@@ -109,9 +153,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Delete Source
         elseif (isset($_POST['delete_source'])) {
             $sourceId = $_POST['source_id'];
+
+            // Get source details before deletion
+            $sourceStmt = $db->prepare("SELECT name, type, category FROM account_sources WHERE id = ?");
+            $sourceStmt->execute([$sourceId]);
+            $sourceInfo = $sourceStmt->fetch(PDO::FETCH_ASSOC);
+            
             $deleteStmt = $db->prepare("DELETE FROM account_sources WHERE id=?");
             $deleted = $deleteStmt->execute([$sourceId]);
+            
             if ($deleted) {
+                // Log source deletion - CRITICAL SECURITY EVENT
+                LogHelper::logConfig('Data source deleted', [
+                    'source_id' => $sourceId,
+                    'source_name' => $sourceInfo['name'] ?? 'Unknown',
+                    'source_type' => $sourceInfo['type'] ?? 'Unknown',
+                    'deleted_by' => $_SESSION['username'] ?? 'unknown'
+                ]);
+                
+                LogHelper::logSecurity('Data source removed from system', 'critical', [
+                    'source_id' => $sourceId,
+                    'source_name' => $sourceInfo['name'] ?? 'Unknown',
+                    'source_type' => $sourceInfo['type'] ?? 'Unknown'
+                ]);
+                
+                LogHelper::logDatabaseChange('account_sources', 'DELETE', $sourceId, [
+                    'name' => $sourceInfo['name'] ?? 'Unknown',
+                    'type' => $sourceInfo['type'] ?? 'Unknown'
+                ]);
+                
                 $_SESSION['message'] = "Source deleted successfully!";
                 $_SESSION['message_type'] = "info";
                 header("Location: sources.php");
@@ -121,6 +191,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: sources.php?source_id=$sourceId");
             }
             exit;
+
+            //$deleteStmt = $db->prepare("DELETE FROM account_sources WHERE id=?");
+            //$deleted = $deleteStmt->execute([$sourceId]);
+            //if ($deleted) {
+            //    $_SESSION['message'] = "Source deleted successfully!";
+            //   $_SESSION['message_type'] = "info";
+            //    header("Location: sources.php");
+            //} else {
+            //    $_SESSION['message'] = "Failed to delete source.";
+            //    $_SESSION['message_type'] = "danger";
+            //    header("Location: sources.php?source_id=$sourceId");
+            //}
+            //exit;
         }
         elseif (isset($_POST['add_rule'])) {
             $sourceId = $_POST['source_id'];
@@ -129,6 +212,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $priority = $_POST['priority'];
 
             if ($correlationEngine->addRule($sourceId, $matchField, $matchType, $priority)) {
+                // Log rule creation
+                LogHelper::logConfig('Correlation rule added', [
+                    'source_id' => $sourceId,
+                    'match_field' => $matchField,
+                    'match_type' => $matchType,
+                    'priority' => $priority,
+                    'created_by' => $_SESSION['username'] ?? 'unknown'
+                ]);
+                
+                LogHelper::logDatabaseChange('correlation_rules', 'INSERT', null, [
+                    'source_id' => $sourceId,
+                    'match_field' => $matchField,
+                    'match_type' => $matchType,
+                    'priority' => $priority
+                ]);
                 $_SESSION['message'] = "Correlation rule added successfully!";
                 $_SESSION['message_type'] = "success";
             } else {
@@ -143,6 +241,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sourceId = $_POST['source_id'];
 
             if ($correlationEngine->deleteRule($ruleId)) {
+                // Log rule deletion
+                LogHelper::logConfig('Correlation rule deleted', [
+                    'rule_id' => $ruleId,
+                    'source_id' => $sourceId,
+                    'deleted_by' => $_SESSION['username'] ?? 'unknown'
+                ]);
+                
+                LogHelper::logDatabaseChange('correlation_rules', 'DELETE', $ruleId, [
+                    'source_id' => $sourceId
+                ]);
                 $_SESSION['message'] = "Rule deleted successfully!";
                 $_SESSION['message_type'] = "info";
             } else {
@@ -197,6 +305,12 @@ if ($currentSourceId) {
     foreach ($sources as $src) {
         if ($src['id'] == $currentSourceId) {
             $currentSource = $src;
+            // Log source details access
+            //LogHelper::logDataAccess('source_details', 'view', [
+            //    'source_id' => $currentSourceId,
+            //    'source_name' => $src['name'],
+            //    'source_type' => $src['type']
+            //]);
 
             // Get active accounts
             $accountsStmt = $db->prepare("
@@ -207,6 +321,12 @@ if ($currentSourceId) {
             ");
             $accountsStmt->execute([$currentSourceId]);
             $accounts = $accountsStmt->fetchAll(PDO::FETCH_ASSOC);
+            // Log account data access
+            //LogHelper::logDataAccess('source_accounts', 'retrieved', [
+            //    'source_id' => $currentSourceId,
+            //   'source_name' => $currentSource['name'],
+            //    'account_count' => count($accounts)
+            //]);
 
             // Get count of inactive/deleted accounts
             $inactiveStmt = $db->prepare("
@@ -226,7 +346,7 @@ include 'templates/header.php';
 ?>
 
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <h2>Data Source Management</h2>
 
     <?php if (isset($_SESSION['message'])): ?>
@@ -524,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </form>
                         </div>
                         <?php if (!empty($rules)): ?>
-                        <div class="table-responsive">
+                        <div class="table-responsive w-100">
                             <table class="table table-bordered table-hover table-sm mt-2" style="font-size: 0.95rem;">
                                 <thead>
                                     <tr>

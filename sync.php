@@ -1,6 +1,10 @@
 <?php
+require_once 'bootstrap.php';
+require_once 'auth_check.php';
 require_once 'config/database.php';
 require_once 'lib/UserManager.php';
+require_once 'lib/CorrelationEngine.php';
+require_once 'lib/AuditLogger.php';
 
 $db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 $userManager = new UserManager($db);
@@ -9,20 +13,27 @@ $userManager = new UserManager($db);
 $syncResult = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_source'])) {
     $sourceId = $_POST['source_id'];
-    
-    // Execute Python sync script
-    $command = escapeshellcmd("python3 run_sync.py --source $sourceId");
+
+    // Execute Python sync script (FIXED: proper escaping)
+    $command = "python3 run_sync.py --source " . escapeshellarg($sourceId);
     $output = shell_exec($command . " 2>&1");
-    
+
+    // FIXED: Moved AuditLogger outside the array
     $syncResult = [
         'source_id' => $sourceId,
         'output' => $output
     ];
     
+    AuditLogger::getLogger('sync')->info('Manual sync completed.', [
+        'source_id' => $sourceId,
+        'user'      => $_SESSION['username'] ?? null,
+        'output'    => trim($output)
+    ]);
+
     // Update last sync time in UI
     $stmt = $db->prepare("
-        UPDATE account_sources 
-        SET last_sync = CURRENT_TIMESTAMP 
+        UPDATE account_sources
+        SET last_sync = CURRENT_TIMESTAMP
         WHERE id = ?
     ");
     $stmt->execute([$sourceId]);
@@ -34,9 +45,9 @@ $sources = $db->query("SELECT * FROM account_sources ORDER BY name")->fetchAll(P
 include 'templates/header.php';
 ?>
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <h2>Manual Synchronization</h2>
-    
+
     <div class="row">
         <div class="col-md-6">
             <div class="card">
@@ -63,7 +74,7 @@ include 'templates/header.php';
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -80,7 +91,7 @@ include 'templates/header.php';
             </div>
         </div>
     </div>
-    
+
     <?php if ($syncResult): ?>
     <div class="card mt-4">
         <div class="card-header">
@@ -91,7 +102,7 @@ include 'templates/header.php';
         </div>
     </div>
     <?php endif; ?>
-    
+
     <div class="card mt-4">
         <div class="card-header">
             Sync Status
@@ -107,19 +118,19 @@ include 'templates/header.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($sources as $source): 
+                    <?php foreach ($sources as $source):
                         $syncStatus = 'Never run';
                         $statusClass = 'text-muted';
-                        
+
                         if ($source['last_sync']) {
                             $syncStatus = date('M j, Y H:i', strtotime($source['last_sync']));
                             $statusClass = 'text-success';
-                            
+
                             // If sync is older than 1 day
                             if (time() - strtotime($source['last_sync']) > 86400) {
                                 $statusClass = 'text-warning';
                             }
-                            
+
                             // If sync is older than 1 week
                             if (time() - strtotime($source['last_sync']) > 604800) {
                                 $statusClass = 'text-danger';

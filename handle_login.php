@@ -1,22 +1,32 @@
 <?php
-// handle_login.php - THE FINAL, WORKING VERSION
+// handle_login.php - External Auth Only with Whitelist
 
 require_once 'bootstrap.php';
 require_once 'config/database.php';
-require_once 'lib/AuditLogger.php';
+require_once 'lib/LogHelper.php';
 
 // --- Stage 1: Security and Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !validate_csrf()) {
     $_SESSION['login_error'] = 'Invalid request or session expired.';
+    
+    LogHelper::logSecurity('Login attempt with invalid request/CSRF', 'warning', [
+        'reason' => 'Invalid method or CSRF token'
+    ]);
+    
     header('Location: login.php');
     exit();
 }
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = trim($_POST['username'] ?? '');
+$password = $_POST['password'] ?? '';
 
 if (empty($username) || empty($password)) {
     $_SESSION['login_error'] = 'Username and password are required.';
+    
+    LogHelper::logAuth('Login attempt with empty credentials', $username ?: 'unknown', false, [
+        'reason' => 'Empty username or password'
+    ]);
+    
     header('Location: login.php');
     exit();
 }
@@ -29,39 +39,50 @@ curl_setopt($ch, CURLOPT_URL, $authUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
-// CRITICAL FIX #1: Bypass the expired SSL certificate for testing.
-// WARNING: This must be removed before production.
+// WARNING: Bypass SSL for internal testing only
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
 $responseXml = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$curlError = curl_error($ch);
 curl_close($ch);
 
 if ($responseXml === false || $httpCode !== 200) {
-    error_log("Auth API call failed. HTTP Code: " . $httpCode);
+    error_log("Auth API call failed. HTTP Code: " . $httpCode . " Error: " . $curlError);
     $_SESSION['login_error'] = 'The authentication service is currently unavailable. Please try again later.';
+    
+    LogHelper::logError('External auth service unavailable', [
+        'username' => $username,
+        'http_code' => $httpCode,
+        'curl_error' => $curlError
+    ]);
+    
     header('Location: login.php');
     exit();
 }
 
 // --- Stage 3: Parse the XML Response ---
 try {
-    // CRITICAL FIX #2: Repair the malformed XML before parsing.
     $fixedXmlString = preg_replace('/&(?![a-zA-Z]{2,6};|#[0-9]{2,4};)/', '&amp;', $responseXml);
 
     $xml = @simplexml_load_string($fixedXmlString);
     if ($xml === false) {
         throw new Exception("Failed to parse XML response from auth server.");
     }
-    
-    // CRITICAL FIX #3: Correctly access the child nodes of the XML object.
+
     $result = (string)$xml->result[0];
     $message = (string)$xml->message[0];
 
 } catch (Exception $e) {
     error_log($e->getMessage() . " Raw response: " . $responseXml);
     $_SESSION['login_error'] = 'An unexpected error occurred while parsing the auth response.';
+    
+    LogHelper::logError('Auth response parsing failed', [
+        'username' => $username,
+        'error' => $e->getMessage()
+    ]);
+    
     header('Location: login.php');
     exit();
 }
@@ -69,29 +90,54 @@ try {
 // --- Stage 4: Authentication Check ---
 if ($result !== 'true') {
     $_SESSION['login_error'] = htmlspecialchars($message);
-    AuditLogger::getLogger('auth')->warning('Authentication failed via external API.', ['user' => $username, 'details' => json_encode(['api_message' => $message])]);
+    
+    LogHelper::logAuth('Login failed - invalid credentials', $username, false, [
+        'api_message' => $message,
+        'auth_result' => $result
+    ]);
+    
     header('Location: login.php');
     exit();
 }
 
-// --- Stage 5: Local Database Authorization ---
-$stmt = $db->prepare("SELECT id, username, password_hash FROM users WHERE username = ? AND status = 'active'");
-$stmt->execute([$username]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+// --- Stage 5: Whitelist Authorization ---
+$authorizedUsers = [
+    'akadium',
+    'imohammed',
+    'sgurubilli',
+    'krishnamurala',
+];
 
-if ($user && $user['password_hash'] !== null) {
+if (in_array($username, $authorizedUsers, true)) {
     // SUCCESS!
     session_regenerate_id(true);
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['username'] = $user['username'];
+    
+    // FIX: Use 0 for external users to prevent SQL Integer errors
+    // (The database column user_id is INT, strings or huge numbers break it)
+    $_SESSION['user_id'] = 0; 
+    $_SESSION['username'] = $username;
 
-    AuditLogger::getLogger('auth')->info('Login successful (External Auth + Local Auth).', ['user' => $user['username']]);
+    // LOG: Login successful
+    LogHelper::logAuth('Login successful', $username, true, [
+        'auth_method' => 'external_sso',
+        'whitelist_check' => 'passed',
+        'user_id' => 0
+    ]);
+
     header('Location: index.php');
     exit();
+    
 } else {
-    // User passed SSO but is not an authorized admin in our system.
+    // User authenticated but not authorized
     $_SESSION['login_error'] = 'You have been authenticated, but you are not authorized to access this application.';
-    AuditLogger::getLogger('auth')->warning('Login blocked for unauthorized user.', ['user' => $username, 'details' => 'User passed external auth but is not authorized locally.']);
+    
+    LogHelper::logSecurity('Unauthorized user blocked', 'warning', [
+        'username' => $username,
+        'reason' => 'User passed external auth but not in whitelist',
+        'whitelist_check' => 'failed'
+    ]);
+    
     header('Location: login.php');
     exit();
 }
+?>

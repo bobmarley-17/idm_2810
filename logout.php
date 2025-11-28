@@ -1,26 +1,25 @@
 <?php
-// logout.php - CORRECTED FOR PASS-THROUGH AUTHENTICATION
+// logout.php - CORRECTED LOGGING
 
-// Load bootstrap to start the session and access session variables
 require_once 'bootstrap.php';
-// Load the logger
-require_once 'vendor/autoload.php'; // Make sure this is included for Monolog
-require_once 'lib/AuditLogger.php';
+require_once 'lib/LogHelper.php'; // Use the Helper for File + DB logging
 
-// Get the username for logging BEFORE we destroy the session
-$username = $_SESSION['username'] ?? 'unknown_user';
+// Get user info before destroying session
+$username = $_SESSION['username'] ?? 'unknown';
+$userId = $_SESSION['user_id'] ?? null;
 
-// Log the logout event
-AuditLogger::getLogger('auth')->info('User logout successful.', [
-    'user' => $username,
-    'details' => ''
-]);
+if (isset($_SESSION['username'])) {
+    // LOG: Logout event (Writes to audit.log and Database)
+    LogHelper::logAuth('User logout successful', $username, true, [
+        'user_id' => $userId,
+        'action' => 'logout'
+    ]);
+}
 
-// 1. Unset all of the session variables.
+// 1. Unset all session variables
 $_SESSION = [];
 
-// 2. If it's desired to kill the session, also delete the session cookie.
-// Note: This will destroy the session, and not just the session data!
+// 2. Delete session cookie
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
@@ -29,9 +28,10 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// 3. Finally, destroy the session.
+// 3. Destroy the session
 session_destroy();
 
-// 4. Redirect the user back to your application's login page.
+// 4. Redirect
 header('Location: login.php');
 exit();
+?>
