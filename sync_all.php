@@ -174,7 +174,7 @@ include 'templates/header.php';
         <a href="sync.php" class="btn btn-primary">
             <i class="fas fa-arrow-left"></i> Back to Sync
         </a>
-        <a href="dashboard.php" class="btn btn-secondary">
+        <a href="index.php" class="btn btn-secondary">
             <i class="fas fa-home"></i> Dashboard
         </a>
     </div>

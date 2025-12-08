@@ -112,19 +112,19 @@ include 'templates/header.php';
 
                 <div class="col-lg-3 col-md-4">
                     <label class="form-label small mb-1">Search</label>
-                    <input type="text" name="q" value="<?= htmlspecialchars($search) ?>" 
+                    <input type="text" name="q" value="<?= htmlspecialchars($search) ?>"
                            class="form-control form-control-sm" placeholder="Message, user, or context...">
                 </div>
 
                 <div class="col-lg-2 col-md-4">
                     <label class="form-label small mb-1">From Date</label>
-                    <input type="date" name="date_from" value="<?= htmlspecialchars($dateFrom) ?>" 
+                    <input type="date" name="date_from" value="<?= htmlspecialchars($dateFrom) ?>"
                            class="form-control form-control-sm">
                 </div>
 
                 <div class="col-lg-2 col-md-4">
                     <label class="form-label small mb-1">To Date</label>
-                    <input type="date" name="date_to" value="<?= htmlspecialchars($dateTo) ?>" 
+                    <input type="date" name="date_to" value="<?= htmlspecialchars($dateTo) ?>"
                            class="form-control form-control-sm">
                 </div>
 
@@ -172,7 +172,7 @@ include 'templates/header.php';
                                 $contextArr = $decoded;
                             }
                         }
-                        
+
                         // Level badge colors
                         $levelColors = [
                             'info' => 'bg-info',
@@ -204,7 +204,7 @@ include 'templates/header.php';
                                         <summary class="text-primary" style="cursor: pointer;">
                                             <small>View Details (<?= count($contextArr) ?> fields)</small>
                                         </summary>
-                                        <pre class="mb-0 mt-1 p-2 bg-light rounded" 
+                                        <pre class="mb-0 mt-1 p-2 bg-light rounded"
                                              style="white-space: pre-wrap; word-break: break-word; font-size: 0.75rem; max-height: 200px; overflow-y: auto;"><?= htmlspecialchars(json_encode($contextArr, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) ?></pre>
                                     </details>
                                 <?php else: ?>
@@ -218,7 +218,7 @@ include 'templates/header.php';
                                 <small class="text-muted"><?= htmlspecialchars($log['ip_address'] ?? '—') ?></small>
                             </td>
                             <td>
-                                <small class="text-truncate d-inline-block" style="max-width: 200px;" 
+                                <small class="text-truncate d-inline-block" style="max-width: 200px;"
                                        title="<?= htmlspecialchars($log['request_uri'] ?? '') ?>">
                                     <?= htmlspecialchars($log['request_uri'] ?? '—') ?>
                                 </small>
@@ -230,7 +230,7 @@ include 'templates/header.php';
             </div>
         </div>
     <?php endif; ?>
-    
+
     <div class="mt-3 d-flex justify-content-between align-items-center">
         <a href="index.php" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left me-1"></i> Back to Dashboard

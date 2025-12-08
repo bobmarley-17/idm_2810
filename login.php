@@ -113,12 +113,20 @@ if (isset($_SESSION['user_id'])) {
             <h4>Identity Manager</h4>
         </div>
 
+
+        <?php if (isset($_GET['expired']) && $_GET['expired'] == 1): ?>
+            <div class="error-message mt-4" style="background-color: #fff3cd; color: #856404; border-color: #ffc107;">
+                <i class="fas fa-clock me-2"></i>Your session has expired due to inactivity. Please log in again.
+            </div>
+        <?php endif; ?>
+
         <?php if (isset($_SESSION['login_error'])): ?>
             <div class="error-message mt-4">
                 <i class="fas fa-exclamation-triangle me-2"></i><?php echo htmlspecialchars($_SESSION['login_error']); ?>
             </div>
             <?php unset($_SESSION['login_error']); ?>
         <?php endif; ?>
+
 
         <div class="login-body">
             <form action="handle_login.php" method="POST">

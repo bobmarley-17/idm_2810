@@ -116,6 +116,7 @@ if (in_array($username, $authorizedUsers, true)) {
     // (The database column user_id is INT, strings or huge numbers break it)
     $_SESSION['user_id'] = 0; 
     $_SESSION['username'] = $username;
+    $_SESSION['last_activity'] = time();
 
     // LOG: Login successful
     LogHelper::logAuth('Login successful', $username, true, [
